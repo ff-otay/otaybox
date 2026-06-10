@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÔTAY BOX – Box Mensuelle Thé & Bien-Être</title>
+    <meta name="description" content="Découvrez une expérience sensorielle unique chaque mois avec ÔTAY BOX — des thés et tisanes artisanaux, des accessoires cocooning et des rituels relaxants livrés chez vous.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar fade-in">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <img src="assets/logo.png" alt="Logo ÔTAY BOX" class="logo-img">
+            </a>
+            
+            <nav class="nav-links">
+                <a href="index.html#about" class="nav-link">À propos</a>
+                <a href="box-detail.html" class="nav-link">Nos Box</a>
+                <div class="nav-item-dropdown">
+                    <a href="boutique.html" class="nav-link">Boutique <i class="fa-solid fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="boutique.html#infusions" class="dropdown-link">Infusions & Tisanes</a>
+                        <a href="boutique.html#accessoires" class="dropdown-link">Accessoires de thé</a>
+                        <a href="boutique.html#bougies" class="dropdown-link">Bougies & Parfums</a>
+                        <a href="boutique.html#savons" class="dropdown-link">Savons & Soins naturels</a>
+                        <a href="boutique.html#lifestyle" class="dropdown-link">Lifestyle & Détente</a>
+                    </div>
+                </div>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="#" class="icon-btn search-btn" aria-label="Rechercher" onclick="event.preventDefault(); alert('Recherche en cours de développement');">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </a>
+                <a href="#" class="icon-btn profile-btn" aria-label="Mon compte" onclick="event.preventDefault(); alert('Espace client en cours de développement');">
+                    <i class="fa-regular fa-user"></i>
+                </a>
+                <button class="icon-btn theme-toggle" aria-label="Basculer le thème clair/sombre">
+                    <i class="fa-solid fa-sun light-icon"></i>
+                    <i class="fa-solid fa-moon dark-icon"></i>
+                </button>
+                <button class="cart-btn" aria-label="Panier">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-count">0</span>
+                </button>
+                <button class="icon-btn mobile-menu-toggle" aria-label="Ouvrir le menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <a href="index.html#about" class="mobile-link">À propos</a>
+            <a href="box-detail.html" class="mobile-link">Nos Box</a>
+            <a href="boutique.html" class="mobile-link">Boutique</a>
+            <a href="index.html#contact" class="mobile-link">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero glass-panel fade-in slide-up" id="hero">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="text-accent">La Box du mois</span> <br> 
+                        Jardin de Douceur
+                    </h1>
+                    <p class="hero-intro">
+                        Découvrez une expérience sensorielle unique chaque mois avec ÔTAY BOX — des thés et tisanes artisanaux, des accessoires cocooning et des conseils pour prendre soin de vous, le tout livré directement chez vous.
+                    </p>
+                    <div class="hero-ctas">
+                        <a href="box-detail.html" class="btn btn-primary">Découvrir la box</a>
+                        <a href="#contact" class="btn btn-outline">Nous contacter</a>
+                    </div>
+                </div>
+                <div class="hero-image-wrapper">
+                    <img src="assets/hero-image.png" alt="Box de Thé Premium ÔTAY BOX" class="hero-image blur-load">
+                    <div class="glow-effect"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about section-padding fade-in scroll-anim" id="about">
+            <div class="container about-container">
+                <div class="about-image-wrapper">
+                    <img src="assets/yukon-haughton-Fkt0y2UZg88-unsplash.jpg" alt="Un moment de calme avec ÔTAY BOX" class="about-image blur-load">
+                    <div class="floating-badge">
+                        <i class="fa-solid fa-seedling"></i>
+                        <span>Bien-Être Premium</span>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <h2 class="section-title">À propos d'<span class="text-accent">ÔTAY BOX</span></h2>
+                    <p class="section-text">
+                        ÔTAY BOX a été imaginée pour les amoureux du thé et de la détente, à la recherche d'un instant de calme et de douceur. Chaque coffret renferme des thés sélectionnés à la main, des accessoires haut de gamme et des astuces dédiées au bien-être.
+                    </p>
+                    <p class="section-text">
+                        Notre philosophie ? Créer un véritable voyage sensoriel alliant goût, arômes et esthétisme, afin de rendre chaque rituel de dégustation absolument unique.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Concept Section (Non-clickable in nav, explains how it works) -->
+        <section class="how-it-works section-padding fade-in scroll-anim">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Le <span class="text-primary">Concept</span></h2>
+                    <p class="section-subtitle">Votre rituel bien-être livré chez vous en 3 étapes simples.</p>
+                </div>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fa-solid fa-mouse-pointer"></i>
+                        </div>
+                        <h3 class="benefit-title">Je commande</h3>
+                        <p class="benefit-desc">Invitez un rituel de bien-être dans votre quotidien, livré jusqu’à votre porte.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <h3 class="benefit-title">Je reçois ma box</h3>
+                        <p class="benefit-desc">Votre coffret est préparé avec soin et livré directement dans votre boîte aux lettres chaque mois.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fa-solid fa-mug-hot"></i>
+                        </div>
+                        <h3 class="benefit-title">Je déguste</h3>
+                        <p class="benefit-desc">Découvrez vos nouveaux thés, utilisez vos accessoires et profitez d'un vrai moment pour vous.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Benefits Section -->
+        <section class="benefits section-padding fade-in scroll-anim" id="benefits">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">La Différence <span class="text-accent">ÔTAY</span></h2>
+                    <p class="section-subtitle">Ce qui fait de nos coffrets les parfaits compagnons de votre détente.</p>
+                </div>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </div>
+                        <h3 class="benefit-title">Thèmes Mensuels</h3>
+                        <p class="benefit-desc">Chaque mois met à l'honneur un thème unique avec un mélange exclusif, une recette et une astuce bien-être.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <h3 class="benefit-title">Ingrédients Premium</h3>
+                        <p class="benefit-desc">Des thés, herbes et ingrédients naturels rigoureusement sélectionnés pour vous offrir la plus haute qualité.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fa-solid fa-hand-sparkles"></i>
+                        </div>
+                        <h3 class="benefit-title">Élément Signature</h3>
+                        <p class="benefit-desc">Un objet soigneusement sélectionné qui prolonge l’expérience de la box et reflète son univers.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fa-solid fa-gift"></i>
+                        </div>
+                        <h3 class="benefit-title">Prêt à Offrir</h3>
+                        <p class="benefit-desc">Un magnifique emballage écologique et protecteur, idéal pour soi ou pour faire un cadeau.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Mission -->
+        <section class="mission section-padding fade-in scroll-anim" id="mission">
+            <div class="container text-center">
+                <h2 class="mission-title">Notre Mission</h2>
+                <p class="mission-statement">
+                    « Créer des expériences bien-être mémorables à travers des thés sélectionnés, des touches artisanales et des rituels attentionnés qui apportent calme et joie au quotidien. »
+                </p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact section-padding fade-in scroll-anim" id="contact">
+            <div class="container contact-container">
+                <div class="contact-info">
+                    <h2 class="section-title">Prendre <span class="text-accent">Contact</span></h2>
+                    <p class="section-desc">Vous avez des questions sur nos box ou souhaitez un cadeau d'entreprise personnalisé ? Écrivez-nous !</p>
+                    
+                    <div class="social-links mt-4">
+                        <a href="#" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+                
+                <form class="contact-form glass-panel">
+                    <div class="form-group">
+                        <label for="name">Nom / Prénom</label>
+                        <input type="text" id="name" placeholder="Ex: Yasmine Ben Ali" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Adresse Email</label>
+                        <input type="email" id="email" placeholder="yasmine@exemple.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="4" placeholder="Comment pouvons-nous vous aider ?" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Envoyer le Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content-grid">
+            <div class="footer-col brand-col">
+                <h3 class="footer-logo-text">ÔTAY BOX</h3>
+                <p class="footer-desc">L'art de prendre du temps pour soi, une parenthèse à la fois. Des rituels bien-être pensés pour votre sérénité.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Votre adresse email" aria-label="Email" required>
+                    <button type="submit" aria-label="S'inscrire"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-heading">Découvrir</h4>
+                <ul class="footer-links">
+                    <li><a href="box-detail.html">Nos Box</a></li>
+                    <li><a href="#about">Notre Histoire</a></li>
+                    <li><a href="#benefits">Avantages</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-heading">Légal & Aide</h4>
+                <ul class="footer-links">
+                    <li><a href="#contact">Contactez-nous</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Conditions Générales</a></li>
+                    <li><a href="#">Confidentialité</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="container footer-bottom">
+            <p>&copy; <span id="current-year"></span> ÔTAY BOX. Tous droits réservés.</p>
+            <div class="footer-actions">
+                <div class="footer-socials">
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" aria-label="Pinterest"><i class="fa-brands fa-pinterest"></i></a>
+                </div>
+                <a href="#hero" class="back-to-top" aria-label="Retour en haut">
+                    <i class="fa-solid fa-arrow-up"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/script.js"></script>
+<a href="https://wa.me/21654050380?text=Bonjour%20je%20veux%20commander%20ÔTAY%20BOX" target="_blank" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #25D366;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  z-index: 1000;
+">
+💬 Commander
+</a>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Espace Client - Boutique Otay</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        body {font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5f7fa, #c3cfe2); color: #333;}
+        .client-section {max-width: 900px; margin: 2rem auto; padding: 2rem; background: rgba(255,255,255,0.9); border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.12);}
+        h1 {font-size: 2rem; margin-bottom: 1rem; color: #2c3e50;}
+        p {font-size: 1rem; line-height: 1.6;}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.svg" alt="logo" />
+                <span class="logo-text">Boutique Otay</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html"><i class="fa-solid fa-house"></i></a>
+                <a href="boutique.html"><i class="fa-solid fa-cart-shopping"></i></a>
+                <a href="#"><i class="fa-solid fa-user"></i></a>
+                <a href="#" id="cart-toggle"><i class="fa-solid fa-bag-shopping"></i><span class="cart-count">0</span></a>
+                <div class="cart-dropdown" id="cart-dropdown" hidden>
+                    <div class="cart-empty" style="display: flex; flex-direction: column; align-items: center;">Votre panier est vide</div>
+                    <ul class="cart-items" style="display: none;"></ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="client-section">
+            <h1>Bienvenue dans votre espace client</h1>
+            <p>Cette section est en cours de construction. Vous pourrez bientôt consulter vos commandes, gérer vos informations personnelles, et accéder à des offres exclusives.</p>
+            <p>Restez à l’écoute pour les prochaines mises à jour !</p>
+        </section>
+    </main>
+
+    <script src="https://kit.fontawesome.com/2b9d55efb9.js" crossorigin="anonymous"></script>
+    <script>
+        // Cart UI reuse (same logic as boutique)
+        const cartToggleBtn = document.getElementById('cart-toggle');
+        const cartDropdown = document.getElementById('cart-dropdown');
+        if (cartToggleBtn) {
+            cartToggleBtn.addEventListener('click', e => { e.stopPropagation(); cartDropdown.hidden = !cartDropdown.hidden; });
+            document.addEventListener('click', e => { if (!cartDropdown.contains(e.target) && e.target !== cartToggleBtn) { cartDropdown.hidden = true; } });
+        }
+        // Initialize shared cart items array
+        if (!window.cartItems) window.cartItems = [];
+    </script>
+</body>
+</html>

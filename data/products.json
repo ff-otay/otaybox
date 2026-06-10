@@ -1,0 +1,58 @@
+[
+  {
+    "id": "1",
+    "name": "Infusion Menthe Fraîche",
+    "price": "12,99 TND",
+    "image": "assets/product1.jpg",
+    "description": "Une infusion rafraîchissante à la menthe pour vos moments de détente."
+  },
+  {
+    "id": "2",
+    "name": "Tasse en Céramique Bleu",
+    "price": "24,50 TND",
+    "image": "assets/product2.jpg",
+    "description": "Tasse élégante en céramique bleue, parfaite pour votre thé."
+  },
+  {
+    "id": "3",
+    "name": "Bougie Parfum Vanille",
+    "price": "19,99 TND",
+    "image": "assets/product3.jpg",
+    "description": "Bougie parfumée à la vanille, crée une ambiance chaleureuse."
+  },
+  {
+    "id": "4",
+    "name": "Infusion Camomille Douce",
+    "price": "13,99 TND",
+    "image": "assets/product4.jpg",
+    "description": "Infusion apaisante de camomille pour un sommeil réparateur."
+  },
+  {
+    "id": "5",
+    "name": "Mug Enchanté – Motif Feuilles",
+    "price": "22,00 TND",
+    "image": "assets/product5.jpg",
+    "description": "Mug en céramique avec motif feuilles, idéal pour thé ou café."
+  },
+  {
+    "id": "6",
+    "name": "Savon Artisanal à la Rose",
+    "price": "9,50 TND",
+    "image": "assets/product6.jpg",
+    "description": "Savon naturel à base d'extrait de rose, doux pour la peau."
+  },
+  {
+    "id": "7",
+    "name": "Coussin Bien-Être – Lavande",
+    "price": "34,99 TND",
+    "image": "assets/product7.jpg",
+    "description": "Coussin aromatique à la lavande pour la détente et le sommeil."
+  },
+  {
+    "id": "8",
+    "name": "Lampe à Huile d’Ambiance",
+    "price": "27,50 TND",
+    "image": "assets/product8.jpg",
+    "description": "Lampe à huile diffuse un parfum naturel pour votre espace."
+  }
+]

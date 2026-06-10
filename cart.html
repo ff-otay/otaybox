@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÔTAY BOX — Votre Panier</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .cart-page-main {
+            padding-top: 8rem;
+            padding-bottom: 4rem;
+            background-color: #FAF8F5;
+            min-height: 80vh;
+        }
+        .cart-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #2F2A25;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .cart-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .cart-items-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            border: 1px solid rgba(47, 42, 37, 0.05);
+        }
+        .cart-empty-msg {
+            text-align: center;
+            padding: 3rem 0;
+            color: #8C857E;
+            font-size: 1.1rem;
+        }
+        .cart-item-row {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(47, 42, 37, 0.05);
+        }
+        .cart-item-row:last-child {
+            border-bottom: none;
+        }
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #F8F6F2;
+        }
+        .cart-item-details {
+            flex-grow: 1;
+        }
+        .cart-item-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #2F2A25;
+            margin-bottom: 0.3rem;
+        }
+        .cart-item-price {
+            font-weight: 600;
+            color: #5B705F;
+        }
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .cart-qty-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(47, 42, 37, 0.2);
+            border-radius: 50px;
+            background: #fff;
+        }
+        .cart-qty-btn {
+            background: none;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            font-size: 1.1rem;
+            color: #2F2A25;
+            cursor: pointer;
+        }
+        .cart-qty-val {
+            width: 30px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            border: none;
+        }
+        .cart-remove-btn {
+            background: none;
+            border: none;
+            color: #8C857E;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .cart-remove-btn:hover {
+            color: #E74C3C;
+        }
+        
+        .cart-summary {
+            background: #fff;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            border: 1px solid rgba(47, 42, 37, 0.05);
+            height: fit-content;
+        }
+        .summary-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #2F2A25;
+            margin-bottom: 1.5rem;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: #615B55;
+            font-size: 0.95rem;
+        }
+        .summary-row.total {
+            font-weight: 600;
+            color: #2F2A25;
+            font-size: 1.2rem;
+            border-top: 1px solid rgba(47, 42, 37, 0.1);
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+        .checkout-btn {
+            width: 100%;
+            background-color: #5B705F;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1.5rem;
+        }
+        .checkout-btn:hover {
+            background-color: #48594b;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(91, 112, 95, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .cart-container {
+                grid-template-columns: 1fr;
+            }
+            .cart-item-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .cart-item-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar fade-in">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="Logo ÔTAY BOX" class="logo-img">
+            </a>
+            
+            <nav class="nav-links">
+                <a href="index.html#about" class="nav-link">À propos</a>
+                <a href="box-detail.html" class="nav-link">Nos Box</a>
+                <div class="nav-item-dropdown">
+                    <a href="boutique.html" class="nav-link">Boutique <i class="fa-solid fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="boutique.html#infusions" class="dropdown-link">Infusions & Tisanes</a>
+                        <a href="boutique.html#accessoires" class="dropdown-link">Accessoires de thé</a>
+                        <a href="boutique.html#bougies" class="dropdown-link">Bougies & Parfums</a>
+                        <a href="boutique.html#savons" class="dropdown-link">Savons & Soins naturels</a>
+                        <a href="boutique.html#lifestyle" class="dropdown-link">Lifestyle & Détente</a>
+                    </div>
+                </div>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="#" class="icon-btn search-btn" aria-label="Rechercher">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </a>
+                <a href="profil.html" class="icon-btn profile-btn" aria-label="Mon compte">
+                    <i class="fa-regular fa-user"></i>
+                </a>
+                <button class="icon-btn theme-toggle" aria-label="Basculer le thème clair/sombre">
+                    <i class="fa-solid fa-sun light-icon"></i>
+                    <i class="fa-solid fa-moon dark-icon"></i>
+                </button>
+                <button class="cart-btn" aria-label="Panier">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-count">0</span>
+                </button>
+                <button class="icon-btn mobile-menu-toggle" aria-label="Ouvrir le menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <a href="index.html#about" class="mobile-link">À propos</a>
+            <a href="box-detail.html" class="mobile-link">Nos Box</a>
+            <a href="boutique.html" class="mobile-link">Boutique</a>
+            <a href="index.html#contact" class="mobile-link">Contact</a>
+        </div>
+    </header>
+
+    <main class="cart-page-main">
+        <div class="container">
+            <h1 class="cart-title">Votre Panier</h1>
+            
+            <div class="cart-container">
+                <div class="cart-items-section" id="cart-items-container">
+                    <!-- Loaded by JS -->
+                    <div class="cart-empty-msg">Chargement du panier...</div>
+                </div>
+                
+                <div class="cart-summary">
+                    <h2 class="summary-title">Résumé de la commande</h2>
+                    <div class="summary-row">
+                        <span>Sous-total</span>
+                        <span id="cart-subtotal">0,00 TND</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Livraison</span>
+                        <span>Offerte</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="cart-total">0,00 TND</span>
+                    </div>
+                    <button class="checkout-btn" onclick="alert('Redirection vers le paiement de la commande...')">
+                        Passer la commande
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Same footer content as index -->
+                <div class="footer-brand">
+                    <h3 class="footer-logo">ÔTAY BOX</h3>
+                    <p class="footer-desc">Une parenthèse de douceur livrée chez vous chaque mois. Cultivez votre bien-être, une tasse de thé à la fois.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="index.html#about">Concept</a></li>
+                        <li><a href="box-detail.html">Nos Box</a></li>
+                        <li><a href="boutique.html">Boutique</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Assistance</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Livraison & Retours</a></li>
+                        <li><a href="#">Nous contacter</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> ÔTAY BOX. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('cart-items-container');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const totalEl = document.getElementById('cart-total');
+            
+            function renderCartPage() {
+                if (!window.otayCart) return;
+                
+                const items = window.otayCart.items;
+                
+                if (items.length === 0) {
+                    container.innerHTML = `
+                        <div class="cart-empty-msg">
+                            <i class="fa-solid fa-basket-shopping" style="font-size: 3rem; color: #E5E0D8; margin-bottom: 1rem;"></i>
+                            <p>Votre panier est vide pour le moment.</p>
+                            <a href="boutique.html" class="btn btn-outline" style="margin-top: 1.5rem; display: inline-block;">Continuer mes achats</a>
+                        </div>
+                    `;
+                    subtotalEl.textContent = '0,00 TND';
+                    totalEl.textContent = '0,00 TND';
+                    return;
+                }
+                
+                container.innerHTML = '';
+                let total = 0;
+                
+                items.forEach(item => {
+                    // Extract numerical value from price "12,90 TND"
+                    const priceVal = parseFloat(item.price.replace(',', '.').replace(/[^\d.-]/g, ''));
+                    total += priceVal * item.qty;
+                    
+                    const row = document.createElement('div');
+                    row.className = 'cart-item-row';
+                    row.innerHTML = `
+                        <img src="${item.img}" alt="${item.title}" class="cart-item-img">
+                        <div class="cart-item-details">
+                            <h3 class="cart-item-title">${item.title}</h3>
+                            <div class="cart-item-price">${item.price}</div>
+                        </div>
+                        <div class="cart-item-actions">
+                            <div class="cart-qty-selector">
+                                <button class="cart-qty-btn dec-btn" data-id="${item.id}">-</button>
+                                <input type="text" class="cart-qty-val" value="${item.qty}" readonly>
+                                <button class="cart-qty-btn inc-btn" data-id="${item.id}">+</button>
+                            </div>
+                            <button class="cart-remove-btn" data-id="${item.id}" aria-label="Supprimer">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    container.appendChild(row);
+                });
+                
+                // Format total safely
+                const formattedTotal = total.toFixed(2).replace('.', ',') + ' TND';
+                subtotalEl.textContent = formattedTotal;
+                totalEl.textContent = formattedTotal;
+                
+                // Bind actions
+                document.querySelectorAll('.dec-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        const product = items.find(p => p.id === id);
+                        if (product && product.qty > 1) {
+                            window.otayCart.add({ id }, -1); // reduce by 1
+                            renderCartPage();
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.inc-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        window.otayCart.add({ id }, 1); // inc by 1
+                        renderCartPage();
+                    });
+                });
+                
+                document.querySelectorAll('.cart-remove-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        window.otayCart.remove(id);
+                        renderCartPage();
+                    });
+                });
+            }
+            
+            // Initial render
+            setTimeout(renderCartPage, 100);
+            
+            // Override global updateUI to also trigger page render if modified from elsewhere
+            const originalUpdateUI = window.otayCart.updateUI;
+            window.otayCart.updateUI = function() {
+                originalUpdateUI.apply(this);
+                renderCartPage();
+            };
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Box du Mois – ÔTAY BOX</title>
+    <meta name="description"
+        content="Découvrez notre édition actuelle, doucement pensée pour sublimer votre routine cocooning.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar fade-in">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="Logo ÔTAY BOX" class="logo-img">
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html#about" class="nav-link">À propos</a>
+                <a href="box-detail.html" class="nav-link active">Nos Box</a>
+                <div class="nav-item-dropdown">
+                    <a href="boutique.html" class="nav-link">Boutique <i class="fa-solid fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="boutique.html#infusions" class="dropdown-link">Infusions & Tisanes</a>
+                        <a href="boutique.html#accessoires" class="dropdown-link">Accessoires de thé</a>
+                        <a href="boutique.html#bougies" class="dropdown-link">Bougies & Parfums</a>
+                        <a href="boutique.html#savons" class="dropdown-link">Savons & Soins naturels</a>
+                        <a href="boutique.html#lifestyle" class="dropdown-link">Lifestyle & Détente</a>
+                    </div>
+                </div>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="#" class="icon-btn search-btn" aria-label="Rechercher" onclick="event.preventDefault(); alert('Recherche en cours de développement');">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </a>
+                <a href="#" class="icon-btn profile-btn" aria-label="Mon compte" onclick="event.preventDefault(); alert('Espace client en cours de développement');">
+                    <i class="fa-regular fa-user"></i>
+                </a>
+                <button class="icon-btn theme-toggle" aria-label="Basculer le thème clair/sombre">
+                    <i class="fa-solid fa-sun light-icon"></i>
+                    <i class="fa-solid fa-moon dark-icon"></i>
+                </button>
+                <button class="cart-btn" aria-label="Panier">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-count">0</span>
+                </button>
+                <button class="icon-btn mobile-menu-toggle" aria-label="Ouvrir le menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <a href="index.html#about" class="mobile-link">À propos</a>
+            <a href="box-detail.html" class="mobile-link active">Nos Box</a>
+            <a href="boutique.html" class="mobile-link">Boutique</a>
+            <a href="index.html#contact" class="mobile-link">Contact</a>
+        </div>
+    </header>
+
+    <main class="main-content premium-editorial">
+        <!-- Hero Section -->
+        <section class="editorial-hero">
+            <div class="container editorial-hero-layout">
+                <!-- Left: Hero Visuals -->
+                <div class="editorial-hero-gallery">
+                    <div class="hero-main-image">
+                        <img id="hero-main-img" src="assets/box-jardin-douceur.png" alt="Coffret Jardin d'Été - Vue d'ensemble">
+                    </div>
+                    <div class="hero-sub-images">
+                        <img src="assets/infusette.png" alt="L'infusette cœur" onclick="let main = document.getElementById('hero-main-img'); let temp = main.src; main.src = this.src; this.src = temp;" class="clickable-thumb">
+                        <img src="assets/Mug Rose Poudré ÔTAY.png" alt="Mug Rose Poudré" onclick="let main = document.getElementById('hero-main-img'); let temp = main.src; main.src = this.src; this.src = temp;" class="clickable-thumb">
+                        <img src="assets/Sachets d'infusion ÔTAY.png" alt="Sachets d'infusion ÔTAY" onclick="let main = document.getElementById('hero-main-img'); let temp = main.src; main.src = this.src; this.src = temp;" class="clickable-thumb">
+                    </div>
+                </div>
+
+                <!-- Right: Product Information -->
+                <div class="editorial-hero-info" style="color: #332b23;">
+                    <div class="editorial-badge" style="color: #5c5046; border-color: #5c5046;">Édition Mai/Juin</div>
+                    <h1 class="editorial-title" style="color: var(--accent, #d4a373);">Jardin de Douceur</h1>
+                    <p class="editorial-price" style="color: #332b23; font-weight: 600;">59 TND</p>
+                    
+                    <div class="editorial-story" style="color: #4a4036;">
+                        <p>Plongez dans l'élégance d'une fin d'après-midi ensoleillée. Notre édition <em>Jardin de Douceur</em> a été poétiquement pensée pour sublimer votre routine bien-être estivale. Des notes florales, une douceur infinie... Laissez le temps s'arrêter, juste un instant.</p>
+                    </div>
+
+                    <div class="editorial-benefits-list">
+                        <span><i class="fa-solid fa-leaf"></i> 100% Naturel</span>
+                        <span><i class="fa-solid fa-heart"></i> Fait avec amour</span>
+                        <span><i class="fa-solid fa-spa"></i> Rituel Bien-être</span>
+                    </div>
+
+                    <div class="editorial-actions">
+                        <div class="quantity-selector-elegant">
+                            <button class="qty-btn-elegant" id="minus">-</button>
+                            <span class="qty-val-elegant" id="qty">1</span>
+                            <button class="qty-btn-elegant" id="plus">+</button>
+                        </div>
+                        <button class="btn-elegant add-to-cart-btn">
+                            Ajouter au panier
+                        </button>
+                    </div>
+
+                    <div class="editorial-accordion">
+                        <details open>
+                            <summary>L'Inspiration</summary>
+                            <div class="accordion-content">
+                                <p>Inspirée par la douceur de vivre méditerranéenne, cette box capture l'essence des longues journées d'été et la fraîcheur des jardins à l'ombre. Un voyage sensoriel qui apaise l'esprit et réconforte l'âme.</p>
+                            </div>
+                        </details>
+                        <details>
+                            <summary>Livraison & Retours</summary>
+                            <div class="accordion-content">
+                                <p>Préparée avec soin dans nos ateliers et expédiée sous 48h. Retours possibles sous 14 jours.</p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What's inside the box (Modified with background, wide layout, no cards) -->
+        <section class="editorial-inside section-padding scroll-anim" style="background-color: rgba(212, 163, 115, 0.08); border: 1px solid rgba(212, 163, 115, 0.2); border-radius: 20px; margin: 2rem auto; max-width: 1400px; padding: 8rem 2rem; position: relative; overflow: hidden;">
+            
+            <!-- Side Ornaments -->
+            <div style="position: absolute; top: 50%; left: -20px; transform: translateY(-50%); font-size: 8rem; color: var(--accent, #d4a373); opacity: 0.1; pointer-events: none;">
+                <i class="fa-brands fa-pagelines"></i>
+            </div>
+            <div style="position: absolute; top: 50%; right: -20px; transform: translateY(-50%) scaleX(-1); font-size: 8rem; color: var(--accent, #d4a373); opacity: 0.1; pointer-events: none;">
+                <i class="fa-brands fa-pagelines"></i>
+            </div>
+
+            <div class="container" style="text-align: center; position: relative; z-index: 2;">
+                <div class="editorial-section-header" style="color: #332b23;">
+                    <h2>Contenu de la box</h2>
+                    <p style="color: #4a4036;">Découvrez les trésors soigneusement sélectionnés pour votre rituel.</p>
+                </div>
+
+                <div class="box-content-tabs">
+                    <!-- Trigger buttons -->
+                    <div class="tabs-header" style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 4rem;">
+                        <button class="btn-elegant tab-btn active" onclick="openBoxTab('tab-tisane1', this)">Éveil du Jardin</button>
+                        <button class="btn-elegant tab-btn" onclick="openBoxTab('tab-tisane2', this)">Velours de Rose</button>
+                        <button class="btn-elegant tab-btn" onclick="openBoxTab('tab-tisane3', this)">Brume Apaisante</button>
+                        <button class="btn-elegant tab-btn" onclick="openBoxTab('tab-accessoire', this)">L'infusette</button>
+                        <button class="btn-elegant tab-btn" onclick="openBoxTab('tab-mug', this)">Le mug</button>
+                        <button class="btn-elegant tab-btn" onclick="openBoxTab('tab-guide', this)">Le guide rituel</button>
+                    </div>
+                    
+                    <!-- Tab Content: Tisane 1 -->
+                    <div class="tab-content" id="tab-tisane1" style="display: block; animation: slideDownFade 0.5s ease-out; text-align: left;">
+                        <div class="inside-grid" style="grid-template-columns: 1fr; max-width: 1100px; margin: 0 auto;">
+                            <div class="horizontal-card">
+                                <div class="inside-img">
+                                    <img src="assets/herbal_infusions_tea_1779202539010.png" alt="Éveil du Jardin">
+                                </div>
+                                <div class="inside-info">
+                                    <span class="inside-category">Infusion Botanique</span>
+                                    <h3>Éveil du Jardin</h3>
+                                    <p class="inside-desc">Un mélange subtil et apaisant qui vous transporte au cœur d'un jardin ensoleillé, pour une pure parenthèse de sérénité.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Tisane 2 -->
+                    <div class="tab-content" id="tab-tisane2" style="display: none; animation: slideDownFade 0.5s ease-out; text-align: left;">
+                        <div class="inside-grid" style="grid-template-columns: 1fr; max-width: 1100px; margin: 0 auto;">
+                            <div class="horizontal-card">
+                                <div class="inside-img">
+                                    <img src="assets/tea_sachets_1779202622262.png" alt="Velours de Rose">
+                                </div>
+                                <div class="inside-info">
+                                    <span class="inside-category">Infusion Florale</span>
+                                    <h3>Velours de Rose</h3>
+                                    <p class="inside-desc">Délicate et florale, cette tisane marie avec élégance les notes réconfortantes de la rose pour un moment divinement doux.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Tisane 3 -->
+                    <div class="tab-content" id="tab-tisane3" style="display: none; animation: slideDownFade 0.5s ease-out; text-align: left;">
+                        <div class="inside-grid" style="grid-template-columns: 1fr; max-width: 1100px; margin: 0 auto;">
+                            <div class="horizontal-card">
+                                <div class="inside-img">
+                                    <img src="assets/sweet_treat_honey_1779202724881.png" alt="Brume Apaisante">
+                                </div>
+                                <div class="inside-info">
+                                    <span class="inside-category">Infusion Réconfort</span>
+                                    <h3>Brume Apaisante</h3>
+                                    <p class="inside-desc">Le réconfort absolu. Une harmonie de plantes calmantes conçue pour envelopper votre esprit et relâcher toutes les tensions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content 4: Accessoire -->
+                    <div class="tab-content" id="tab-accessoire" style="display: none; animation: slideDownFade 0.5s ease-out; text-align: left;">
+                        <div class="inside-grid" style="grid-template-columns: 1fr; max-width: 1100px; margin: 0 auto;">
+                            <div class="horizontal-card">
+                                <div class="inside-img">
+                                    <img src="assets/infusette.png" alt="L'infusette cuillère">
+                                </div>
+                                <div class="inside-info">
+                                    <span class="inside-category">Accessoire Magique</span>
+                                    <h3>Le Sceptre Botanique</h3>
+                                    <p class="inside-desc">Une infusette en forme de cuillère, délicate et pratique, pensée pour libérer les précieux arômes de vos plantes avec une élégance infinie.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content 5: Mug -->
+                    <div class="tab-content" id="tab-mug" style="display: none; animation: slideDownFade 0.5s ease-out; text-align: left;">
+                        <div class="inside-grid" style="grid-template-columns: 1fr; max-width: 1100px; margin: 0 auto;">
+                            <div class="horizontal-card">
+                                <div class="inside-img">
+                                    <img src="assets/Mug Rose Poudré ÔTAY.png" alt="Mug Rose Poudré">
+                                </div>
+                                <div class="inside-info">
+                                    <span class="inside-category">Céramique Artisanale</span>
+                                    <h3>Le mug</h3>
+                                    <p class="inside-desc">Un magnifique mug conçu pour épouser la paume de vos mains. Une invitation à savourer chaque instant avec chaleur et réconfort.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content 6: Guide Rituel -->
+                    <div class="tab-content" id="tab-guide" style="display: none; animation: slideDownFade 0.5s ease-out; text-align: left;">
+                        <div class="inside-grid" style="grid-template-columns: 1fr; max-width: 1100px; margin: 0 auto;">
+                            <div class="horizontal-card">
+                                <div class="inside-img">
+                                    <img src="assets/wellness_card_art_1779202974836.png" alt="Guide Recette">
+                                </div>
+                                <div class="inside-info">
+                                    <span class="inside-category">Inspiration Secrète</span>
+                                    <h3>Le Grimoire des Saveurs</h3>
+                                    <p class="inside-desc">Un guide poétique regroupant nos recettes secrètes et astuces bien-être pour sublimer chaque note de vos infusions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <style>
+                @keyframes slideDownFade {
+                    from {
+                        opacity: 0;
+                        transform: translateY(-10px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                .tab-btn {
+                    font-size: 1.05rem;
+                    padding: 12px 25px;
+                    color: #4a4036;
+                    background-color: transparent;
+                    border: 1px solid var(--accent, #d4a373);
+                    box-shadow: none;
+                    transition: all 0.3s ease;
+                }
+                .tab-btn:hover {
+                    background-color: var(--accent, #d4a373);
+                    color: #fff;
+                }
+                .tab-btn.active {
+                    background-color: var(--accent, #d4a373) !important;
+                    color: #fff !important;
+                    border-color: var(--accent, #d4a373) !important;
+                }
+                
+                /* Horizontal Layout (No Card Background) */
+                .horizontal-card {
+                    display: flex;
+                    align-items: center;
+                    gap: 5rem;
+                    background: transparent;
+                    border: none;
+                    padding: 0;
+                    transition: transform 0.3s ease;
+                }
+                .horizontal-card .inside-img {
+                    flex: 0 0 500px;
+                    aspect-ratio: 1 / 1;
+                    overflow: hidden;
+                    border-radius: 24px;
+                    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+                }
+                .horizontal-card .inside-img img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 24px;
+                }
+                .horizontal-card .inside-info {
+                    flex: 1;
+                    padding-right: 2rem;
+                }
+                .horizontal-card .inside-info .inside-category {
+                    font-size: 1.1rem;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                    color: var(--accent, #d4a373);
+                    display: block;
+                    margin-bottom: 1rem;
+                }
+                .horizontal-card .inside-info h3 {
+                    margin: 0 0 1.5rem;
+                    font-size: 2.8rem;
+                    font-weight: 300;
+                    line-height: 1.2;
+                    color: #332b23;
+                }
+                .horizontal-card .inside-info .inside-desc {
+                    font-size: 1.25rem;
+                    line-height: 1.8;
+                    color: #4a4036;
+                }
+                
+                @media (max-width: 992px) {
+                    .horizontal-card {
+                        gap: 3rem;
+                    }
+                    .horizontal-card .inside-img {
+                        flex: 0 0 400px;
+                    }
+                    .horizontal-card .inside-img img {
+                        height: 350px;
+                    }
+                }
+
+                @media (max-width: 768px) {
+                    .horizontal-card {
+                        flex-direction: column;
+                        text-align: center;
+                        gap: 2rem;
+                    }
+                    .horizontal-card .inside-img {
+                        flex: 0 0 auto;
+                        width: 100%;
+                        max-width: 100%;
+                    }
+                    .horizontal-card .inside-img img {
+                        height: auto;
+                        aspect-ratio: 1/1;
+                    }
+                    .horizontal-card .inside-info {
+                        padding-right: 0;
+                    }
+                    .horizontal-card .inside-info h3 {
+                        font-size: 2rem;
+                    }
+                }
+            </style>
+            
+            <script>
+                function openBoxTab(tabId, btn) {
+                    // Hide all contents
+                    document.querySelectorAll('.tab-content').forEach(tab => {
+                        tab.style.display = 'none';
+                    });
+                    
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.tab-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    // Show target content and activate button
+                    document.getElementById(tabId).style.display = 'block';
+                    btn.classList.add('active');
+                }
+            </script>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content-grid">
+            <div class="footer-col brand-col">
+                <h3 class="footer-logo-text">ÔTAY BOX</h3>
+                <p class="footer-desc">L'art de prendre du temps pour soi, une parenthèse à la fois. Des rituels
+                    bien-être pensés pour votre sérénité.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Votre adresse email" aria-label="Email" required>
+                    <button type="submit" aria-label="S'inscrire"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-heading">Découvrir</h4>
+                <ul class="footer-links">
+                    <li><a href="box-detail.html">Nos Box</a></li>
+                    <li><a href="index.html#about">Notre Histoire</a></li>
+                    <li><a href="index.html#benefits">Avantages</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-heading">Légal & Aide</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html#contact">Contactez-nous</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Conditions Générales</a></li>
+                    <li><a href="#">Confidentialité</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container footer-bottom">
+            <p>&copy; <span id="current-year"></span> ÔTAY BOX. Tous droits réservés.</p>
+            <div class="footer-actions">
+                <div class="footer-socials">
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" aria-label="Pinterest"><i class="fa-brands fa-pinterest"></i></a>
+                </div>
+                <a href="#" class="back-to-top" aria-label="Retour en haut">
+                    <i class="fa-solid fa-arrow-up"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/script.js"></script>
+</body>
+
+</html>

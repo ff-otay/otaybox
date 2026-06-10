@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÔTAY BOX – Box Mensuelle Thé & Bien-Être</title>
+    <meta name="description" content="Découvrez une expérience sensorielle unique chaque mois avec ÔTAY BOX — des thés et tisanes artisanaux, des accessoires cocooning et des rituels relaxants livrés chez vous.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Product Page Specific Styles */
+        .product-page-main {
+            background-color: #FAF8F5;
+            min-height: 80vh;
+            padding-top: 8rem;
+            padding-bottom: 4rem;
+        }
+        .product-layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+        .product-gallery {
+            position: sticky;
+            top: 120px;
+        }
+        .product-image-main {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid rgba(47, 42, 37, 0.05);
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-image-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .product-info-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .product-breadcrumb {
+            font-size: 0.8rem;
+            color: #8C857E;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .product-breadcrumb a {
+            color: #615B55;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .product-breadcrumb a:hover {
+            color: #5B705F;
+        }
+        .product-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: #2F2A25;
+            line-height: 1.2;
+            margin: 0;
+        }
+        .product-subtitle {
+            font-size: 1.1rem;
+            color: #615B55;
+            font-style: italic;
+        }
+        .product-price-row {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+        .product-price {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #5B705F;
+        }
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #FFB800;
+            font-size: 0.9rem;
+        }
+        .product-rating span {
+            color: #8C857E;
+            margin-left: 5px;
+        }
+        .product-short-desc {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #4A4540;
+            border-top: 1px solid rgba(47, 42, 37, 0.1);
+            border-bottom: 1px solid rgba(47, 42, 37, 0.1);
+            padding: 1.5rem 0;
+        }
+        .product-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .qty-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(47, 42, 37, 0.2);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            background: #fff;
+        }
+        .qty-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #2F2A25;
+            cursor: pointer;
+            padding: 0 10px;
+        }
+        .qty-input {
+            width: 40px;
+            text-align: center;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+            background: transparent;
+        }
+        .add-cart-large {
+            flex-grow: 1;
+            background-color: #5B705F;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .add-cart-large:hover {
+            background-color: #48594b;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(91, 112, 95, 0.2);
+        }
+        .product-meta {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: #8C857E;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .product-meta strong {
+            color: #2F2A25;
+        }
+        
+        /* Tabs Section */
+        .product-extra-info {
+            margin-top: 5rem;
+            background: #fff;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+            border: 1px solid rgba(47, 42, 37, 0.05);
+        }
+        .info-tabs {
+            display: flex;
+            gap: 2rem;
+            border-bottom: 1px solid rgba(47, 42, 37, 0.1);
+            margin-bottom: 2rem;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: #8C857E;
+            padding-bottom: 1rem;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s;
+        }
+        .tab-btn.active {
+            color: #5B705F;
+            font-weight: 600;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #5B705F;
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tab-text {
+            color: #4A4540;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+        .tab-list {
+            list-style: none;
+            padding: 0;
+            color: #4A4540;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+        .tab-list li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 20px;
+        }
+        .tab-list li::before {
+            content: '•';
+            color: #5B705F;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        /* Related */
+        .related-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #2F2A25;
+            text-align: center;
+            margin-bottom: 3rem;
+            margin-top: 5rem;
+        }
+        .products-grid-mock {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        .product-card-mock {
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.02);
+            border: 1px solid rgba(47, 42, 37, 0.04);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .product-card-mock:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(91, 112, 95, 0.08);
+        }
+        
+        @media (max-width: 992px) {
+            .product-layout-grid {
+                grid-template-columns: 1fr;
+            }
+            .product-gallery {
+                position: static;
+            }
+            .products-grid-mock {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .info-tabs {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .tab-btn {
+                text-align: left;
+                padding-bottom: 0.5rem;
+            }
+            .product-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar fade-in">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <img src="assets/logo.png" alt="Logo ÔTAY BOX" class="logo-img">
+            </a>
+            
+            <nav class="nav-links">
+                <a href="index.html#about" class="nav-link">À propos</a>
+                <a href="box-detail.html" class="nav-link">Nos Box</a>
+                <div class="nav-item-dropdown">
+                    <a href="boutique.html" class="nav-link">Boutique <i class="fa-solid fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="boutique.html#infusions" class="dropdown-link">Infusions & Tisanes</a>
+                        <a href="boutique.html#accessoires" class="dropdown-link">Accessoires de thé</a>
+                        <a href="boutique.html#bougies" class="dropdown-link">Bougies & Parfums</a>
+                        <a href="boutique.html#savons" class="dropdown-link">Savons & Soins naturels</a>
+                        <a href="boutique.html#lifestyle" class="dropdown-link">Lifestyle & Détente</a>
+                    </div>
+                </div>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="#" class="icon-btn search-btn" aria-label="Rechercher" onclick="event.preventDefault(); alert('Recherche en cours de développement');">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </a>
+                <a href="#" class="icon-btn profile-btn" aria-label="Mon compte" onclick="event.preventDefault(); alert('Espace client en cours de développement');">
+                    <i class="fa-regular fa-user"></i>
+                </a>
+                <button class="icon-btn theme-toggle" aria-label="Basculer le thème clair/sombre">
+                    <i class="fa-solid fa-sun light-icon"></i>
+                    <i class="fa-solid fa-moon dark-icon"></i>
+                </button>
+                <button class="cart-btn" aria-label="Panier">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-count">0</span>
+                </button>
+                <button class="icon-btn mobile-menu-toggle" aria-label="Ouvrir le menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <a href="index.html#about" class="mobile-link">À propos</a>
+            <a href="box-detail.html" class="mobile-link">Nos Box</a>
+            <a href="boutique.html" class="mobile-link">Boutique</a>
+            <a href="index.html#contact" class="mobile-link">Contact</a>
+        </div>
+    </header>
+
+    <main class="product-page-main section-padding fade-in">
+        <div class="container">
+            <div class="product-layout-grid" id="product-container">
+                <!-- Fallback content if JS doesn't load or invalid ID -->
+                <div class="product-loading" style="grid-column: span 2; text-align: center; padding: 4rem;">
+                    <h3>Chargement du produit...</h3>
+                </div>
+            </div>
+            
+            <div class="product-extra-info mt-5" style="display: none;" id="product-extra-info">
+                <div class="info-tabs">
+                    <button class="tab-btn active" data-target="desc">Description</button>
+                    <button class="tab-btn" data-target="details">Détails & Conseils</button>
+                    <button class="tab-btn" data-target="delivery">Livraison</button>
+                </div>
+                <div class="tab-content active" id="tab-desc">
+                    <p class="tab-text" id="product-desc-text">Découvrez notre produit signature conçu pour sublimer vos moments de détente. Des matériaux de qualité et un savoir-faire authentique pour une expérience unique.</p>
+                </div>
+                <div class="tab-content" id="tab-details">
+                    <ul class="tab-list">
+                        <li><strong>Composition :</strong> Matériaux naturels, respectueux de l'environnement.</li>
+                        <li><strong>Entretien :</strong> Précautions d'usage pour préserver la qualité.</li>
+                        <li><strong>Fabrication :</strong> Artisanale, chaque pièce peut présenter de légères variations.</li>
+                    </ul>
+                </div>
+                <div class="tab-content" id="tab-delivery">
+                    <ul class="tab-list">
+                        <li><strong>Expédition :</strong> Sous 24/48h jours ouvrés.</li>
+                        <li><strong>Livraison :</strong> Offerte à partir de 150 TND d'achat.</li>
+                        <li><strong>Retours :</strong> Gratuits sous 14 jours si le produit n'a pas été utilisé.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="related-products mt-5" style="display: none;" id="related-products">
+                <h3 class="related-title">Vous aimerez aussi</h3>
+                <div class="products-grid-mock" id="related-products-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content-grid">
+            <div class="footer-col brand-col">
+                <h3 class="footer-logo-text">ÔTAY BOX</h3>
+                <p class="footer-desc">L'art de prendre du temps pour soi, une parenthèse à la fois. Des rituels bien-être pensés pour votre sérénité.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Votre adresse email" aria-label="Email" required>
+                    <button type="submit" aria-label="S'inscrire"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-heading">Découvrir</h4>
+                <ul class="footer-links">
+                    <li><a href="box-detail.html">Nos Box</a></li>
+                    <li><a href="#about">Notre Histoire</a></li>
+                    <li><a href="#benefits">Avantages</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-heading">Légal & Aide</h4>
+                <ul class="footer-links">
+                    <li><a href="#contact">Contactez-nous</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Conditions Générales</a></li>
+                    <li><a href="#">Confidentialité</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="container footer-bottom">
+            <p>&copy; <span id="current-year"></span> ÔTAY BOX. Tous droits réservés.</p>
+            <div class="footer-actions">
+                <div class="footer-socials">
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" aria-label="Pinterest"><i class="fa-brands fa-pinterest"></i></a>
+                </div>
+                <a href="#hero" class="back-to-top" aria-label="Retour en haut">
+                    <i class="fa-solid fa-arrow-up"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof productsData === 'undefined') return; // Wait for script.js
+            
+            // Parse ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id'));
+            
+            // Find product
+            let product = productsData.find(p => p.id === productId);
+            if (!product) {
+                product = productsData[0]; // fallback
+            }
+
+            // Render Product Detail
+            const container = document.getElementById('product-container');
+            const extraInfo = document.getElementById('product-extra-info');
+            const relatedContainer = document.getElementById('related-products');
+            
+            if (container && extraInfo && relatedContainer) {
+                let starsHTML = '';
+                for (let i = 0; i < product.stars; i++) starsHTML += '<i class="fa-solid fa-star"></i>';
+                
+                container.innerHTML = `
+                    <div class="product-gallery">
+                        <div class="product-image-main">
+                            <img src="${product.img}" alt="${product.title}">
+                        </div>
+                    </div>
+                    
+                    <div class="product-info-col">
+                        <div class="product-breadcrumb">
+                            <a href="index.html">Accueil</a> &gt; 
+                            <a href="boutique.html#${product.category}">${product.category}</a> &gt; 
+                            <span>Produit</span>
+                        </div>
+                        
+                        <h1 class="product-title">${product.title}</h1>
+                        <div class="product-subtitle">${product.sub}</div>
+                        
+                        <div class="product-price-row">
+                            <div class="product-price">${product.price}</div>
+                            <div class="product-rating">${starsHTML} <span>(${product.reviews} avis)</span></div>
+                        </div>
+                        
+                        <div class="product-short-desc">
+                            Laissez-vous séduire par l'élégance et le raffinement de ce produit. 
+                            Un essentiel pensé pour apporter une touche de douceur à votre quotidien et transformer votre rituel de bien-être.
+                        </div>
+                        
+                        <div class="product-actions">
+                            <div class="qty-selector">
+                                <button class="qty-btn" id="pd-minus">-</button>
+                                <input type="text" class="qty-input" id="pd-qty" value="1" readonly>
+                                <button class="qty-btn" id="pd-plus">+</button>
+                            </div>
+                            <button class="add-cart-large" id="pd-add-to-cart">
+                                <i class="fa-solid fa-cart-plus"></i> Ajouter au panier
+                            </button>
+                        </div>
+                        
+                        <div class="product-meta">
+                            <span><strong>Catégorie :</strong> <span style="text-transform: capitalize;">${product.category}</span></span>
+                            <span><strong>Disponibilité :</strong> En stock</span>
+                        </div>
+                    </div>
+                `;
+                
+                extraInfo.style.display = 'block';
+                relatedContainer.style.display = 'block';
+                
+                // Bind qty buttons
+                const qtyInput = document.getElementById('pd-qty');
+                document.getElementById('pd-minus').addEventListener('click', () => {
+                    let v = parseInt(qtyInput.value);
+                    if (v > 1) qtyInput.value = v - 1;
+                });
+                document.getElementById('pd-plus').addEventListener('click', () => {
+                    qtyInput.value = parseInt(qtyInput.value) + 1;
+                });
+                
+                // Bind Add to Cart
+                const addBtn = document.getElementById('pd-add-to-cart');
+                addBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const qty = parseInt(qtyInput.value);
+                    if (window.otayCart) {
+                        window.otayCart.add(product, qty);
+                    }
+                    
+                    const orig = this.innerHTML;
+                    this.innerHTML = '<i class="fa-solid fa-check"></i> Ajouté avec succès !';
+                    this.style.backgroundColor = '#48594b';
+                    setTimeout(() => {
+                        this.innerHTML = orig;
+                        this.style.backgroundColor = '';
+                    }, 2000);
+                });
+                
+                // Render Related Products
+                const relatedGrid = document.getElementById('related-products-grid');
+                let related = productsData.filter(p => p.category === product.category && p.id !== product.id);
+                if (related.length === 0) {
+                    related = productsData.filter(p => p.id !== product.id).slice(0, 4);
+                } else {
+                    related = related.slice(0, 4);
+                }
+                
+                relatedGrid.innerHTML = '';
+                related.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card-mock'; 
+                    
+                    let pStars = '';
+                    for (let i = 0; i < p.stars; i++) pStars += '<i class="fa-solid fa-star"></i>';
+                    
+                    card.innerHTML = `
+                        <div class="prod-img-wrapper" style="position: relative; width: 100%; padding-top: 100%; overflow: hidden; background: #F8F6F2;">
+                            <img src="${p.img}" alt="${p.title}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+                            <button class="prod-cart-btn-overlay rel-add-btn" style="position: absolute; bottom: 12px; right: 12px; width: 38px; height: 38px; border-radius: 50%; background-color: #5B705F; border: none; color: #FFFFFF; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(91, 112, 95, 0.2);">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="prod-details" style="padding: 1.2rem; display: flex; flex-direction: column; flex-grow: 1;">
+                            <h3 style="font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 500; color: #2F2A25; margin-bottom: 4px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${p.title}</h3>
+                            <p class="prod-sub" style="font-size: 0.75rem; color: #8C857E; margin-bottom: 8px;">${p.sub}</p>
+                            <div class="prod-stars" style="display: flex; align-items: center; gap: 2px; color: #FFB800; font-size: 0.7rem; margin-bottom: 10px;">${pStars}</div>
+                            <p class="prod-price" style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.95rem; color: #2F2A25; margin-top: auto;">${p.price}</p>
+                        </div>
+                    `;
+                    
+                    card.addEventListener('click', (e) => {
+                        if (e.target.closest('.rel-add-btn')) return;
+                        window.location.href = `product.html?id=${p.id}`;
+                    });
+                    
+                    const relAddBtn = card.querySelector('.rel-add-btn');
+                    relAddBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        if (window.otayCart) {
+                            window.otayCart.add(p, 1);
+                        }
+                        const og = this.innerHTML;
+                        this.innerHTML = '<i class="fa-solid fa-check"></i>';
+                        setTimeout(() => { this.innerHTML = og; }, 2000);
+                    });
+                    
+                    relatedGrid.appendChild(card);
+                });
+                
+                // Tabs
+                const tabBtns = document.querySelectorAll('.tab-btn');
+                const tabContents = document.querySelectorAll('.tab-content');
+                tabBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        tabBtns.forEach(b => b.classList.remove('active'));
+                        tabContents.forEach(c => c.classList.remove('active'));
+                        btn.classList.add('active');
+                        document.getElementById('tab-' + btn.getAttribute('data-target')).classList.add('active');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
