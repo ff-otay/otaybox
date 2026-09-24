@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Process Favicon</title>
+</head>
+<body>
+  <h2>Conversion en cours...</h2>
+  <canvas id="canvas" style="display:none;"></canvas>
+  <script>
+    const img = new Image();
+    img.src = 'C:/Users/Feiza/.gemini/antigravity/brain/3bac078d-81d4-4bf0-a87a-6a95c4d03368/.user_uploaded/media_1790244315899.jpg';
+    img.onload = () => {
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      // Resize to a good favicon size, like 256x256
+      canvas.width = 256;
+      canvas.height = 256;
+      ctx.drawImage(img, 0, 0, 256, 256);
+      
+      const imgData = ctx.getImageData(0, 0, 256, 256);
+      const data = imgData.data;
+      
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        
+        // The green is roughly r=80, g=110, b=80. 
+        // Background is grays (r=g=b roughly).
+        // If the color is close to gray (r, g, b are similar), make it transparent
+        const maxDiff = Math.max(Math.abs(r-g), Math.abs(r-b), Math.abs(g-b));
+        
+        // Also the green has much more G than R and B.
+        // Let's keep pixels where G is significantly higher than R and B.
+        if (maxDiff < 20 || (r > 150 && g > 150 && b > 150)) {
+          // It's a gray checkerboard pixel or white-ish noise
+          data[i + 3] = 0; // alpha = 0
+        } else {
+            // Soften edges based on grayness
+            if (maxDiff < 30) {
+                data[i + 3] = 128;
+            }
+        }
+      }
+      
+      ctx.putImageData(imgData, 0, 0);
+      
+      const link = document.createElement('a');
+      link.download = 'favicon.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      
+      document.body.innerHTML += '<p>Terminé ! Le fichier favicon.png a été téléchargé.</p>';
+    };
+  </script>
+</body>
+</html>
