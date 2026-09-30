@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ — ÔTAY BOX</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    
+    <style>
+        .legal-page { padding-top: calc(var(--nav-height) + 3rem); padding-bottom: 5rem; }
+        .legal-content { max-width: 800px; margin: 0 auto; padding: 0 2rem; }
+        .legal-content h1 { font-size: 2.5rem; color: var(--accent); margin-bottom: 1rem; font-family: var(--font-heading); }
+        .legal-intro { font-size: 1.1rem; color: var(--text-secondary); border-left: 3px solid var(--accent); padding-left: 1.5rem; margin-bottom: 3rem; }
+        .faq-category { margin-bottom: 3rem; }
+        .faq-category h2 { font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); font-family: var(--font-heading); }
+        
+        .faq-accordion { margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-surface); overflow: hidden; }
+        .faq-accordion summary { padding: 1.25rem; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; color: var(--text-primary); }
+        .faq-accordion summary::-webkit-details-marker { display: none; }
+        .faq-accordion summary::after { content: '\f078'; font-family: 'FontAwesome'; transition: transform 0.3s; color: var(--accent); }
+        .faq-accordion[open] summary::after { transform: rotate(180deg); }
+        .faq-accordion[open] summary { border-bottom: 1px solid var(--border-color); }
+        .faq-accordion p { padding: 1.25rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+        .faq-accordion a { color: var(--accent); text-decoration: underline; }
+        
+        .faq-contact { background: var(--bg-surface); padding: 2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 3rem; text-align: center; }
+        .faq-contact h3 { color: var(--accent); margin-bottom: 1rem; }
+        .faq-contact p { margin-bottom: 0.5rem; color: var(--text-secondary); }
+    </style>
+    
+    <script>!function(){var t=localStorage.getItem('otay-theme')||'light';document.documentElement.setAttribute('data-theme',t)}();</script>
+</head>
+<body>
+    <header class="navbar fade-in">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="Logo ÔTAY BOX" class="logo-img">
+            </a>
+            
+            <nav class="nav-links">
+                <a href="index.html#about" class="nav-link">À propos</a>
+                <a href="box-detail.html" class="nav-link">Nos Box</a>
+                <div class="nav-item-dropdown">
+                    <a href="boutique.html" class="nav-link">Boutique <i class="fa-solid fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="boutique.html#infusions" class="dropdown-link">Infusions & Tisanes</a>
+                        <a href="boutique.html#accessoires" class="dropdown-link">Accessoires de thé</a>
+                        <a href="boutique.html#bougies" class="dropdown-link">Bougies & Parfums</a>
+                        <a href="boutique.html#savons" class="dropdown-link">Savons & Soins naturels</a>
+                        <a href="boutique.html#lifestyle" class="dropdown-link">Lifestyle & Détente</a>
+                    </div>
+                </div>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="#" class="icon-btn search-btn" aria-label="Rechercher"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href="#" class="icon-btn profile-btn" aria-label="Mon compte"><i class="fa-regular fa-user"></i></a>
+                <button class="icon-btn theme-toggle" aria-label="Basculer le thème clair/sombre">
+                    <i class="fa-solid fa-sun light-icon"></i>
+                    <i class="fa-solid fa-moon dark-icon"></i>
+                </button>
+                <button class="cart-btn" aria-label="Panier">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-count">0</span>
+                </button>
+                <button class="icon-btn mobile-menu-toggle" aria-label="Ouvrir le menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="mobile-menu">
+            <a href="index.html#about" class="mobile-link">À propos</a>
+            <a href="box-detail.html" class="mobile-link">Nos Box</a>
+            <a href="boutique.html" class="mobile-link">Boutique</a>
+            <a href="index.html#contact" class="mobile-link">Contact</a>
+        </div>
+    </header>
+
+    <main class="legal-page">
+        <div class="container legal-content fade-in">
+            <h1>FAQ — ÔTAY BOX</h1>
+            <div class="legal-intro">
+                Bienvenue chez ÔTAY BOX 🌿<br>
+                Retrouvez ici les réponses aux questions les plus fréquentes concernant nos box, les commandes et la livraison.
+            </div>
+
+            <div class="faq-category">
+                <h2>À propos d’ÔTAY BOX</h2>
+                <details class="faq-accordion">
+                    <summary>Qu’est-ce qu’ÔTAY BOX ?</summary>
+                    <p>ÔTAY BOX est une marque tunisienne de box bien-être autour des infusions et de l’art de ralentir.<br>
+                    Chaque édition est imaginée autour d’un thème et réunit une sélection d’infusions et d’objets pensés pour créer un moment de douceur, de pause et de bien-être.</p>
+                </details>
+                <details class="faq-accordion">
+                    <summary>Les box sont-elles disponibles toute l’année ?</summary>
+                    <p>Les éditions peuvent être proposées en quantité limitée. La disponibilité de chaque box est indiquée directement sur sa page produit.</p>
+                </details>
+                <details class="faq-accordion">
+                    <summary>Est-ce que les box sont personnalisables ?</summary>
+                    <p>Les box ÔTAY BOX sont des créations de la marque. Les contenus et les éditions sont définis par ÔTAY BOX et peuvent varier selon les collections.<br>
+                    Pour une demande particulière ou une collaboration professionnelle, vous pouvez nous contacter.</p>
+                </details>
+            </div>
+
+            <div class="faq-category">
+                <h2>Commander</h2>
+                <details class="faq-accordion">
+                    <summary>Comment passer une commande ?</summary>
+                    <p>Vous pouvez commander directement depuis notre boutique en ligne.<br>
+                    Selon les produits et les campagnes en cours, nous pouvons également recevoir des commandes via nos réseaux sociaux.</p>
+                </details>
+                <details class="faq-accordion">
+                    <summary>Comment savoir si ma commande est confirmée ?</summary>
+                    <p>Après réception de votre commande, nous vous contactons pour confirmer les informations nécessaires à sa préparation et à sa livraison.</p>
+                </details>
+                <details class="faq-accordion">
+                    <summary>Quels moyens de paiement sont disponibles ?</summary>
+                    <p>Les moyens de paiement disponibles sont indiqués au moment de la commande.</p>
+                </details>
+                <details class="faq-accordion">
+                    <summary>Puis-je modifier ou annuler ma commande ?</summary>
+                    <p>Si votre commande n’a pas encore été préparée ou expédiée, contactez-nous rapidement à <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a>.<br>
+                    Nous ferons notre possible pour prendre en compte votre demande.</p>
+                </details>
+            </div>
+
+            <div class="faq-category">
+                <h2>Livraison</h2>
+                <details class="faq-accordion">
+                    <summary>Où livrez-vous ?</summary>
+                    <p>Nous livrons actuellement dans toute la Tunisie.</p>
+                </details>
+                <details class="faq-accordion">
+                    <summary>Combien coûte la livraison ?</summary>
+                    <p>Les frais de livraison applicables sont indiqués au moment de la commande.<br>
+                    À titre indicatif, la livraison standard est actuellement proposée à 9 DT dans toute la Tunisie.<br>
+                    La livraison peut être offerte à partir de 150 DT d’achat, selon les conditions indiquées sur le site.</p>
+                </details>
+                <details class="faq-accordion">
+                    <summary>Quel est le délai de livraison ?</summary>
+                    <p>Le délai dépend de la destination et du transporteur. Le délai estimatif applicable à votre commande vous est communiqué lors de sa confirmation.</p>
+                </details>
+                <details class="faq-accordion">
+                    <summary>Que faire si mon colis arrive endommagé ?</summary>
+                    <p>Contactez-nous dès que possible à <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a> et envoyez-nous des photos du colis et du produit concerné.<br>
+                    Nous examinerons la situation et vous indiquerons la procédure à suivre.</p>
+                </details>
+            </div>
+
+            <div class="faq-category">
+                <h2>Retours et échanges</h2>
+                <details class="faq-accordion">
+                    <summary>Puis-je retourner une commande ?</summary>
+                    <p>Oui. Les commandes de produits physiques bénéficient du droit de rétractation dans les conditions prévues par la législation tunisienne.<br>
+                    Consultez notre page <a href="retours.html">Conditions de retour et d’échange</a> pour connaître la procédure.</p>
+                </details>
+                <details class="faq-accordion">
+                    <summary>Qui prend en charge les frais de retour ?</summary>
+                    <p>Dans le cadre d'une rétractation, les frais de retour sont à la charge du client, conformément à la réglementation applicable.<br>
+                    En cas de produit non conforme à la commande ou de problème relevant de notre responsabilité, les modalités de prise en charge sont différentes.</p>
+                </details>
+                <details class="faq-accordion">
+                    <summary>Puis-je retourner une infusion ouverte ?</summary>
+                    <p>Les produits alimentaires ou les produits susceptibles de se détériorer ou de perdre leur qualité après ouverture peuvent être soumis aux exceptions prévues par la législation.<br>
+                    Contactez-nous avant tout retour afin que nous puissions vous indiquer la procédure applicable à votre produit.</p>
+                </details>
+            </div>
+
+            <div class="faq-category">
+                <h2>Collaborer avec ÔTAY BOX</h2>
+                <details class="faq-accordion">
+                    <summary>Je suis créateur et je souhaite proposer mes produits pour une future box. Est-ce possible ?</summary>
+                    <p>Oui, Nous sommes ouvertes à découvrir les créations de petits créateurs et marques dont l’univers correspond à celui d’ÔTAY BOX.<br>
+                    Vous pouvez nous présenter votre marque, vos produits et votre idée de collaboration via <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a> ou sur Instagram <a href="https://www.instagram.com/otaybox/" target="_blank">@otaybox</a>.</p>
+                </details>
+                <details class="faq-accordion">
+                    <summary>Quels types de produits recherchez-vous ?</summary>
+                    <p>Nous recherchons principalement des créations qui s’accordent avec notre univers autour du bien-être, du self-care, des infusions et de l’art de ralentir.<br>
+                    Nous sommes notamment ouvertes à découvrir des créations artisanales, des accessoires, des produits de beauté et de bien-être, des bougies et senteurs, de la papeterie et d’autres petites attentions qui peuvent enrichir l’expérience ÔTAY BOX.</p>
+                </details>
+                <details class="faq-accordion">
+                    <summary>Comment proposer une collaboration ?</summary>
+                    <p>Vous pouvez nous envoyer une présentation de votre marque, vos réseaux sociaux, votre site internet si vous en avez un, ainsi que quelques informations sur les produits que vous souhaitez nous proposer.<br>
+                    📧 <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a><br>
+                    📱 +216 54 050 380<br>
+                    Instagram : <a href="https://www.instagram.com/otaybox/" target="_blank">@otaybox</a></p>
+                </details>
+            </div>
+            
+            <div class="faq-contact">
+                <h3>Besoin d’aide ?</h3>
+                <p>Notre équipe est disponible pour vous accompagner.</p>
+                <p>📧 <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a></p>
+                <p>Vous pouvez également nous contacter via nos réseaux sociaux.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content-grid">
+            <div class="footer-col brand-col">
+                <h3 class="footer-logo-text">ÔTAY BOX</h3>
+                <p class="footer-desc">Marque tunisienne de box bien-être.<br>📧 contact@otaybox.tn<br>📞 +216 54 050 380</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Votre adresse email" aria-label="Email" required>
+                    <button type="submit" aria-label="S'inscrire"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-heading">ÔTAY BOX</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html#about">À propos</a></li>
+                    <li><a href="collaborer.html">Collaborer avec nous</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="https://www.instagram.com/otaybox/" target="_blank">Instagram</a></li>
+                    <li><a href="https://www.facebook.com/OTAYBOX/" target="_blank">Facebook</a></li>
+                    <li><a href="https://www.tiktok.com/@otaybox" target="_blank">TikTok</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-heading">Légal & Aide</h4>
+                <ul class="footer-links">
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="cgv.html">Conditions Générales de Vente</a></li>
+                    <li><a href="confidentialite.html">Politique de confidentialité</a></li>
+                    <li><a href="retours.html">Conditions de retour & échange</a></li>
+                    <li><a href="livraison.html">Livraison</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="container footer-bottom">
+            <p>&copy; <span id="current-year"></span> ÔTAY BOX. Tous droits réservés.</p>
+            <div class="footer-actions">
+                <div class="footer-socials">
+                    <a href="https://www.instagram.com/otaybox/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@otaybox" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.facebook.com/OTAYBOX/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+                <a href="#" class="back-to-top" aria-label="Retour en haut">
+                    <i class="fa-solid fa-arrow-up"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+    <script src="js/script.js"></script>
+</body>
+</html>
