@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" href="assets/favicon.png">
     
     <style>
-        .legal-page { padding-top: calc(var(--nav-height) + 3rem); padding-bottom: 5rem; }
+        .legal-page { padding-top: var(--nav-height); padding-bottom: 5rem; }
         .legal-content { max-width: 800px; margin: 0 auto; padding: 0 2rem; }
         .legal-content h1 { font-size: 2.5rem; color: var(--accent); margin-bottom: 0.5rem; font-family: var(--font-heading); }
         .legal-date { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 2rem; font-style: italic; }
@@ -81,8 +81,13 @@
     </header>
 
     <main class="legal-page">
+
+        <div class="legal-cover" style="width: 100%; height: 350px; background-image: url('assets/hero-image.webp'); background-size: cover; background-position: center 30%; margin-bottom: 3rem; display: flex; align-items: center; justify-content: center; position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(47, 42, 37, 0.4);"></div>
+            <h1 style="position: relative; color: #fff; font-size: 3rem; text-align: center; font-family: var(--font-heading); margin: 0; padding: 0 20px; z-index: 1;">Politique de livraison</h1>
+        </div>
         <div class="container legal-content fade-in">
-            <h1>Politique de livraison</h1>
+            
             <p class="legal-date">Dernière mise à jour : 30 septembre 2026</p>
             
             <div class="legal-intro">
@@ -120,7 +125,7 @@
             <h2>6. Vérification à la réception</h2>
             <p>Nous vous recommandons de vérifier votre commande à sa réception.</p>
             <p>Si le colis ou le produit présente un dommage apparent, prenez si possible des photographies et contactez-nous rapidement à :</p>
-            <p>📧 <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a></p>
+            <p><i class="fa-regular fa-envelope"></i> <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a></p>
 
             <h2>7. Retard ou problème de livraison</h2>
             <p>Si votre commande n'est pas reçue dans le délai annoncé, contactez-nous afin que nous puissions vérifier son statut avec le transporteur.</p>
@@ -133,8 +138,8 @@
             <h2>9. Contact</h2>
             <p>Pour toute question concernant une livraison :</p>
             <div class="legal-contact">
-                <p>📧 <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a></p>
-                <p>📞 +216 54 050 380</p>
+                <p><i class="fa-regular fa-envelope"></i> <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a></p>
+                <p><i class="fa-solid fa-phone"></i> +216 54 050 380</p>
             </div>
         </div>
     </main>
@@ -143,7 +148,7 @@
         <div class="container footer-content-grid">
             <div class="footer-col brand-col">
                 <h3 class="footer-logo-text">ÔTAY BOX</h3>
-                <p class="footer-desc">Marque tunisienne de box bien-être.<br>📧 contact@otaybox.tn<br>📞 +216 54 050 380</p>
+                <p class="footer-desc">Marque tunisienne de box bien-être.<br><i class="fa-regular fa-envelope"></i> contact@otaybox.tn<br><i class="fa-solid fa-phone"></i> +216 54 050 380</p>
                 <form class="newsletter-form">
                     <input type="email" placeholder="Votre adresse email" aria-label="Email" required>
                     <button type="submit" aria-label="S'inscrire"><i class="fa-solid fa-arrow-right"></i></button>
@@ -156,9 +161,6 @@
                     <li><a href="index.html#about">À propos</a></li>
                     <li><a href="collaborer.html">Collaborer avec nous</a></li>
                     <li><a href="index.html#contact">Contact</a></li>
-                    <li><a href="https://www.instagram.com/otaybox/" target="_blank">Instagram</a></li>
-                    <li><a href="https://www.facebook.com/OTAYBOX/" target="_blank">Facebook</a></li>
-                    <li><a href="https://www.tiktok.com/@otaybox" target="_blank">TikTok</a></li>
                 </ul>
             </div>
             

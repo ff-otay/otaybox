@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" href="assets/favicon.png">
     
     <style>
-        .legal-page { padding-top: calc(var(--nav-height) + 3rem); padding-bottom: 5rem; }
+        .legal-page { padding-top: var(--nav-height); padding-bottom: 5rem; }
         .legal-content { max-width: 800px; margin: 0 auto; padding: 0 2rem; }
         .legal-content h1 { font-size: 2.5rem; color: var(--accent); margin-bottom: 1rem; font-family: var(--font-heading); }
         .legal-intro { font-size: 1.1rem; color: var(--text-secondary); border-left: 3px solid var(--accent); padding-left: 1.5rem; margin-bottom: 3rem; }
@@ -87,10 +87,15 @@
     </header>
 
     <main class="legal-page">
+
+        <div class="legal-cover" style="width: 100%; height: 350px; background-image: url('assets/hero-image.webp'); background-size: cover; background-position: center 30%; margin-bottom: 3rem; display: flex; align-items: center; justify-content: center; position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(47, 42, 37, 0.4);"></div>
+            <h1 style="position: relative; color: #fff; font-size: 3rem; text-align: center; font-family: var(--font-heading); margin: 0; padding: 0 20px; z-index: 1;">FAQ — ÔTAY BOX</h1>
+        </div>
         <div class="container legal-content fade-in">
-            <h1>FAQ — ÔTAY BOX</h1>
+            
             <div class="legal-intro">
-                Bienvenue chez ÔTAY BOX 🌿<br>
+                Bienvenue chez ÔTAY BOX <br>
                 Retrouvez ici les réponses aux questions les plus fréquentes concernant nos box, les commandes et la livraison.
             </div>
 
@@ -191,8 +196,8 @@
                 <details class="faq-accordion">
                     <summary>Comment proposer une collaboration ?</summary>
                     <p>Vous pouvez nous envoyer une présentation de votre marque, vos réseaux sociaux, votre site internet si vous en avez un, ainsi que quelques informations sur les produits que vous souhaitez nous proposer.<br>
-                    📧 <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a><br>
-                    📱 +216 54 050 380<br>
+                    <i class="fa-regular fa-envelope"></i> <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a><br>
+                    <i class='fa-solid fa-phone'></i> +216 54 050 380<br>
                     Instagram : <a href="https://www.instagram.com/otaybox/" target="_blank">@otaybox</a></p>
                 </details>
             </div>
@@ -200,7 +205,7 @@
             <div class="faq-contact">
                 <h3>Besoin d’aide ?</h3>
                 <p>Notre équipe est disponible pour vous accompagner.</p>
-                <p>📧 <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a></p>
+                <p><i class="fa-regular fa-envelope"></i> <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a></p>
                 <p>Vous pouvez également nous contacter via nos réseaux sociaux.</p>
             </div>
         </div>
@@ -210,7 +215,7 @@
         <div class="container footer-content-grid">
             <div class="footer-col brand-col">
                 <h3 class="footer-logo-text">ÔTAY BOX</h3>
-                <p class="footer-desc">Marque tunisienne de box bien-être.<br>📧 contact@otaybox.tn<br>📞 +216 54 050 380</p>
+                <p class="footer-desc">Marque tunisienne de box bien-être.<br><i class="fa-regular fa-envelope"></i> contact@otaybox.tn<br><i class="fa-solid fa-phone"></i> +216 54 050 380</p>
                 <form class="newsletter-form">
                     <input type="email" placeholder="Votre adresse email" aria-label="Email" required>
                     <button type="submit" aria-label="S'inscrire"><i class="fa-solid fa-arrow-right"></i></button>
@@ -223,9 +228,6 @@
                     <li><a href="index.html#about">À propos</a></li>
                     <li><a href="collaborer.html">Collaborer avec nous</a></li>
                     <li><a href="index.html#contact">Contact</a></li>
-                    <li><a href="https://www.instagram.com/otaybox/" target="_blank">Instagram</a></li>
-                    <li><a href="https://www.facebook.com/OTAYBOX/" target="_blank">Facebook</a></li>
-                    <li><a href="https://www.tiktok.com/@otaybox" target="_blank">TikTok</a></li>
                 </ul>
             </div>
             

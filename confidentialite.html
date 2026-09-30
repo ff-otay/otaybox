@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" href="assets/favicon.png">
     
     <style>
-        .legal-page { padding-top: calc(var(--nav-height) + 3rem); padding-bottom: 5rem; }
+        .legal-page { padding-top: var(--nav-height); padding-bottom: 5rem; }
         .legal-content { max-width: 800px; margin: 0 auto; padding: 0 2rem; }
         .legal-content h1 { font-size: 2.5rem; color: var(--accent); margin-bottom: 1rem; font-family: var(--font-heading); }
         .legal-content h2 { font-size: 1.4rem; margin-top: 2.5rem; margin-bottom: 1rem; color: var(--text-primary); font-family: var(--font-heading); }
@@ -80,8 +80,13 @@
     </header>
 
     <main class="legal-page">
+
+        <div class="legal-cover" style="width: 100%; height: 350px; background-image: url('assets/hero-image.webp'); background-size: cover; background-position: center 30%; margin-bottom: 3rem; display: flex; align-items: center; justify-content: center; position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(47, 42, 37, 0.4);"></div>
+            <h1 style="position: relative; color: #fff; font-size: 3rem; text-align: center; font-family: var(--font-heading); margin: 0; padding: 0 20px; z-index: 1;">Politique de confidentialité</h1>
+        </div>
         <div class="container legal-content fade-in">
-            <h1>Politique de confidentialité</h1>
+            
             <div class="legal-intro">
                 <p>ÔTAY BOX accorde une importance particulière à la protection de vos données personnelles.</p>
                 <p>Cette politique explique quelles données peuvent être collectées lorsque vous utilisez notre site, pourquoi elles sont utilisées et comment nous les protégeons.</p>
@@ -129,8 +134,8 @@
             <h2>6. Vos droits</h2>
             <p>Conformément au cadre tunisien relatif à la protection des données personnelles, vous disposez de droits concernant vos données personnelles, dans les conditions prévues par la législation applicable.</p>
             <p>Pour toute demande concernant vos données personnelles :<br>
-            📧 <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a><br>
-            📞 +216 54 050 380</p>
+            <i class="fa-regular fa-envelope"></i> <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a><br>
+            <i class="fa-solid fa-phone"></i> +216 54 050 380</p>
 
             <h2>7. Cookies</h2>
             <p>Le site peut utiliser des cookies ou technologies similaires nécessaires à son fonctionnement ou permettant de mesurer et améliorer son utilisation.</p>
@@ -144,8 +149,8 @@
             <p>Pour toute question concernant la protection de vos données :</p>
             <div class="legal-contact">
                 <h3>ÔTAY BOX</h3>
-                <p>📧 <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a></p>
-                <p>📞 +216 54 050 380</p>
+                <p><i class="fa-regular fa-envelope"></i> <a href="mailto:contact@otaybox.tn">contact@otaybox.tn</a></p>
+                <p><i class="fa-solid fa-phone"></i> +216 54 050 380</p>
             </div>
         </div>
     </main>
@@ -154,7 +159,7 @@
         <div class="container footer-content-grid">
             <div class="footer-col brand-col">
                 <h3 class="footer-logo-text">ÔTAY BOX</h3>
-                <p class="footer-desc">Marque tunisienne de box bien-être.<br>📧 contact@otaybox.tn<br>📞 +216 54 050 380</p>
+                <p class="footer-desc">Marque tunisienne de box bien-être.<br><i class="fa-regular fa-envelope"></i> contact@otaybox.tn<br><i class="fa-solid fa-phone"></i> +216 54 050 380</p>
                 <form class="newsletter-form">
                     <input type="email" placeholder="Votre adresse email" aria-label="Email" required>
                     <button type="submit" aria-label="S'inscrire"><i class="fa-solid fa-arrow-right"></i></button>
@@ -167,9 +172,6 @@
                     <li><a href="index.html#about">À propos</a></li>
                     <li><a href="collaborer.html">Collaborer avec nous</a></li>
                     <li><a href="index.html#contact">Contact</a></li>
-                    <li><a href="https://www.instagram.com/otaybox/" target="_blank">Instagram</a></li>
-                    <li><a href="https://www.facebook.com/OTAYBOX/" target="_blank">Facebook</a></li>
-                    <li><a href="https://www.tiktok.com/@otaybox" target="_blank">TikTok</a></li>
                 </ul>
             </div>
             
