@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÔTAY BOX | Tous nos liens</title>
+    <meta name="description" content="Découvrez ÔTAY BOX et retrouvez tous nos réseaux sociaux et moyens de contact.">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/2b9d55efb9.js" crossorigin="anonymous"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* Specific styles for the links page */
+        body.links-page {
+            background-color: var(--bg-main, #F8F6F2);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 1.5rem;
+            font-family: var(--font-body, 'Inter', sans-serif);
+        }
+        
+        .links-container {
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            animation: fadeUp 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .links-header {
+            margin-bottom: 2.5rem;
+        }
+        
+        .links-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            display: block;
+            background-color: #ffffff;
+            padding: 5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        .links-title {
+            font-family: var(--font-heading, 'Poppins', sans-serif);
+            font-size: 1.5rem;
+            color: var(--text-primary, #2F2A25);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .links-slogan {
+            font-size: 0.95rem;
+            color: var(--text-secondary, #6E6862);
+            line-height: 1.5;
+            margin: 0 auto;
+            max-width: 90%;
+        }
+        
+        .links-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        
+        .link-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-color: #ffffff;
+            color: var(--clr-brand-dark, #4B6C4F);
+            text-decoration: none;
+            padding: 1.2rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-family: var(--font-heading, 'Poppins', sans-serif);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(75, 108, 79, 0.15);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+        
+        .link-item:hover, .link-item:active {
+            background-color: var(--clr-brand-dark, #4B6C4F);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(75, 108, 79, 0.2);
+        }
+        
+        .link-icon {
+            position: absolute;
+            left: 1.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .links-footer {
+            margin-top: auto;
+            color: var(--text-secondary, #6E6862);
+            font-size: 0.85rem;
+            padding-top: 2rem;
+        }
+
+        /* Dark Theme overrides */
+        html[data-theme="dark"] body.links-page {
+            background-color: var(--bg-main);
+        }
+        html[data-theme="dark"] .link-item {
+            background-color: var(--bg-surface);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+        html[data-theme="dark"] .link-item:hover, html[data-theme="dark"] .link-item:active {
+            background-color: var(--clr-brand-dark);
+            color: #ffffff;
+            border-color: var(--clr-brand-dark);
+        }
+        html[data-theme="dark"] .links-logo {
+            background-color: var(--bg-surface);
+        }
+    </style>
+    <script>
+        !function(){var t=localStorage.getItem('otay-theme')||'light';document.documentElement.setAttribute('data-theme',t)}();
+    </script>
+</head>
+<body class="links-page">
+
+    <div class="links-container">
+        <header class="links-header">
+            <img src="assets/logo.png" alt="Logo ÔTAY BOX" class="links-logo">
+            <h1 class="links-title">ÔTAY BOX</h1>
+            <p class="links-slogan">Rituel de bien-être pour ralentir & créer des instants de douceur</p>
+        </header>
+
+        <nav class="links-list">
+            <a href="https://www.instagram.com/otaybox/" class="link-item" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-instagram link-icon"></i>
+                <span>Instagram</span>
+            </a>
+            
+            <a href="https://www.tiktok.com/@otaybox" class="link-item" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-tiktok link-icon"></i>
+                <span>TikTok</span>
+            </a>
+            
+            <a href="https://www.facebook.com/OTAYBOX" class="link-item" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-facebook-f link-icon"></i>
+                <span>Facebook</span>
+            </a>
+            
+            <a href="https://www.linkedin.com/company/otaybox" class="link-item" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-linkedin-in link-icon"></i>
+                <span>LinkedIn</span>
+            </a>
+            
+            <a href="https://wa.me/21654050380" class="link-item" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-whatsapp link-icon"></i>
+                <span>Nous contacter sur WhatsApp</span>
+            </a>
+            
+            <a href="mailto:contact@otaybox.tn" class="link-item" target="_blank" rel="noopener noreferrer">
+                <i class="fa-regular fa-envelope link-icon"></i>
+                <span>Nous contacter par email</span>
+            </a>
+            
+            <a href="https://otaybox.tn/" class="link-item" target="_blank" rel="noopener noreferrer">
+                <i class="fa-solid fa-globe link-icon"></i>
+                <span>Visiter notre site</span>
+            </a>
+        </nav>
+
+        <footer class="links-footer">
+            &copy; <span id="current-year"></span> ÔTAY BOX
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
