@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Factures — ÔTAY BOX Admin</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <img src="../assets/logo.png" alt="ÔTAY BOX" class="sidebar-logo-img">
+            <span class="sidebar-brand-title">ÔTAY BOX</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item-link">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="commandes.html" class="nav-item-link">
+                <i class="fa-solid fa-box-archive"></i>
+                <span>Commandes</span>
+            </a>
+            <a href="devis.html" class="nav-item-link">
+                <i class="fa-solid fa-file-signature"></i>
+                <span>Devis</span>
+            </a>
+            <a href="factures.html" class="nav-item-link active">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Factures</span>
+            </a>
+            <a href="documents.html" class="nav-item-link">
+                <i class="fa-solid fa-folder-closed"></i>
+                <span>Documents & PDF</span>
+            </a>
+            <a href="international.html" class="nav-item-link">
+                <i class="fa-solid fa-earth-africa"></i>
+                <span>International & ILEY'COM</span>
+            </a>
+            <a href="parametres.html" class="nav-item-link">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Paramètres</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile-badge">
+                <div class="avatar-circle">ÔB</div>
+                <div class="user-details">
+                    <div class="user-role-label">Administratrice</div>
+                    <div class="user-email-val" id="admin-sidebar-email">contact@otaybox.tn</div>
+                </div>
+            </div>
+            <button class="btn-secondary btn-admin-logout" style="width: 100%; justify-content: center; font-size: 0.85rem;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main-wrap">
+        <header class="admin-topbar">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="btn-secondary" id="admin-menu-toggle" style="display: none; padding: 6px 12px;">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 class="page-main-heading">Facturation Professionnelle</h1>
+            </div>
+            <div class="topbar-actions">
+                <a href="commandes.html" class="btn-secondary">
+                    <i class="fa-solid fa-plus"></i> Créer depuis une commande
+                </a>
+            </div>
+        </header>
+
+        <main class="admin-body-content">
+            <!-- Avertissement Légal / Fiscalité Tunisienne -->
+            <div id="tax-warning-box" style="background: #fef9e7; border-left: 4px solid #f39c12; padding: 1rem 1.25rem; border-radius: 6px; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <strong style="color: #b7950b;"><i class="fa-solid fa-triangle-exclamation"></i> Configuration des Mentions Légales</strong>
+                    <p style="font-size: 0.85rem; color: #555; margin-top: 4px;">
+                        Votre Matricule Fiscal et Registre de Commerce ne sont pas encore renseignés dans les paramètres. Pour générer des factures fiscalement conformes en Tunisie, veuillez compléter vos identifiants d'entreprise.
+                    </p>
+                </div>
+                <a href="parametres.html" class="btn-secondary" style="font-size: 0.8rem; white-space: nowrap; margin-left: 1rem;">
+                    Configurer mes mentions
+                </a>
+            </div>
+
+            <!-- Liste des Factures -->
+            <div class="panel-card">
+                <div class="panel-card-header">
+                    <h2 class="panel-card-title"><i class="fa-solid fa-file-invoice"></i> Registre des factures émises</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>N° Facture</th>
+                                <th>Date d'émission</th>
+                                <th>Client</th>
+                                <th>N° Commande / Devis</th>
+                                <th>Montant Total</th>
+                                <th>Statut</th>
+                                <th style="text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoices-table-body">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 3rem; color: var(--brand-muted);">
+                                    <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                                    Chargement des factures...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modale de Prévisualisation Facture A4 -->
+            <div id="invoice-preview-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; padding: 2rem;">
+                <div style="background: #FFFFFF; border-radius: 12px; width: 95%; max-width: 900px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.25);">
+                    <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--brand-border); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="font-family: 'Poppins', sans-serif; margin: 0; font-size: 1.1rem;" id="modal-invoice-title">Facture A4</h3>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn-primary" id="btn-download-modal-invoice" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+                                <i class="fa-solid fa-download"></i> Télécharger PDF
+                            </button>
+                            <button class="btn-secondary" id="btn-close-modal-invoice" style="padding: 0.4rem 0.8rem;">
+                                &times;
+                            </button>
+                        </div>
+                    </div>
+                    <div style="overflow-y: auto; padding: 1.5rem; background: #e2ded8; display: flex; justify-content: center;" id="modal-invoice-body"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/pdf-generator.js"></script>
+    <script>
+        let invoicesList = [];
+        let activeInvoice = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const action = urlParams.get('action');
+            const orderId = urlParams.get('order_id');
+
+            // Si on demande la création directe depuis une commande
+            if (action === 'create_from_order' && orderId) {
+                await createInvoiceFromOrder(orderId);
+            }
+
+            await loadInvoices();
+
+            // Fermeture modale
+            document.getElementById('btn-close-modal-invoice').addEventListener('click', () => {
+                document.getElementById('invoice-preview-modal').style.display = 'none';
+            });
+
+            // Téléchargement PDF
+            document.getElementById('btn-download-modal-invoice').addEventListener('click', () => {
+                if (activeInvoice) {
+                    const filename = `Facture_OTAY_BOX_${activeInvoice.invoice_number.replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`;
+                    window.PdfGenerator.downloadPDF('printable-invoice', filename);
+                }
+            });
+        });
+
+        async function createInvoiceFromOrder(orderId) {
+            try {
+                const ord = await window.OtayAPI.getOrderById(orderId);
+                if (!ord) throw new Error("Commande introuvable.");
+
+                const invoiceData = {
+                    order_id: ord.id,
+                    client_name: ord.client_name,
+                    client_email: ord.client_email,
+                    client_phone: ord.client_phone,
+                    client_address: `${ord.address}, ${ord.city} (${ord.governorate})`,
+                    subtotal: ord.subtotal,
+                    shipping_fee: ord.shipping_fee,
+                    discount: ord.discount || 0,
+                    total: ord.total,
+                    legal_notes: 'TVA non applicable selon la législation en vigueur en Tunisie.',
+                    items: (ord.items || ord.order_items || []).map(i => ({
+                        designation: i.product_name,
+                        quantity: i.quantity,
+                        unit_price: i.unit_price,
+                        total_price: i.total_price
+                    }))
+                };
+
+                const created = await window.OtayAPI.createInvoice(invoiceData);
+                alert(`Facture ${created.invoice_number} générée avec succès pour la commande ${ord.order_number} !`);
+                window.location.href = 'factures.html';
+            } catch (err) {
+                alert("Erreur lors de la création de la facture : " + err.message);
+            }
+        }
+
+        async function loadInvoices() {
+            invoicesList = await window.OtayAPI.getInvoices();
+            const tbody = document.getElementById('invoices-table-body');
+
+            if (invoicesList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 3rem; color: var(--brand-muted);">
+                            Aucune facture générée pour le moment.<br>
+                            Vous pouvez générer une facture à tout moment depuis la fiche d'une commande validée.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            invoicesList.forEach(inv => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${inv.invoice_number}</strong></td>
+                    <td>${inv.issue_date}</td>
+                    <td><strong>${inv.client_name}</strong></td>
+                    <td>${inv.order_id ? 'Commande liée' : 'Direct'}</td>
+                    <td><strong>${Number(inv.total).toFixed(3)} DT</strong></td>
+                    <td><span class="status-badge badge-order-confirmee">${inv.status || 'Émise'}</span></td>
+                    <td style="text-align: right;">
+                        <button class="btn-primary btn-view-invoice" data-id="${inv.id}" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+                            <i class="fa-solid fa-file-pdf"></i> Visualiser & Télécharger
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.querySelectorAll('.btn-view-invoice').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const inv = invoicesList.find(x => x.id === id);
+                    if (inv) showInvoiceModal(inv);
+                });
+            });
+        }
+
+        function showInvoiceModal(inv) {
+            activeInvoice = inv;
+            document.getElementById('modal-invoice-title').textContent = `Facture ${inv.invoice_number} — ${inv.client_name}`;
+            const modalBody = document.getElementById('modal-invoice-body');
+            modalBody.innerHTML = window.PdfGenerator.renderInvoiceHTML(inv);
+            document.getElementById('invoice-preview-modal').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

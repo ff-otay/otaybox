@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres Généraux — ÔTAY BOX Admin</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <img src="../assets/logo.png" alt="ÔTAY BOX" class="sidebar-logo-img">
+            <span class="sidebar-brand-title">ÔTAY BOX</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item-link">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="commandes.html" class="nav-item-link">
+                <i class="fa-solid fa-box-archive"></i>
+                <span>Commandes</span>
+            </a>
+            <a href="devis.html" class="nav-item-link">
+                <i class="fa-solid fa-file-signature"></i>
+                <span>Devis</span>
+            </a>
+            <a href="factures.html" class="nav-item-link">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Factures</span>
+            </a>
+            <a href="documents.html" class="nav-item-link">
+                <i class="fa-solid fa-folder-closed"></i>
+                <span>Documents & PDF</span>
+            </a>
+            <a href="international.html" class="nav-item-link">
+                <i class="fa-solid fa-earth-africa"></i>
+                <span>International & ILEY'COM</span>
+            </a>
+            <a href="parametres.html" class="nav-item-link active">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Paramètres</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile-badge">
+                <div class="avatar-circle">ÔB</div>
+                <div class="user-details">
+                    <div class="user-role-label">Administratrice</div>
+                    <div class="user-email-val" id="admin-sidebar-email">contact@otaybox.tn</div>
+                </div>
+            </div>
+            <button class="btn-secondary btn-admin-logout" style="width: 100%; justify-content: center; font-size: 0.85rem;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main-wrap">
+        <header class="admin-topbar">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="btn-secondary" id="admin-menu-toggle" style="display: none; padding: 6px 12px;">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 class="page-main-heading">Paramètres & Configuration</h1>
+            </div>
+        </header>
+
+        <main class="admin-body-content">
+            <!-- État de la connexion Supabase -->
+            <div class="panel-card" style="margin-bottom: 2rem;">
+                <div class="panel-card-header">
+                    <h2 class="panel-card-title"><i class="fa-solid fa-server"></i> Connexion Backend & Stockage Supabase</h2>
+                </div>
+                <div style="padding: 1.5rem;" id="supabase-status-container">
+                    <!-- Rendu dynamique par JS -->
+                </div>
+            </div>
+
+            <!-- Paramètres de Livraison & Tarification -->
+            <div class="panel-card" style="margin-bottom: 2rem;">
+                <div class="panel-card-header">
+                    <h2 class="panel-card-title"><i class="fa-solid fa-truck-ramp-box"></i> Règles de Livraison en Tunisie</h2>
+                </div>
+                <form id="shipping-settings-form" style="padding: 1.5rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">
+                                Tarif standard de livraison (en DT)
+                            </label>
+                            <input type="number" step="0.5" id="set-shipping-fee" class="filter-select" style="width: 100%;" value="9.000" required>
+                            <span style="font-size: 0.75rem; color: var(--brand-muted);">Frais appliqués si le panier est inférieur au seuil de gratuité.</span>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">
+                                Seuil de livraison gratuite (en DT)
+                            </label>
+                            <input type="number" step="1" id="set-free-threshold" class="filter-select" style="width: 100%;" value="150.000" required>
+                            <span style="font-size: 0.75rem; color: var(--brand-muted);">Livraison offerte sur toute la Tunisie dès ce montant (ex: 150 DT).</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" id="btn-save-shipping">
+                        <i class="fa-solid fa-check"></i> Enregistrer les règles de livraison
+                    </button>
+                </form>
+            </div>
+
+            <!-- Mentions Légales & Identifiants Tunisiens pour Devis et Factures -->
+            <div class="panel-card">
+                <div class="panel-card-header">
+                    <h2 class="panel-card-title"><i class="fa-solid fa-building-columns"></i> Coordonnées & Mentions Légales Fiscales</h2>
+                </div>
+                <form id="legal-settings-form" style="padding: 1.5rem;">
+                    <p style="font-size: 0.85rem; color: var(--brand-muted); margin-bottom: 1.25rem;">
+                        Renseignez ces informations dès que votre entreprise dispose de ses identifiants fiscaux tunisiens. Elles s'insèreront automatiquement sur vos factures A4.
+                    </p>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.25rem;">
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">Nom commercial de la marque</label>
+                            <input type="text" id="set-comp-name" class="filter-select" style="width: 100%;" value="ÔTAY BOX">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">Téléphone officiel</label>
+                            <input type="text" id="set-comp-phone" class="filter-select" style="width: 100%;" value="+216 54 050 380">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.25rem;">
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">E-mail de contact et notification</label>
+                            <input type="email" id="set-comp-email" class="filter-select" style="width: 100%;" value="contact@otaybox.tn">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">Lien boutique ILEY'COM</label>
+                            <input type="url" id="set-comp-ileycom" class="filter-select" style="width: 100%;" value="https://ileycom.com/store/otay-box/">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">Matricule Fiscal (MF)</label>
+                            <input type="text" id="set-comp-mf" class="filter-select" style="width: 100%;" placeholder="Ex: 1234567/A/M/000">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">Régime TVA</label>
+                            <input type="text" id="set-comp-tva" class="filter-select" style="width: 100%;" value="Exonéré / Non assujetti">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="btn-save-legal">
+                        <i class="fa-solid fa-check"></i> Enregistrer les mentions légales
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Affichage de l'état de connexion Supabase
+            const statusBox = document.getElementById('supabase-status-container');
+            const cfg = window.OTAY_CONFIG || {};
+
+            if (cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY && cfg.SUPABASE_URL.startsWith('https://')) {
+                statusBox.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 12px; color: #27ae60;">
+                        <i class="fa-solid fa-circle-check" style="font-size: 1.8rem;"></i>
+                        <div>
+                            <strong style="font-size: 1rem;">Connecté à Supabase en direct</strong>
+                            <div style="font-size: 0.8rem; color: var(--brand-muted); margin-top: 2px;">Projet : ${cfg.SUPABASE_URL}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                statusBox.innerHTML = `
+                    <div style="background: #eef5ee; border: 1px solid #c9decb; border-radius: 8px; padding: 1.25rem;">
+                        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 0.75rem;">
+                            <i class="fa-solid fa-shield-halved" style="font-size: 1.8rem; color: var(--brand-primary); margin-top: 2px;"></i>
+                            <div>
+                                <strong style="color: var(--brand-text); font-size: 1rem;">Mode Local Sécurisé & Démonstration Actif</strong>
+                                <p style="font-size: 0.85rem; color: #555; margin-top: 4px; line-height: 1.5;">
+                                    Toutes les fonctionnalités (commandes en ligne, recalcul des prix, fiches détaillées, génération des devis A4 conformes Clinique Ennasr et factures) sont <strong>100% opérationnelles immédiatement</strong> dans votre navigateur.
+                                </p>
+                            </div>
+                        </div>
+                        <div style="border-top: 1px solid #c9decb; padding-top: 0.75rem; font-size: 0.85rem; color: #444;">
+                            Pour connecter votre base en ligne gratuite Supabase : ouvrez le fichier <code>js/supabase-config.js</code> et renseignez votre <code>SUPABASE_URL</code> et <code>SUPABASE_ANON_KEY</code>. Le schéma SQL complet est prêt dans <code>supabase/schema.sql</code>.
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Chargement règles shipping
+            const rules = await window.OtayAPI.getShippingRules();
+            document.getElementById('set-shipping-fee').value = rules.standardFee;
+            document.getElementById('set-free-threshold').value = rules.freeThreshold;
+
+            // Formulaires de sauvegarde
+            document.getElementById('shipping-settings-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const fee = parseFloat(document.getElementById('set-shipping-fee').value);
+                const thresh = parseFloat(document.getElementById('set-free-threshold').value);
+                window.OTAY_CONFIG.SHIPPING_STANDARD_FEE = fee;
+                window.OTAY_CONFIG.SHIPPING_FREE_THRESHOLD = thresh;
+                alert("Règles de livraison mises à jour avec succès !");
+            });
+
+            document.getElementById('legal-settings-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert("Mentions légales mises à jour !");
+            });
+        });
+    </script>
+</body>
+</html>

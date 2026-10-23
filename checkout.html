@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finaliser votre Commande — ÔTAY BOX</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <script>!function(){var t=localStorage.getItem('otay-theme')||'light';document.documentElement.setAttribute('data-theme',t)}();</script>
+
+    <style>
+        .checkout-page-main {
+            padding-top: 8rem;
+            padding-bottom: 5rem;
+            background-color: var(--bg-main, #FAF8F5);
+            min-height: 85vh;
+        }
+
+        .checkout-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.3rem;
+            color: var(--text-primary, #2F2A25);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .checkout-subtitle {
+            text-align: center;
+            color: var(--text-secondary, #6E6862);
+            font-size: 0.95rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 2.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .checkout-card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(47, 42, 37, 0.08);
+        }
+
+        .card-header-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--clr-brand-dark, #4b6c4f);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(47, 42, 37, 0.08);
+            padding-bottom: 0.75rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2F2A25;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group label .required {
+            color: #E2725B;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(47, 42, 37, 0.2);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s ease;
+            background: #FFFFFF;
+            color: #2F2A25;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #4b6c4f;
+            box-shadow: 0 0 0 3px rgba(75, 108, 79, 0.15);
+        }
+
+        /* Récapitulatif Panier */
+        .summary-item-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(47, 42, 37, 0.06);
+        }
+
+        .summary-item-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
+            object-fit: cover;
+            background: #f4f2ed;
+        }
+
+        .summary-item-info {
+            flex: 1;
+        }
+
+        .summary-item-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2F2A25;
+            line-height: 1.2;
+            margin-bottom: 3px;
+        }
+
+        .summary-item-meta {
+            font-size: 0.8rem;
+            color: #8C857E;
+        }
+
+        .summary-item-total {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #4b6c4f;
+        }
+
+        .calc-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            font-size: 0.95rem;
+            color: #615B55;
+        }
+
+        .calc-row.total-row {
+            border-top: 2px solid rgba(75, 108, 79, 0.2);
+            margin-top: 0.75rem;
+            padding-top: 1rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2F2A25;
+        }
+
+        .free-shipping-progress {
+            background-color: #eef5ee;
+            border: 1px solid #c8decb;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.85rem;
+            color: #3b573e;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-box-badge {
+            background-color: #f7faf7;
+            border: 1px solid #cce2ce;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .btn-confirm-order {
+            width: 100%;
+            background-color: #4b6c4f;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 50px;
+            padding: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(75, 108, 79, 0.3);
+        }
+
+        .btn-confirm-order:hover {
+            background-color: #3c573f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(75, 108, 79, 0.4);
+        }
+
+        .btn-confirm-order:disabled {
+            background-color: #a0b5a3;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .alert-checkout-error {
+            background-color: #fdedec;
+            color: #c0392b;
+            border: 1px solid #f5b7b1;
+            border-radius: 8px;
+            padding: 0.85rem 1.25rem;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        /* Mode sombre */
+        [data-theme="dark"] .checkout-card {
+            background: #1E1E1E;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        [data-theme="dark"] .form-input, [data-theme="dark"] .form-select, [data-theme="dark"] .form-textarea {
+            background: #2a2a2a;
+            border-color: rgba(255, 255, 255, 0.15);
+            color: #FFFFFF;
+        }
+        [data-theme="dark"] .form-group label, [data-theme="dark"] .summary-item-title, [data-theme="dark"] .calc-row.total-row {
+            color: #FFFFFF;
+        }
+        [data-theme="dark"] .free-shipping-progress {
+            background: rgba(75, 108, 79, 0.2);
+            border-color: rgba(75, 108, 79, 0.4);
+            color: #8dac95;
+        }
+        [data-theme="dark"] .payment-box-badge {
+            background: #252525;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 850px) {
+            .checkout-layout {
+                grid-template-columns: 1fr;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar fade-in">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="Logo ÔTAY BOX" class="logo-img">
+            </a>
+            
+            <nav class="nav-links">
+                <a href="index.html#about" class="nav-link">À propos</a>
+                <a href="box-detail.html" class="nav-link">Nos Box</a>
+                <a href="boutique.html" class="nav-link">Boutique</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button class="icon-btn theme-toggle" aria-label="Basculer le thème">
+                    <i class="fa-solid fa-sun light-icon"></i>
+                    <i class="fa-solid fa-moon dark-icon"></i>
+                </button>
+                <a href="cart.html" class="cart-btn" aria-label="Panier">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="checkout-page-main">
+        <div class="container">
+            <h1 class="checkout-title">Finalisez votre Commande</h1>
+            <p class="checkout-subtitle">Renseignez vos coordonnées de livraison. Paiement sécurisé à la réception du colis.</p>
+            
+            <div class="alert-checkout-error" id="checkout-error-msg"></div>
+
+            <div class="checkout-layout">
+                <!-- FORMULAIRE COORDONNÉES DE LIVRAISON -->
+                <div class="checkout-card">
+                    <h2 class="card-header-title">
+                        <i class="fa-solid fa-truck-fast"></i> Coordonnées de livraison (Tunisie)
+                    </h2>
+
+                    <form id="order-checkout-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="c-name">Nom et Prénom <span class="required">*</span></label>
+                                <input type="text" id="c-name" class="form-input" required placeholder="Ex: Fatma Ben Salem" autocomplete="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="c-phone">Numéro de téléphone <span class="required">*</span></label>
+                                <input type="tel" id="c-phone" class="form-input" required placeholder="Ex: 50 123 456 ou 98 765 432" autocomplete="tel">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="c-email">Adresse e-mail <span style="color: var(--brand-muted); font-size: 0.8rem;">(facultatif pour confirmation)</span></label>
+                            <input type="email" id="c-email" class="form-input" placeholder="exemple@domaine.tn" autocomplete="email">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="c-gov">Gouvernorat <span class="required">*</span></label>
+                                <select id="c-gov" class="form-select" required>
+                                    <option value="" disabled selected>Sélectionnez votre gouvernorat...</option>
+                                    <option value="Ariana">Ariana</option>
+                                    <option value="Béja">Béja</option>
+                                    <option value="Ben Arous">Ben Arous</option>
+                                    <option value="Bizerte">Bizerte</option>
+                                    <option value="Gabès">Gabès</option>
+                                    <option value="Gafsa">Gafsa</option>
+                                    <option value="Jendouba">Jendouba</option>
+                                    <option value="Kairouan">Kairouan</option>
+                                    <option value="Kasserine">Kasserine</option>
+                                    <option value="Kébili">Kébili</option>
+                                    <option value="Le Kef">Le Kef</option>
+                                    <option value="Mahdia">Mahdia</option>
+                                    <option value="La Manouba">La Manouba</option>
+                                    <option value="Médenine">Médenine</option>
+                                    <option value="Monastir">Monastir</option>
+                                    <option value="Nabeul">Nabeul</option>
+                                    <option value="Sfax">Sfax</option>
+                                    <option value="Sidi Bouzid">Sidi Bouzid</option>
+                                    <option value="Siliana">Siliana</option>
+                                    <option value="Sousse">Sousse</option>
+                                    <option value="Tataouine">Tataouine</option>
+                                    <option value="Tozeur">Tozeur</option>
+                                    <option value="Tunis">Tunis</option>
+                                    <option value="Zaghouan">Zaghouan</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="c-city">Délégation ou Ville <span class="required">*</span></label>
+                                <input type="text" id="c-city" class="form-input" required placeholder="Ex: La Marsa, Menzah, Ennasr...">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="c-address">Adresse complète de livraison <span class="required">*</span></label>
+                            <textarea id="c-address" class="form-textarea" rows="3" required placeholder="Numéro, rue, résidence, étage, point de repère..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="c-notes">Instructions de livraison <span style="color: var(--brand-muted); font-size: 0.8rem;">(facultatif)</span></label>
+                            <input type="text" id="c-notes" class="form-input" placeholder="Ex: Appeler avant d'arriver, digicode...">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- RÉCAPITULATIF FINANCIER ET VALIDATION -->
+                <div class="checkout-card">
+                    <h2 class="card-header-title">
+                        <i class="fa-solid fa-receipt"></i> Récapitulatif de commande
+                    </h2>
+
+                    <div id="free-shipping-banner" class="free-shipping-progress">
+                        <i class="fa-solid fa-sparkles"></i>
+                        <span id="free-shipping-text">Calcul de la livraison...</span>
+                    </div>
+
+                    <!-- Liste des articles commandés -->
+                    <div id="checkout-items-list" style="margin-bottom: 1.5rem;">
+                        <div style="text-align: center; color: var(--brand-muted); padding: 1rem;">Chargement des articles...</div>
+                    </div>
+
+                    <!-- Calculs -->
+                    <div class="calc-row">
+                        <span>Sous-total articles</span>
+                        <strong id="calc-subtotal">0,000 DT</strong>
+                    </div>
+                    <div class="calc-row">
+                        <span>Frais de livraison</span>
+                        <strong id="calc-shipping">9,000 DT</strong>
+                    </div>
+                    <div class="calc-row total-row">
+                        <span>Total à payer</span>
+                        <span style="color: #4b6c4f;" id="calc-total">0,000 DT</span>
+                    </div>
+
+                    <!-- Mode de règlement -->
+                    <div class="payment-box-badge">
+                        <i class="fa-solid fa-hand-holding-dollar" style="font-size: 1.5rem; color: #4b6c4f; margin-top: 2px;"></i>
+                        <div>
+                            <strong style="display: block; font-size: 0.95rem; color: var(--text-primary, #2F2A25); margin-bottom: 2px;">
+                                Paiement à la livraison
+                            </strong>
+                            <p style="font-size: 0.82rem; color: #6E6862; margin: 0; line-height: 1.4;">
+                                Vous réglerez votre commande en espèces au livreur dès la réception de votre colis.
+                            </p>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-confirm-order" id="btn-submit-order">
+                        <i class="fa-solid fa-lock"></i> Valider et Confirmer ma commande
+                    </button>
+
+                    <p style="font-size: 0.78rem; color: var(--brand-muted); text-align: center; margin-top: 1rem; line-height: 1.4;">
+                        En validant votre commande, vous acceptez nos <a href="cgv.html" target="_blank" style="color: #4b6c4f;">Conditions Générales de Vente</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content-grid">
+            <div class="footer-col brand-col">
+                <h3 class="footer-logo-text">ÔTAY BOX</h3>
+                <p class="footer-desc">Marque tunisienne de box bien-être.<br><i class="fa-regular fa-envelope"></i> contact@otaybox.tn<br><i class="fa-solid fa-phone"></i> +216 54 050 380</p>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading">Légal & Aide</h4>
+                <ul class="footer-links">
+                    <li><a href="cgv.html">Conditions Générales de Vente</a></li>
+                    <li><a href="confidentialite.html">Politique de confidentialité</a></li>
+                    <li><a href="livraison.html">Livraison & Retours</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const cartItems = window.otayCart ? window.otayCart.items : [];
+            const itemsContainer = document.getElementById('checkout-items-list');
+            const subtotalEl = document.getElementById('calc-subtotal');
+            const shippingEl = document.getElementById('calc-shipping');
+            const totalEl = document.getElementById('calc-total');
+            const freeShippingText = document.getElementById('free-shipping-text');
+            const submitBtn = document.getElementById('btn-submit-order');
+            const errorBox = document.getElementById('checkout-error-msg');
+
+            if (!cartItems || cartItems.length === 0) {
+                itemsContainer.innerHTML = `
+                    <div style="text-align: center; padding: 2rem 0;">
+                        <p style="color: #8C857E;">Votre panier est vide.</p>
+                        <a href="boutique.html" class="btn btn-outline" style="margin-top: 1rem; display: inline-block;">Continuer mes achats</a>
+                    </div>
+                `;
+                submitBtn.disabled = true;
+                return;
+            }
+
+            // Calcul officiel via OtayAPI
+            const shippingRules = await window.OtayAPI.getShippingRules();
+            const calculation = window.OtayAPI.calculateOrderTotals(cartItems, shippingRules);
+
+            // Rendu des articles
+            itemsContainer.innerHTML = '';
+            calculation.items.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'summary-item-row';
+                row.innerHTML = `
+                    <img src="${item.img}" alt="${item.name}" class="summary-item-img">
+                    <div class="summary-item-info">
+                        <div class="summary-item-title">${item.name}</div>
+                        <div class="summary-item-meta">${item.qty} × ${item.price.toFixed(3)} DT</div>
+                    </div>
+                    <div class="summary-item-total">${item.total.toFixed(3)} DT</div>
+                `;
+                itemsContainer.appendChild(row);
+            });
+
+            // Affichage financier
+            subtotalEl.textContent = calculation.subtotal.toFixed(3) + ' DT';
+            if (calculation.isFreeShipping) {
+                shippingEl.textContent = 'Offerte (Gratuite)';
+                freeShippingText.innerHTML = '🎉 Félicitations ! Vous bénéficiez de la <strong>livraison offerte</strong>.';
+            } else {
+                shippingEl.textContent = calculation.shippingFee.toFixed(3) + ' DT';
+                freeShippingText.innerHTML = `Plus que <strong>${calculation.missingForFreeShipping.toFixed(3)} DT</strong> pour bénéficier de la livraison offerte !`;
+            }
+            totalEl.textContent = calculation.total.toFixed(3) + ' DT';
+
+            // Validation et Enregistrement
+            submitBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                errorBox.style.display = 'none';
+
+                const name = document.getElementById('c-name').value.trim();
+                const phone = document.getElementById('c-phone').value.trim();
+                const email = document.getElementById('c-email').value.trim();
+                const gov = document.getElementById('c-gov').value;
+                const city = document.getElementById('c-city').value.trim();
+                const address = document.getElementById('c-address').value.trim();
+                const notes = document.getElementById('c-notes').value.trim();
+
+                // Validation champs obligatoires
+                if (!name || !phone || !gov || !city || !address) {
+                    errorBox.textContent = "Veuillez renseigner tous les champs obligatoires (marqués d'un astérisque rouge).";
+                    errorBox.style.display = 'block';
+                    window.scrollTo({ top: 150, behavior: 'smooth' });
+                    return;
+                }
+
+                // Protection anti-double clic
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enregistrement de votre commande...';
+
+                try {
+                    const formData = {
+                        clientName: name,
+                        clientPhone: phone,
+                        clientEmail: email,
+                        governorate: gov,
+                        city: city,
+                        address: address,
+                        deliveryNotes: notes,
+                        origin: 'otaybox.tn'
+                    };
+
+                    const result = await window.OtayAPI.submitOrder(formData, cartItems);
+
+                    if (result && result.success) {
+                        // Vider le panier uniquement si l'enregistrement a réussi
+                        window.otayCart.items = [];
+                        window.otayCart.save();
+
+                        // Sauvegarder les données de confirmation pour l'écran suivant
+                        sessionStorage.setItem('otay_last_order', JSON.stringify(result));
+
+                        // Redirection vers confirmation
+                        window.location.href = `confirmation.html?order=${encodeURIComponent(result.orderNumber)}`;
+                    } else {
+                        throw new Error("L'enregistrement de la commande n'a pas pu aboutir.");
+                    }
+                } catch (err) {
+                    console.error("Erreur commande:", err);
+                    errorBox.textContent = "Une erreur est survenue lors de l'enregistrement de votre commande : " + (err.message || "Erreur réseau. Veuillez réessayer.");
+                    errorBox.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Valider et Confirmer ma commande';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

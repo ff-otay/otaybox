@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>International & ILEY'COM — ÔTAY BOX Admin</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/admin.css">
+
+    <style>
+        .intl-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--brand-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--brand-muted);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background-color: var(--brand-primary);
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <img src="../assets/logo.png" alt="ÔTAY BOX" class="sidebar-logo-img">
+            <span class="sidebar-brand-title">ÔTAY BOX</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item-link">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="commandes.html" class="nav-item-link">
+                <i class="fa-solid fa-box-archive"></i>
+                <span>Commandes</span>
+            </a>
+            <a href="devis.html" class="nav-item-link">
+                <i class="fa-solid fa-file-signature"></i>
+                <span>Devis</span>
+            </a>
+            <a href="factures.html" class="nav-item-link">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Factures</span>
+            </a>
+            <a href="documents.html" class="nav-item-link">
+                <i class="fa-solid fa-folder-closed"></i>
+                <span>Documents & PDF</span>
+            </a>
+            <a href="international.html" class="nav-item-link active">
+                <i class="fa-solid fa-earth-africa"></i>
+                <span>International & ILEY'COM</span>
+            </a>
+            <a href="parametres.html" class="nav-item-link">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Paramètres</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile-badge">
+                <div class="avatar-circle">ÔB</div>
+                <div class="user-details">
+                    <div class="user-role-label">Administratrice</div>
+                    <div class="user-email-val" id="admin-sidebar-email">contact@otaybox.tn</div>
+                </div>
+            </div>
+            <button class="btn-secondary btn-admin-logout" style="width: 100%; justify-content: center; font-size: 0.85rem;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main-wrap">
+        <header class="admin-topbar">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="btn-secondary" id="admin-menu-toggle" style="display: none; padding: 6px 12px;">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 class="page-main-heading">Ventes Internationales & Boutique ILEY'COM</h1>
+            </div>
+            <div class="topbar-actions">
+                <a href="https://ileycom.com/store/otay-box/" target="_blank" class="btn-secondary">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Ma boutique ILEY'COM
+                </a>
+            </div>
+        </header>
+
+        <main class="admin-body-content">
+            <!-- Onglets de navigation -->
+            <div class="intl-tabs">
+                <button class="tab-btn active" id="tab-btn-ileycom">
+                    <i class="fa-solid fa-globe"></i> Ventes ILEY'COM
+                </button>
+                <button class="tab-btn" id="tab-btn-direct">
+                    <i class="fa-solid fa-plane"></i> Commandes Internationales Directes
+                </button>
+            </div>
+
+            <!-- ONGLET 1 : VENTES ILEY'COM -->
+            <div id="tab-content-ileycom">
+                <div style="background: #fcf3cf; border-left: 4px solid #f1c40f; padding: 1rem 1.25rem; border-radius: 6px; margin-bottom: 1.5rem;">
+                    <strong><i class="fa-solid fa-circle-info"></i> Information d'Intégration ILEY'COM</strong>
+                    <p style="font-size: 0.85rem; color: #555; margin-top: 4px;">
+                        ILEY'COM ne disposant pas d'une API publique d'export automatisé pour les boutiques créateurs, les commandes sont gérées sur votre Seller App ILEY'COM. Cet écran vous permet d'enregistrer manuellement vos ventes ILEY'COM afin de suivre votre activité globale sans doublon statistique.
+                    </p>
+                </div>
+
+                <div class="panel-card" style="margin-bottom: 2rem;">
+                    <div class="panel-card-header">
+                        <h2 class="panel-card-title"><i class="fa-solid fa-plus-circle"></i> Enregistrer une vente ILEY'COM</h2>
+                    </div>
+                    <form id="form-ileycom-sale" style="padding: 1.5rem;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">N° Référence ILEY'COM *</label>
+                                <input type="text" id="iley-ref" class="filter-select" style="width: 100%;" required placeholder="Ex: ILEY-2026-9482">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Nom du Client *</label>
+                                <input type="text" id="iley-client" class="filter-select" style="width: 100%;" required placeholder="Nom du destinataire étranger">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Pays de Destination *</label>
+                                <input type="text" id="iley-country" class="filter-select" style="width: 100%;" required placeholder="Ex: France, Canada, Suisse...">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Montant Total (TND ou équivalent) *</label>
+                                <input type="number" step="0.001" id="iley-total" class="filter-select" style="width: 100%;" required placeholder="0.000">
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Détail des coffrets commandés</label>
+                            <input type="text" id="iley-products" class="filter-select" style="width: 100%;" placeholder="Ex: 2x Box Jardin de Douceur + 1x Mug">
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="btn-save-iley">
+                            <i class="fa-solid fa-check"></i> Enregistrer la vente ILEY'COM
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ONGLET 2 : COMMANDES INTERNATIONALES DIRECTES -->
+            <div id="tab-content-direct" style="display: none;">
+                <div class="panel-card">
+                    <div class="panel-card-header">
+                        <h2 class="panel-card-title"><i class="fa-solid fa-file-pen"></i> Saisie d'une demande internationale directe</h2>
+                    </div>
+                    <form id="form-intl-direct" style="padding: 1.5rem;">
+                        <p style="font-size: 0.85rem; color: var(--brand-muted); margin-bottom: 1.25rem;">
+                            Toute commande internationale directe reste avec le statut <strong>« À confirmer »</strong> tant que la faisabilité du transporteur, les frais de fret et le règlement ne sont pas validés. Le paiement à la livraison n'est pas applicable à l'international.
+                        </p>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Nom du Destinataire *</label>
+                                <input type="text" id="intl-recipient" class="filter-select" style="width: 100%;" required placeholder="Nom du destinataire">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Payeur (si différent)</label>
+                                <input type="text" id="intl-payer" class="filter-select" style="width: 100%;" placeholder="Nom de la personne qui règle">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Téléphone</label>
+                                <input type="tel" id="intl-phone" class="filter-select" style="width: 100%;" required placeholder="+33 6 12 34 56 78">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">E-mail</label>
+                                <input type="email" id="intl-email" class="filter-select" style="width: 100%;" placeholder="client@international.com">
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Pays *</label>
+                                <input type="text" id="intl-country" class="filter-select" style="width: 100%;" required placeholder="Ex: France, Belgique...">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Ville *</label>
+                                <input type="text" id="intl-city" class="filter-select" style="width: 100%;" required placeholder="Ex: Paris">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Code Postal *</label>
+                                <input type="text" id="intl-postal" class="filter-select" style="width: 100%;" required placeholder="75001">
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Adresse internationale complète *</label>
+                            <input type="text" id="intl-address" class="filter-select" style="width: 100%;" required placeholder="Numéro, rue, bâtiment, indications douanières...">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Devise</label>
+                                <select id="intl-currency" class="filter-select" style="width: 100%;">
+                                    <option value="EUR">EUR (€)</option>
+                                    <option value="USD">USD ($)</option>
+                                    <option value="TND">TND (DT)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Sous-total marchandises</label>
+                                <input type="number" step="0.001" id="intl-subtotal" class="filter-select" style="width: 100%;" required placeholder="0.00">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Frais de port international</label>
+                                <input type="number" step="0.001" id="intl-shipping" class="filter-select" style="width: 100%;" placeholder="0.00">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Transporteur prévu</label>
+                                <input type="text" id="intl-carrier" class="filter-select" style="width: 100%;" placeholder="Ex: DHL, Poste Rapide...">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="btn-save-intl">
+                            <i class="fa-solid fa-floppy-disk"></i> Enregistrer la demande internationale
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabIley = document.getElementById('tab-btn-ileycom');
+            const tabDirect = document.getElementById('tab-btn-direct');
+            const contentIley = document.getElementById('tab-content-ileycom');
+            const contentDirect = document.getElementById('tab-content-direct');
+
+            tabIley.addEventListener('click', () => {
+                tabIley.classList.add('active');
+                tabDirect.classList.remove('active');
+                contentIley.style.display = 'block';
+                contentDirect.style.display = 'none';
+            });
+
+            tabDirect.addEventListener('click', () => {
+                tabDirect.classList.add('active');
+                tabIley.classList.remove('active');
+                contentDirect.style.display = 'block';
+                contentIley.style.display = 'none';
+            });
+
+            // Enregistrement ILEY'COM
+            document.getElementById('form-ileycom-sale').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-save-iley');
+                btn.disabled = true;
+
+                try {
+                    const ref = document.getElementById('iley-ref').value.trim();
+                    const client = document.getElementById('iley-client').value.trim();
+                    const country = document.getElementById('iley-country').value.trim();
+                    const total = parseFloat(document.getElementById('iley-total').value || 0);
+                    const prod = document.getElementById('iley-products').value.trim();
+
+                    // Création de commande avec origine 'ileycom'
+                    const orderPayload = {
+                        clientName: client,
+                        clientPhone: 'Via ILEYCOM',
+                        clientEmail: '',
+                        governorate: 'Étranger',
+                        city: country,
+                        address: `Boutique ILEY'COM • Réf: ${ref}`,
+                        deliveryNotes: prod,
+                        origin: 'ileycom',
+                        paymentMethod: 'ILEY\'COM (Encaissé en ligne)'
+                    };
+
+                    const mockItems = [{ id: 1, qty: 1 }]; // placeholder pour item
+                    await window.OtayAPI.submitOrder(orderPayload, mockItems);
+
+                    alert(`Vente ILEY'COM ${ref} enregistrée avec succès dans le tableau de bord !`);
+                    window.location.href = 'commandes.html';
+                } catch (err) {
+                    alert("Erreur : " + err.message);
+                } finally {
+                    btn.disabled = false;
+                }
+            });
+
+            // Enregistrement International Direct
+            document.getElementById('form-intl-direct').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-save-intl');
+                btn.disabled = true;
+
+                try {
+                    const recipient = document.getElementById('intl-recipient').value.trim();
+                    const payer = document.getElementById('intl-payer').value.trim();
+                    const phone = document.getElementById('intl-phone').value.trim();
+                    const email = document.getElementById('intl-email').value.trim();
+                    const country = document.getElementById('intl-country').value.trim();
+                    const city = document.getElementById('intl-city').value.trim();
+                    const postal = document.getElementById('intl-postal').value.trim();
+                    const address = document.getElementById('intl-address').value.trim();
+                    const currency = document.getElementById('intl-currency').value;
+                    const subtotal = parseFloat(document.getElementById('intl-subtotal').value || 0);
+                    const shipping = parseFloat(document.getElementById('intl-shipping').value || 0);
+                    const carrier = document.getElementById('intl-carrier').value.trim();
+
+                    const orderPayload = {
+                        clientName: recipient,
+                        clientPhone: phone,
+                        clientEmail: email,
+                        governorate: country,
+                        city: city,
+                        address: `${address}, ${postal} ${city}, ${country}`,
+                        country: country,
+                        postalCode: postal,
+                        recipientName: recipient,
+                        payerName: payer,
+                        currency: currency,
+                        origin: 'international_direct',
+                        deliveryNotes: `Transporteur souhaité: ${carrier}`,
+                        paymentMethod: 'Virement international / En attente'
+                    };
+
+                    const mockItems = [{ id: 1, qty: 1 }];
+                    const res = await window.OtayAPI.submitOrder(orderPayload, mockItems);
+
+                    // Mettre le statut à "À confirmer"
+                    await window.OtayAPI.updateOrder(res.orderId, {
+                        order_status: 'À confirmer',
+                        delivery_status: 'Non préparée',
+                        payment_status: 'En attente',
+                        carrier: carrier
+                    });
+
+                    alert("Demande internationale directe enregistrée avec le statut « À confirmer » !");
+                    window.location.href = 'commandes.html';
+                } catch (err) {
+                    alert("Erreur : " + err.message);
+                } finally {
+                    btn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

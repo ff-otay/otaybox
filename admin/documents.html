@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Documentaire & Archives — ÔTAY BOX Admin</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <img src="../assets/logo.png" alt="ÔTAY BOX" class="sidebar-logo-img">
+            <span class="sidebar-brand-title">ÔTAY BOX</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item-link">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="commandes.html" class="nav-item-link">
+                <i class="fa-solid fa-box-archive"></i>
+                <span>Commandes</span>
+            </a>
+            <a href="devis.html" class="nav-item-link">
+                <i class="fa-solid fa-file-signature"></i>
+                <span>Devis</span>
+            </a>
+            <a href="factures.html" class="nav-item-link">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Factures</span>
+            </a>
+            <a href="documents.html" class="nav-item-link active">
+                <i class="fa-solid fa-folder-closed"></i>
+                <span>Documents & PDF</span>
+            </a>
+            <a href="international.html" class="nav-item-link">
+                <i class="fa-solid fa-earth-africa"></i>
+                <span>International & ILEY'COM</span>
+            </a>
+            <a href="parametres.html" class="nav-item-link">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Paramètres</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile-badge">
+                <div class="avatar-circle">ÔB</div>
+                <div class="user-details">
+                    <div class="user-role-label">Administratrice</div>
+                    <div class="user-email-val" id="admin-sidebar-email">contact@otaybox.tn</div>
+                </div>
+            </div>
+            <button class="btn-secondary btn-admin-logout" style="width: 100%; justify-content: center; font-size: 0.85rem;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main-wrap">
+        <header class="admin-topbar">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="btn-secondary" id="admin-menu-toggle" style="display: none; padding: 6px 12px;">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 class="page-main-heading">Archives & Documents Commerciaux</h1>
+            </div>
+            <div class="topbar-actions">
+                <button class="btn-secondary" id="btn-backup-data">
+                    <i class="fa-solid fa-cloud-arrow-down"></i> Sauvegarder les données (JSON)
+                </button>
+            </div>
+        </header>
+
+        <main class="admin-body-content">
+            <div class="panel-card">
+                <div class="filter-bar">
+                    <div class="search-input-wrap">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="doc-search" placeholder="Rechercher par référence (OTB-...), client, type...">
+                    </div>
+                    <select class="filter-select" id="doc-type-filter">
+                        <option value="">Tous les types de documents</option>
+                        <option value="devis">Devis uniquement</option>
+                        <option value="facture">Factures uniquement</option>
+                    </select>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Référence</th>
+                                <th>Date</th>
+                                <th>Client</th>
+                                <th>Montant Total</th>
+                                <th>Commande Associée</th>
+                                <th style="text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="documents-table-body">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 3rem; color: var(--brand-muted);">
+                                    <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                                    Chargement des archives documentaires...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/pdf-generator.js"></script>
+    <script>
+        let allDocs = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadDocuments();
+
+            document.getElementById('doc-search').addEventListener('input', renderFilteredDocs);
+            document.getElementById('doc-type-filter').addEventListener('change', renderFilteredDocs);
+
+            // Procédure de sauvegarde et de récupération des données
+            document.getElementById('btn-backup-data').addEventListener('click', async () => {
+                const orders = await window.OtayAPI.getOrders();
+                const quotes = await window.OtayAPI.getQuotes();
+                const invoices = await window.OtayAPI.getInvoices();
+
+                const backupData = {
+                    metadata: {
+                        site: "otaybox.tn",
+                        exported_at: new Date().toISOString(),
+                        version: "1.0"
+                    },
+                    orders,
+                    quotes,
+                    invoices
+                };
+
+                const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `OTAY_BOX_Backup_Archives_${new Date().toISOString().substring(0, 10)}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        });
+
+        async function loadDocuments() {
+            const quotes = await window.OtayAPI.getQuotes();
+            const invoices = await window.OtayAPI.getInvoices();
+
+            allDocs = [
+                ...quotes.map(q => ({
+                    type: 'devis',
+                    ref: q.quote_number,
+                    date: q.issue_date,
+                    client: q.client_name,
+                    total: q.total,
+                    order_ref: q.order_id ? 'Commande liée' : 'Direct',
+                    raw: q
+                })),
+                ...invoices.map(inv => ({
+                    type: 'facture',
+                    ref: inv.invoice_number,
+                    date: inv.issue_date,
+                    client: inv.client_name,
+                    total: inv.total,
+                    order_ref: inv.order_id ? 'Commande liée' : 'Direct',
+                    raw: inv
+                }))
+            ];
+
+            // Tri par date décroissante
+            allDocs.sort((a, b) => new Date(b.date) - new Date(a.date));
+            renderFilteredDocs();
+        }
+
+        function renderFilteredDocs() {
+            const tbody = document.getElementById('documents-table-body');
+            const searchVal = document.getElementById('doc-search').value.toLowerCase().trim();
+            const typeVal = document.getElementById('doc-type-filter').value;
+
+            const filtered = allDocs.filter(d => {
+                if (typeVal && d.type !== typeVal) return false;
+                if (searchVal) {
+                    const matchRef = (d.ref || '').toLowerCase().includes(searchVal);
+                    const matchClient = (d.client || '').toLowerCase().includes(searchVal);
+                    if (!matchRef && !matchClient) return false;
+                }
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 3rem; color: var(--brand-muted);">Aucun document archivé ne correspond à votre recherche.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            filtered.forEach(d => {
+                const tr = document.createElement('tr');
+                const isQuote = d.type === 'devis';
+                const badge = isQuote
+                    ? `<span class="status-badge badge-order-aconfirmer"><i class="fa-solid fa-file-signature"></i> Devis</span>`
+                    : `<span class="status-badge badge-order-confirmee"><i class="fa-solid fa-file-invoice"></i> Facture</span>`;
+
+                tr.innerHTML = `
+                    <td>${badge}</td>
+                    <td><strong>${d.ref}</strong></td>
+                    <td>${d.date}</td>
+                    <td><strong>${d.client}</strong></td>
+                    <td><strong>${Number(d.total).toFixed(3)} DT</strong></td>
+                    <td>${d.order_ref}</td>
+                    <td style="text-align: right;">
+                        <a href="${isQuote ? `devis.html?ref=${d.ref}` : `factures.html?ref=${d.ref}`}" class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+                            <i class="fa-solid fa-folder-open"></i> Ouvrir
+                        </a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    </script>
+</body>
+</html>

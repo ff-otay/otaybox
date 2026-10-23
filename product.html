@@ -547,15 +547,33 @@ document.head.appendChild(scriptSchema);
                             Un essentiel pensé pour apporter une touche de douceur à votre quotidien et transformer votre rituel de bien-être.
                         </div>
                         
-                        <div class="product-actions">
+                        <div class="product-actions" style="flex-wrap: wrap; gap: 12px;">
                             <div class="qty-selector">
                                 <button class="qty-btn" id="pd-minus">-</button>
                                 <input type="text" class="qty-input" id="pd-qty" value="1" readonly>
                                 <button class="qty-btn" id="pd-plus">+</button>
                             </div>
-                            <button class="add-cart-large" id="pd-whatsapp-order" style="background-color: #25D366; color: white;">
-                                <i class="fa-brands fa-whatsapp"></i> Commander par WhatsApp
+                            <button class="add-cart-large" id="pd-add-to-cart" style="background-color: #4b6c4f; color: white; border: none; cursor: pointer; flex: 1; min-width: 200px;">
+                                <i class="fa-solid fa-bag-shopping"></i> Ajouter au panier
                             </button>
+                        </div>
+
+                        <!-- Option Internationale ILEY'COM -->
+                        <div class="intl-product-box" style="margin-top: 1.5rem; padding: 1.25rem; background: #FAF8F5; border: 1px solid rgba(75, 108, 79, 0.2); border-radius: 10px;">
+                            <p style="font-size: 0.88rem; color: #555; margin-bottom: 0.75rem; line-height: 1.4;">
+                                <i class="fa-solid fa-earth-africa" style="color: #4b6c4f;"></i> <strong>Vous résidez à l'étranger ?</strong><br>
+                                Retrouvez nos coffrets sur ILEY'COM pour commander depuis votre pays.
+                            </p>
+                            <a href="https://ileycom.com/store/otay-box/" target="_blank" rel="noopener" class="btn" style="background-color: transparent; border: 1.5px solid #4b6c4f; color: #4b6c4f; padding: 8px 18px; border-radius: 50px; font-size: 0.88rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s ease;">
+                                Commander depuis l'étranger <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.75rem;"></i>
+                            </a>
+                        </div>
+
+                        <!-- Conseil WhatsApp -->
+                        <div style="margin-top: 1rem;">
+                            <a href="https://wa.me/21654050380?text=Bonjour%20%F0%9F%8C%BF%20Je%20souhaite%20des%20renseignements%20sur%20ce%20produit" target="_blank" style="color: #6E6862; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 1.1rem;"></i> Une question ? Discutez avec nous sur WhatsApp
+                            </a>
                         </div>
                         
                         <div class="product-meta">
@@ -578,13 +596,20 @@ document.head.appendChild(scriptSchema);
                     qtyInput.value = parseInt(qtyInput.value) + 1;
                 });
                 
-                // Bind Order via WhatsApp
-                const orderBtn = document.getElementById('pd-whatsapp-order');
-                orderBtn.addEventListener('click', function(e) {
+                // Bind Add to Cart
+                const addCartBtn = document.getElementById('pd-add-to-cart');
+                addCartBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const qty = parseInt(qtyInput.value);
-                    if (window.openWhatsAppOrderModal) {
-                        window.openWhatsAppOrderModal(product.title, qty);
+                    const qty = parseInt(qtyInput.value) || 1;
+                    if (window.otayCart) {
+                        window.otayCart.add(product, qty);
+                        const originalHTML = addCartBtn.innerHTML;
+                        addCartBtn.innerHTML = '<i class="fa-solid fa-check"></i> Ajouté au panier !';
+                        addCartBtn.style.backgroundColor = '#3c573f';
+                        setTimeout(() => {
+                            addCartBtn.innerHTML = originalHTML;
+                            addCartBtn.style.backgroundColor = '#4b6c4f';
+                        }, 2000);
                     }
                 });
                 

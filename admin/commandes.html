@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Commandes — ÔTAY BOX Admin</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <img src="../assets/logo.png" alt="ÔTAY BOX" class="sidebar-logo-img">
+            <span class="sidebar-brand-title">ÔTAY BOX</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item-link">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="commandes.html" class="nav-item-link active">
+                <i class="fa-solid fa-box-archive"></i>
+                <span>Commandes</span>
+            </a>
+            <a href="devis.html" class="nav-item-link">
+                <i class="fa-solid fa-file-signature"></i>
+                <span>Devis</span>
+            </a>
+            <a href="factures.html" class="nav-item-link">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Factures</span>
+            </a>
+            <a href="documents.html" class="nav-item-link">
+                <i class="fa-solid fa-folder-closed"></i>
+                <span>Documents & PDF</span>
+            </a>
+            <a href="international.html" class="nav-item-link">
+                <i class="fa-solid fa-earth-africa"></i>
+                <span>International & ILEY'COM</span>
+            </a>
+            <a href="parametres.html" class="nav-item-link">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Paramètres</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile-badge">
+                <div class="avatar-circle">ÔB</div>
+                <div class="user-details">
+                    <div class="user-role-label">Administratrice</div>
+                    <div class="user-email-val" id="admin-sidebar-email">contact@otaybox.tn</div>
+                </div>
+            </div>
+            <button class="btn-secondary btn-admin-logout" style="width: 100%; justify-content: center; font-size: 0.85rem;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main-wrap">
+        <header class="admin-topbar">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="btn-secondary" id="admin-menu-toggle" style="display: none; padding: 6px 12px;">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 class="page-main-heading">Registre des Commandes</h1>
+            </div>
+            <div class="topbar-actions">
+                <button class="btn-secondary" id="btn-export-csv">
+                    <i class="fa-solid fa-file-excel"></i> Exporter en CSV / Excel
+                </button>
+            </div>
+        </header>
+
+        <main class="admin-body-content">
+            <div class="panel-card">
+                <!-- Filtres et Recherche Complète -->
+                <div class="filter-bar">
+                    <div class="search-input-wrap">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="filter-search" placeholder="Rechercher par N° commande, client, téléphone, ville...">
+                    </div>
+
+                    <select class="filter-select" id="filter-order-status">
+                        <option value="">Tous les statuts commande</option>
+                        <option value="Nouvelle">Nouvelle</option>
+                        <option value="À confirmer">À confirmer</option>
+                        <option value="Confirmée">Confirmée</option>
+                        <option value="En préparation">En préparation</option>
+                        <option value="Expédiée">Expédiée</option>
+                        <option value="Livrée">Livrée</option>
+                        <option value="Annulée">Annulée</option>
+                        <option value="Retour">Retour</option>
+                    </select>
+
+                    <select class="filter-select" id="filter-delivery-status">
+                        <option value="">Tous les statuts livraison</option>
+                        <option value="Non préparée">Non préparée</option>
+                        <option value="En préparation">En préparation</option>
+                        <option value="Remise au transporteur">Remise au transporteur</option>
+                        <option value="En transit">En transit</option>
+                        <option value="Livrée">Livrée</option>
+                        <option value="Échec de livraison">Échec de livraison</option>
+                        <option value="Retour en cours">Retour en cours</option>
+                    </select>
+
+                    <select class="filter-select" id="filter-payment-status">
+                        <option value="">Tous les statuts paiement</option>
+                        <option value="En attente">En attente</option>
+                        <option value="Payé">Payé</option>
+                        <option value="Échec ou non encaissé">Échec ou non encaissé</option>
+                        <option value="Remboursé">Remboursé</option>
+                    </select>
+
+                    <select class="filter-select" id="filter-origin">
+                        <option value="">Toutes origines</option>
+                        <option value="otaybox.tn">otaybox.tn</option>
+                        <option value="ileycom">ILEY'COM</option>
+                        <option value="international_direct">Direct International</option>
+                    </select>
+
+                    <select class="filter-select" id="filter-sort">
+                        <option value="date_desc">Date (Récente d'abord)</option>
+                        <option value="date_asc">Date (Ancienne d'abord)</option>
+                        <option value="amount_desc">Montant (Décroissant)</option>
+                        <option value="amount_asc">Montant (Croissant)</option>
+                    </select>
+                </div>
+
+                <!-- Table des commandes -->
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>N° Commande</th>
+                                <th>Date & Heure</th>
+                                <th>Client</th>
+                                <th>Téléphone</th>
+                                <th>Destination</th>
+                                <th>Origine</th>
+                                <th>Total</th>
+                                <th>Statut Commande</th>
+                                <th>Statut Livraison</th>
+                                <th>Statut Paiement</th>
+                                <th style="text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table-body">
+                            <tr>
+                                <td colspan="11" style="text-align: center; padding: 3rem; color: var(--brand-muted);">
+                                    <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                                    Chargement des commandes...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        let allOrders = [];
+
+        async function loadAndRenderOrders() {
+            allOrders = await window.OtayAPI.getOrders();
+            renderFilteredOrders();
+        }
+
+        function renderFilteredOrders() {
+            const tbody = document.getElementById('orders-table-body');
+            const searchVal = document.getElementById('filter-search').value.toLowerCase().trim();
+            const orderStatusVal = document.getElementById('filter-order-status').value;
+            const deliveryStatusVal = document.getElementById('filter-delivery-status').value;
+            const paymentStatusVal = document.getElementById('filter-payment-status').value;
+            const originVal = document.getElementById('filter-origin').value;
+            const sortVal = document.getElementById('filter-sort').value;
+
+            let filtered = allOrders.filter(o => {
+                if (orderStatusVal && o.order_status !== orderStatusVal) return false;
+                if (deliveryStatusVal && o.delivery_status !== deliveryStatusVal) return false;
+                if (paymentStatusVal && o.payment_status !== paymentStatusVal) return false;
+                if (originVal && o.origin !== originVal) return false;
+
+                if (searchVal) {
+                    const matchNumber = (o.order_number || '').toLowerCase().includes(searchVal);
+                    const matchClient = (o.client_name || '').toLowerCase().includes(searchVal);
+                    const matchPhone = (o.client_phone || '').includes(searchVal);
+                    const matchCity = (o.city || '').toLowerCase().includes(searchVal);
+                    const matchGov = (o.governorate || '').toLowerCase().includes(searchVal);
+                    if (!matchNumber && !matchClient && !matchPhone && !matchCity && !matchGov) return false;
+                }
+                return true;
+            });
+
+            // Tri
+            filtered.sort((a, b) => {
+                if (sortVal === 'date_desc') return new Date(b.created_at) - new Date(a.created_at);
+                if (sortVal === 'date_asc') return new Date(a.created_at) - new Date(b.created_at);
+                if (sortVal === 'amount_desc') return Number(b.total) - Number(a.total);
+                if (sortVal === 'amount_asc') return Number(a.total) - Number(b.total);
+                return 0;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="11" style="text-align: center; padding: 3rem; color: var(--brand-muted);">
+                            Aucune commande ne correspond aux critères sélectionnés.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            filtered.forEach(ord => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong><a href="commande-detail.html?id=${ord.id}" style="color: var(--brand-primary); text-decoration: none;">${ord.order_number}</a></strong></td>
+                    <td>${window.AdminUI.formatDateTime(ord.created_at)}</td>
+                    <td>${ord.client_name}</td>
+                    <td><a href="tel:${ord.client_phone}" style="color: var(--brand-text); text-decoration: none;">${ord.client_phone}</a></td>
+                    <td>${ord.governorate ? `${ord.city} (${ord.governorate})` : (ord.country || 'Tunisie')}</td>
+                    <td>${window.AdminUI.getOriginBadge(ord.origin)}</td>
+                    <td><strong>${window.AdminUI.formatDT(ord.total)}</strong></td>
+                    <td>${window.AdminUI.getOrderStatusBadge(ord.order_status)}</td>
+                    <td>${window.AdminUI.getDeliveryStatusBadge(ord.delivery_status)}</td>
+                    <td>${window.AdminUI.getPaymentStatusBadge(ord.payment_status)}</td>
+                    <td style="text-align: right;">
+                        <a href="commande-detail.html?id=${ord.id}" class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+                            Détails <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem; margin-left: 4px;"></i>
+                        </a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAndRenderOrders();
+
+            // Écouteurs filtres
+            ['filter-search', 'filter-order-status', 'filter-delivery-status', 'filter-payment-status', 'filter-origin', 'filter-sort'].forEach(id => {
+                const el = document.getElementById(id);
+                el.addEventListener('input', renderFilteredOrders);
+                el.addEventListener('change', renderFilteredOrders);
+            });
+
+            // Export CSV
+            document.getElementById('btn-export-csv').addEventListener('click', () => {
+                if (allOrders.length === 0) {
+                    alert('Aucune commande disponible à exporter.');
+                    return;
+                }
+                window.OtayAPI.exportOrdersToCSV(allOrders);
+            });
+        });
+    </script>
+</body>
+</html>

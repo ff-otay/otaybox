@@ -181,9 +181,27 @@
                             <span class="qty-val-elegant" id="qty">1</span>
                             <button class="qty-btn-elegant" id="plus">+</button>
                         </div>
-                        <button class="btn-elegant wa-order-btn" id="box-whatsapp-order" style="background-color: #25D366; color: white;">
-                            <i class="fa-brands fa-whatsapp"></i> Commander par WhatsApp
+                        <button class="btn-elegant" id="box-add-to-cart" style="background-color: var(--clr-brand-dark, #4b6c4f); color: white; border: none; cursor: pointer; padding: 12px 24px; border-radius: 50px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-bag-shopping"></i> Ajouter au panier
                         </button>
+                    </div>
+
+                    <!-- Option Internationale ILEY'COM -->
+                    <div style="margin-top: 1.5rem; padding: 1.25rem; background: rgba(75, 108, 79, 0.06); border: 1px solid rgba(75, 108, 79, 0.2); border-radius: 12px;">
+                        <p style="font-size: 0.9rem; color: #424746; margin-bottom: 0.75rem; line-height: 1.4;">
+                            <i class="fa-solid fa-earth-africa" style="color: #4b6c4f;"></i> <strong>Vous résidez à l'étranger ?</strong><br>
+                            Retrouvez nos coffrets sur ILEY'COM pour commander depuis votre pays.
+                        </p>
+                        <a href="https://ileycom.com/store/otay-box/" target="_blank" rel="noopener" class="btn" style="background: transparent; border: 1.5px solid #4b6c4f; color: #4b6c4f; padding: 8px 18px; border-radius: 50px; font-size: 0.88rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                            Commander depuis l'étranger <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.75rem;"></i>
+                        </a>
+                    </div>
+
+                    <!-- Conseil WhatsApp -->
+                    <div style="margin-top: 1rem;">
+                        <a href="https://wa.me/21654050380?text=Bonjour%20%F0%9F%8C%BF%20Je%20souhaite%20des%20informations%20sur%20la%20Box%20Jardin%20de%20Douceur" target="_blank" style="color: #8C857E; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 1.1rem;"></i> Une question ? Discutez avec nous sur WhatsApp
+                        </a>
                     </div>
 
                     <div class="editorial-accordion">
@@ -527,6 +545,34 @@
 
     <!-- Scripts -->
     <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const addBtn = document.getElementById('box-add-to-cart');
+            if (addBtn) {
+                addBtn.addEventListener('click', function() {
+                    const qtyVal = parseInt(document.getElementById('qty')?.textContent || '1');
+                    if (window.otayCart) {
+                        window.otayCart.add({
+                            id: 1,
+                            title: 'Box Jardin de douceur',
+                            category: 'infusions',
+                            sub: 'Tisane artisanale',
+                            price: '59,00 TND',
+                            img: 'assets/produit.webp'
+                        }, qtyVal);
+
+                        const orig = addBtn.innerHTML;
+                        addBtn.innerHTML = '<i class="fa-solid fa-check"></i> Ajouté au panier !';
+                        addBtn.style.backgroundColor = '#3c573f';
+                        setTimeout(() => {
+                            addBtn.innerHTML = orig;
+                            addBtn.style.backgroundColor = '';
+                        }, 2000);
+                    }
+                });
+            }
+        });
+    </script>
 
     <!-- Dark mode overrides for box-detail editorial elements -->
     <style>

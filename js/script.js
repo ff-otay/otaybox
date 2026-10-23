@@ -25,16 +25,23 @@ window.otayCart = {
         this.updateUI();
     },
     add(product, quantity = 1) {
-        const existing = this.items.find(item => item.id === product.id);
+        const existing = this.items.find(item => String(item.id) === String(product.id));
         if (existing) {
             existing.qty += quantity;
         } else {
-            this.items.push({ ...product, qty: quantity });
+            this.items.push({
+                id: product.id,
+                title: product.title || product.name,
+                name: product.name || product.title,
+                price: product.price,
+                img: product.img || product.image || 'assets/produit.webp',
+                qty: quantity
+            });
         }
         this.save();
     },
     remove(id) {
-        this.items = this.items.filter(item => item.id !== id);
+        this.items = this.items.filter(item => String(item.id) !== String(id));
         this.save();
     },
     updateUI() {
@@ -94,10 +101,10 @@ window.otayCart = {
 document.addEventListener('DOMContentLoaded', () => {
     // --- Global Floating WhatsApp Button ---
     const waBtn = document.createElement('a');
-    waBtn.href = "https://wa.me/21654050380?text=" + encodeURIComponent("Bonjour 🌿 Je souhaite commander une ÔTAY BOX !");
+    waBtn.href = "https://wa.me/21654050380?text=" + encodeURIComponent("Bonjour 🌿 J'aimerais des renseignements sur vos coffrets et infusions ÔTAY BOX.");
     waBtn.target = "_blank";
     waBtn.className = "global-wa-btn";
-    waBtn.setAttribute('aria-label', 'Commander via WhatsApp');
+    waBtn.setAttribute('aria-label', 'Contacter ÔTAY BOX sur WhatsApp');
     waBtn.innerHTML = '<i class="fa-brands fa-whatsapp"></i>';
     document.body.appendChild(waBtn);
 

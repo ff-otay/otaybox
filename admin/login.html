@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Administration — ÔTAY BOX</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/admin.css">
+    
+    <style>
+        body.login-page {
+            background-color: var(--brand-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+        
+        .login-card {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 420px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--brand-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            padding: 2.5rem;
+            text-align: center;
+        }
+        
+        .login-logo {
+            height: 60px;
+            width: auto;
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--brand-text);
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-subtitle {
+            font-size: 0.9rem;
+            color: var(--brand-muted);
+            margin-bottom: 2rem;
+        }
+        
+        .login-form {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--brand-accent);
+            margin-bottom: 0.4rem;
+        }
+        
+        .input-icon-wrap {
+            position: relative;
+        }
+        
+        .input-icon-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--brand-muted);
+        }
+        
+        .input-icon-wrap input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--brand-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        
+        .input-icon-wrap input:focus {
+            border-color: var(--brand-primary);
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 0.85rem;
+            font-size: 1rem;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+        
+        .alert-error {
+            background-color: #fdedec;
+            color: #c0392b;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            margin-bottom: 1.25rem;
+            display: none;
+            text-align: left;
+        }
+        
+        .login-footer-links {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--brand-border);
+            font-size: 0.85rem;
+            color: var(--brand-muted);
+        }
+        
+        .login-footer-links a {
+            color: var(--brand-primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="login-page">
+
+    <div class="login-card">
+        <img src="../assets/logo.png" alt="Logo ÔTAY BOX" class="login-logo">
+        <h1 class="login-title">Espace Administrateur</h1>
+        <p class="login-subtitle">Gestion des commandes, devis et facturation</p>
+        
+        <div class="alert-error" id="login-error"></div>
+        
+        <form class="login-form" id="admin-login-form">
+            <div class="form-group">
+                <label for="login-email">Adresse E-mail</label>
+                <div class="input-icon-wrap">
+                    <i class="fa-regular fa-envelope"></i>
+                    <input type="email" id="login-email" required placeholder="contact@otaybox.tn" autocomplete="email">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="login-password">Mot de passe</label>
+                <div class="input-icon-wrap">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="login-password" required placeholder="••••••••••••" autocomplete="current-password">
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-primary btn-login" id="login-btn">
+                <i class="fa-solid fa-right-to-bracket"></i> Se connecter
+            </button>
+        </form>
+        
+        <div class="login-footer-links">
+            <a href="../index.html"><i class="fa-solid fa-arrow-left"></i> Retourner sur le site public</a>
+        </div>
+    </div>
+
+    <!-- Scripts Supabase & API -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Si déjà connecté, rediriger vers le dashboard
+            if (window.OtayAPI && window.OtayAPI.getAdminSession()) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const form = document.getElementById('admin-login-form');
+            const errorBox = document.getElementById('login-error');
+            const submitBtn = document.getElementById('login-btn');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorBox.style.display = 'none';
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
+
+                const email = document.getElementById('login-email').value.trim();
+                const password = document.getElementById('login-password').value;
+
+                try {
+                    await window.OtayAPI.adminLogin(email, password);
+                    window.location.href = 'index.html';
+                } catch (err) {
+                    errorBox.textContent = err.message || "Erreur de connexion. Veuillez vérifier vos identifiants.";
+                    errorBox.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

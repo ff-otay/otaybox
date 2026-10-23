@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Devis — ÔTAY BOX Admin</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/admin.css">
+
+    <style>
+        .devis-editor-layout {
+            display: grid;
+            grid-template-columns: 460px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .editor-form-panel {
+            background: #FFFFFF;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--brand-border);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .form-section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--brand-primary);
+            margin: 1.25rem 0 0.75rem 0;
+            border-bottom: 1px solid var(--brand-border);
+            padding-bottom: 0.4rem;
+        }
+
+        .form-section-title:first-child {
+            margin-top: 0;
+        }
+
+        .item-editor-row {
+            background: #FAF8F5;
+            border: 1px solid var(--brand-border);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .btn-remove-line {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: none;
+            border: none;
+            color: #c0392b;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .preview-sticky-wrap {
+            position: sticky;
+            top: 90px;
+        }
+
+        @media (max-width: 1200px) {
+            .devis-editor-layout {
+                grid-template-columns: 1fr;
+            }
+            .preview-sticky-wrap {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <img src="../assets/logo.png" alt="ÔTAY BOX" class="sidebar-logo-img">
+            <span class="sidebar-brand-title">ÔTAY BOX</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item-link">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="commandes.html" class="nav-item-link">
+                <i class="fa-solid fa-box-archive"></i>
+                <span>Commandes</span>
+            </a>
+            <a href="devis.html" class="nav-item-link active">
+                <i class="fa-solid fa-file-signature"></i>
+                <span>Devis</span>
+            </a>
+            <a href="factures.html" class="nav-item-link">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Factures</span>
+            </a>
+            <a href="documents.html" class="nav-item-link">
+                <i class="fa-solid fa-folder-closed"></i>
+                <span>Documents & PDF</span>
+            </a>
+            <a href="international.html" class="nav-item-link">
+                <i class="fa-solid fa-earth-africa"></i>
+                <span>International & ILEY'COM</span>
+            </a>
+            <a href="parametres.html" class="nav-item-link">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Paramètres</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile-badge">
+                <div class="avatar-circle">ÔB</div>
+                <div class="user-details">
+                    <div class="user-role-label">Administratrice</div>
+                    <div class="user-email-val" id="admin-sidebar-email">contact@otaybox.tn</div>
+                </div>
+            </div>
+            <button class="btn-secondary btn-admin-logout" style="width: 100%; justify-content: center; font-size: 0.85rem;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main-wrap">
+        <header class="admin-topbar">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="btn-secondary" id="admin-menu-toggle" style="display: none; padding: 6px 12px;">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 class="page-main-heading">Devis Professionnels</h1>
+            </div>
+            <div class="topbar-actions">
+                <button class="btn-secondary" id="btn-show-list" style="display: none;">
+                    <i class="fa-solid fa-list"></i> Liste des devis
+                </button>
+                <button class="btn-primary" id="btn-new-devis">
+                    <i class="fa-solid fa-plus"></i> Créer un nouveau devis
+                </button>
+            </div>
+        </header>
+
+        <main class="admin-body-content">
+            <!-- VUE 1 : LISTE DES DEVIS EXISTANTS -->
+            <div id="view-quotes-list" class="panel-card">
+                <div class="panel-card-header">
+                    <h2 class="panel-card-title"><i class="fa-solid fa-file-contract"></i> Archives des devis émis</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>N° Devis</th>
+                                <th>Date d'émission</th>
+                                <th>Client</th>
+                                <th>Livraison prévue</th>
+                                <th>Qté Réf.</th>
+                                <th>Montant Total</th>
+                                <th>Statut</th>
+                                <th style="text-align: right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="quotes-table-body">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 3rem; color: var(--brand-muted);">
+                                    <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                                    Chargement des devis...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VUE 2 : ÉDITEUR ET PRÉVISUALISATION DIRECTE DU MODÈLE A4 -->
+            <div id="view-quote-editor" style="display: none;">
+                <div class="devis-editor-layout">
+                    <!-- Formulaire de saisie -->
+                    <div class="editor-form-panel">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h2 style="font-family: 'Poppins', sans-serif; font-size: 1.15rem; color: var(--brand-text); margin: 0;">
+                                Édition du devis
+                            </h2>
+                            <span class="status-badge badge-order-confirmee" id="editor-quote-ref">OTB-DEV-2026-002</span>
+                        </div>
+
+                        <form id="quote-edit-form">
+                            <div class="form-section-title">Informations Client</div>
+                            <div style="margin-bottom: 0.75rem;">
+                                <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:4px;">Nom ou Raison Sociale *</label>
+                                <input type="text" id="q-client-name" class="filter-select" style="width:100%;" required placeholder="Ex: Clinique Ennasr">
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                <div>
+                                    <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:4px;">Téléphone</label>
+                                    <input type="text" id="q-client-phone" class="filter-select" style="width:100%;" placeholder="+216 71 800 000">
+                                </div>
+                                <div>
+                                    <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:4px;">E-mail</label>
+                                    <input type="email" id="q-client-email" class="filter-select" style="width:100%;" placeholder="contact@client.tn">
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 0.75rem;">
+                                <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:4px;">Livraison prévue</label>
+                                <input type="text" id="q-expected-delivery" class="filter-select" style="width:100%;" placeholder="Ex: Première semaine de décembre 2026">
+                            </div>
+
+                            <div class="form-section-title">Lignes de prestation</div>
+                            <div id="items-editor-container"></div>
+                            
+                            <button type="button" class="btn-secondary" id="btn-add-item-line" style="width: 100%; justify-content: center; margin-bottom: 1.5rem; font-size: 0.85rem;">
+                                <i class="fa-solid fa-plus"></i> Ajouter une ligne
+                            </button>
+
+                            <div class="form-section-title">Conditions Commerciales</div>
+                            <div style="margin-bottom: 1rem;">
+                                <textarea id="q-conditions-text" class="filter-select" style="width:100%; min-height: 100px; border-radius: 8px; font-family: inherit; font-size: 0.85rem; padding: 10px;" placeholder="Une condition par ligne..."></textarea>
+                            </div>
+
+                            <div style="display: flex; gap: 10px;">
+                                <button type="submit" class="btn-primary" style="flex: 1; justify-content: center;" id="btn-save-quote">
+                                    <i class="fa-solid fa-check"></i> Enregistrer le devis
+                                </button>
+                                <button type="button" class="btn-secondary" id="btn-cancel-edit">
+                                    Annuler
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Prévisualisation A4 en Direct (Modèle Clinique Ennasr conforme) -->
+                    <div class="preview-sticky-wrap">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <span style="font-weight: 600; font-size: 0.95rem; color: var(--brand-accent);">
+                                <i class="fa-solid fa-eye"></i> Aperçu A4 en direct
+                            </span>
+                            <button class="btn-primary" id="btn-download-pdf-direct" style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">
+                                <i class="fa-solid fa-download"></i> Télécharger le PDF (A4)
+                            </button>
+                        </div>
+                        
+                        <div class="a4-preview-wrapper" id="pdf-container-target">
+                            <!-- Rendu par PdfGenerator.renderQuoteHTML -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts CDN pour génération de PDF A4 vectoriel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/pdf-generator.js"></script>
+    <script>
+        let quotesList = [];
+        let currentQuoteData = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadQuotes();
+
+            // Gestion des boutons de vue
+            document.getElementById('btn-new-devis').addEventListener('click', () => {
+                initNewQuoteEditor();
+            });
+
+            document.getElementById('btn-show-list').addEventListener('click', () => {
+                showView('list');
+            });
+
+            document.getElementById('btn-cancel-edit').addEventListener('click', () => {
+                showView('list');
+            });
+
+            document.getElementById('btn-add-item-line').addEventListener('click', () => {
+                addItemLine({ designation: '', description: '', quantity: 1, unit_price: 0, total_price: 0 });
+                updatePreviewFromForm();
+            });
+
+            // Sauvegarde
+            document.getElementById('quote-edit-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const saveBtn = document.getElementById('btn-save-quote');
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enregistrement...';
+
+                try {
+                    const data = buildQuoteObjectFromForm();
+                    await window.OtayAPI.createQuote(data);
+                    alert("Devis enregistré avec succès !");
+                    await loadQuotes();
+                    showView('list');
+                } catch (err) {
+                    alert("Erreur lors de l'enregistrement : " + err.message);
+                } finally {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Enregistrer le devis';
+                }
+            });
+
+            // Téléchargement PDF
+            document.getElementById('btn-download-pdf-direct').addEventListener('click', () => {
+                const quoteRef = document.getElementById('editor-quote-ref').textContent || 'Devis_OTAY_BOX';
+                const filename = `Devis_OTAY_BOX_${quoteRef.replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`;
+                window.PdfGenerator.downloadPDF('printable-quote', filename);
+            });
+
+            // Écouteur pour live update
+            ['q-client-name', 'q-client-phone', 'q-client-email', 'q-expected-delivery', 'q-conditions-text'].forEach(id => {
+                document.getElementById(id).addEventListener('input', updatePreviewFromForm);
+            });
+        });
+
+        async function loadQuotes() {
+            quotesList = await window.OtayAPI.getQuotes();
+            const tbody = document.getElementById('quotes-table-body');
+            
+            if (quotesList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:3rem; color:var(--brand-muted);">Aucun devis dans les archives.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            quotesList.forEach(q => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${q.quote_number}</strong></td>
+                    <td>${q.issue_date}</td>
+                    <td><strong>${q.client_name}</strong></td>
+                    <td>${q.expected_delivery || '—'}</td>
+                    <td style="text-align: center;">${q.quantity_reference || '—'}</td>
+                    <td><strong>${Number(q.total).toFixed(3)} DT</strong></td>
+                    <td><span class="status-badge badge-order-confirmee">${q.status || 'Validé'}</span></td>
+                    <td style="text-align: right;">
+                        <button class="btn-secondary btn-preview-quote" data-id="${q.id}" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; margin-right: 5px;">
+                            <i class="fa-solid fa-eye"></i> Aperçu
+                        </button>
+                        <button class="btn-primary btn-download-quote" data-id="${q.id}" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+                            <i class="fa-solid fa-file-pdf"></i> PDF
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Bind actions
+            document.querySelectorAll('.btn-preview-quote').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const q = quotesList.find(x => x.id === id);
+                    if (q) openQuoteInEditor(q);
+                });
+            });
+
+            document.querySelectorAll('.btn-download-quote').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const q = quotesList.find(x => x.id === id);
+                    if (q) {
+                        openQuoteInEditor(q);
+                        setTimeout(() => {
+                            const filename = `Devis_OTAY_BOX_${q.quote_number.replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`;
+                            window.PdfGenerator.downloadPDF('printable-quote', filename);
+                        }, 400);
+                    }
+                });
+            });
+        }
+
+        function showView(view) {
+            const listEl = document.getElementById('view-quotes-list');
+            const editorEl = document.getElementById('view-quote-editor');
+            const btnList = document.getElementById('btn-show-list');
+            const btnNew = document.getElementById('btn-new-devis');
+
+            if (view === 'editor') {
+                listEl.style.display = 'none';
+                editorEl.style.display = 'block';
+                btnList.style.display = 'inline-flex';
+                btnNew.style.display = 'none';
+            } else {
+                listEl.style.display = 'block';
+                editorEl.style.display = 'none';
+                btnList.style.display = 'none';
+                btnNew.style.display = 'inline-flex';
+            }
+        }
+
+        function initNewQuoteEditor() {
+            const year = new Date().getFullYear();
+            const nextSeq = String(quotesList.length + 1).padStart(3, '0');
+            const quoteNumber = `OTB-DEV-${year}-${nextSeq}`;
+
+            document.getElementById('editor-quote-ref').textContent = quoteNumber;
+            document.getElementById('q-client-name').value = '';
+            document.getElementById('q-client-phone').value = '';
+            document.getElementById('q-client-email').value = '';
+            document.getElementById('q-expected-delivery').value = 'Première semaine de décembre 2026';
+            document.getElementById('q-conditions-text').value = 
+`Tarif établi pour une commande de 100 coffrets.
+La personnalisation du coffret et de le mug est incluse dans le prix indiqué.
+Livraison prévue durant la première semaine de décembre 2026.
+La production sera lancée après validation du visuel de personnalisation et confirmation de la commande.
+Modalité de paiement : 50% avance à la confirmation de commande, 50% à la livraison (discutable).`;
+
+            const container = document.getElementById('items-editor-container');
+            container.innerHTML = '';
+            
+            // Lignes initiales de modèle
+            addItemLine({ designation: 'Coffret ÔTAY BOX – Jardin de Douceur', description: '3 infusions, mug, infusette et guide rituel', quantity: 100, unit_price: 69.000 });
+            addItemLine({ designation: 'Personnalisation au logo du client', description: 'Coffret et mug', quantity: 100, unit_price: 6.800 });
+            addItemLine({ designation: 'Carte de réduction offerte par Mindyness', description: '(Coaching et bien-être)', quantity: 100, unit_price: 0.000 });
+            addItemLine({ designation: 'Remise commerciale pour quantité de 8 %', description: '', quantity: 100, unit_price: -5.520 });
+
+            updatePreviewFromForm();
+            showView('editor');
+        }
+
+        function openQuoteInEditor(q) {
+            document.getElementById('editor-quote-ref').textContent = q.quote_number;
+            document.getElementById('q-client-name').value = q.client_name;
+            document.getElementById('q-client-phone').value = q.client_phone || '';
+            document.getElementById('q-client-email').value = q.client_email || '';
+            document.getElementById('q-expected-delivery').value = q.expected_delivery || '';
+            document.getElementById('q-conditions-text').value = (q.conditions || []).join('\n');
+
+            const container = document.getElementById('items-editor-container');
+            container.innerHTML = '';
+            (q.items || []).forEach(item => addItemLine(item));
+
+            updatePreviewFromForm();
+            showView('editor');
+        }
+
+        function addItemLine(item = {}) {
+            const container = document.getElementById('items-editor-container');
+            const div = document.createElement('div');
+            div.className = 'item-editor-row';
+            div.innerHTML = `
+                <button type="button" class="btn-remove-line" title="Supprimer">&times;</button>
+                <div style="margin-bottom: 6px;">
+                    <input type="text" class="item-input-desc filter-select" style="width: 100%; font-weight: 600;" placeholder="Désignation (ex: Coffret Jardin de Douceur)" value="${item.designation || ''}">
+                </div>
+                <div style="margin-bottom: 6px;">
+                    <input type="text" class="item-input-sub filter-select" style="width: 100%; font-size: 0.8rem;" placeholder="Description additionnelle (ex: 3 infusions, mug...)" value="${item.description || ''}">
+                </div>
+                <div style="display: grid; grid-template-columns: 80px 1fr 100px; gap: 8px; align-items: center;">
+                    <div>
+                        <label style="font-size: 0.7rem; color: var(--brand-muted);">Qté</label>
+                        <input type="number" class="item-input-qty filter-select" style="width: 100%;" min="1" value="${item.quantity || 1}">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.7rem; color: var(--brand-muted);">Prix unit. (DT)</label>
+                        <input type="number" step="0.001" class="item-input-price filter-select" style="width: 100%;" value="${item.unit_price !== undefined ? item.unit_price : 0}">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.7rem; color: var(--brand-muted);">Total (DT)</label>
+                        <div class="item-row-total" style="font-weight: 700; font-size: 0.85rem; padding-top: 4px;">0.000</div>
+                    </div>
+                </div>
+            `;
+
+            div.querySelector('.btn-remove-line').addEventListener('click', () => {
+                div.remove();
+                updatePreviewFromForm();
+            });
+
+            div.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', updatePreviewFromForm);
+            });
+
+            container.appendChild(div);
+        }
+
+        function buildQuoteObjectFromForm() {
+            const rows = document.querySelectorAll('.item-editor-row');
+            const items = [];
+            let subtotal = 0;
+            let discount = 0;
+
+            rows.forEach(r => {
+                const des = r.querySelector('.item-input-desc').value.trim();
+                const sub = r.querySelector('.item-input-sub').value.trim();
+                const qty = parseInt(r.querySelector('.item-input-qty').value || 1);
+                const price = parseFloat(r.querySelector('.item-input-price').value || 0);
+                const total = qty * price;
+
+                r.querySelector('.item-row-total').textContent = total.toFixed(3);
+
+                if (total < 0) {
+                    discount += Math.abs(total);
+                } else {
+                    subtotal += total;
+                }
+
+                items.push({
+                    designation: des,
+                    description: sub,
+                    quantity: qty,
+                    unit_price: price,
+                    total_price: total
+                });
+            });
+
+            const netTotal = subtotal - discount;
+            const refQty = items.length > 0 ? items[0].quantity : 100;
+            const unitPriceAfterDiscount = refQty > 0 ? (netTotal / refQty) : 0;
+
+            const condLines = document.getElementById('q-conditions-text').value
+                .split('\n')
+                .map(l => l.trim())
+                .filter(l => l.length > 0);
+
+            return {
+                quote_number: document.getElementById('editor-quote-ref').textContent,
+                client_name: document.getElementById('q-client-name').value.trim() || 'Client',
+                client_phone: document.getElementById('q-client-phone').value.trim(),
+                client_email: document.getElementById('q-client-email').value.trim(),
+                expected_delivery: document.getElementById('q-expected-delivery').value.trim(),
+                issue_date: new Date().toISOString().split('T')[0],
+                items: items,
+                quantity_reference: refQty,
+                unit_price_after_discount: unitPriceAfterDiscount,
+                subtotal: subtotal,
+                discount: discount,
+                total: netTotal,
+                conditions: condLines
+            };
+        }
+
+        function updatePreviewFromForm() {
+            const quoteObj = buildQuoteObjectFromForm();
+            const target = document.getElementById('pdf-container-target');
+            target.innerHTML = window.PdfGenerator.renderQuoteHTML(quoteObj);
+        }
+    </script>
+</body>
+</html>

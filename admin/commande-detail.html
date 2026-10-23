@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche Commande — ÔTAY BOX Admin</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/admin.css">
+    <style>
+        .order-detail-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .detail-card {
+            background: #FFFFFF;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--brand-border);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-subtle);
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-card-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--brand-text);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--brand-border);
+            padding-bottom: 0.75rem;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+        
+        .info-label {
+            color: var(--brand-muted);
+            font-weight: 500;
+        }
+        
+        .info-val {
+            color: var(--brand-text);
+            font-weight: 600;
+            text-align: right;
+        }
+        
+        .status-update-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .status-update-form label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--brand-accent);
+            display: block;
+            margin-bottom: 0.35rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.65rem 0.85rem;
+            border: 1px solid var(--brand-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            outline: none;
+            background: #FFFFFF;
+        }
+        
+        .form-control:focus {
+            border-color: var(--brand-primary);
+        }
+        
+        .history-timeline {
+            list-style: none;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .history-timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 5px;
+            bottom: 5px;
+            width: 2px;
+            background-color: var(--brand-border);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.25rem;
+            font-size: 0.85rem;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -18px;
+            top: 4px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--brand-primary);
+            border: 2px solid #FFFFFF;
+        }
+        
+        .timeline-date {
+            font-size: 0.75rem;
+            color: var(--brand-muted);
+            margin-bottom: 2px;
+        }
+        
+        .timeline-action {
+            font-weight: 600;
+            color: var(--brand-text);
+        }
+        
+        .timeline-note {
+            color: var(--brand-accent);
+            margin-top: 2px;
+        }
+
+        @media (max-width: 900px) {
+            .order-detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <img src="../assets/logo.png" alt="ÔTAY BOX" class="sidebar-logo-img">
+            <span class="sidebar-brand-title">ÔTAY BOX</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item-link">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="commandes.html" class="nav-item-link active">
+                <i class="fa-solid fa-box-archive"></i>
+                <span>Commandes</span>
+            </a>
+            <a href="devis.html" class="nav-item-link">
+                <i class="fa-solid fa-file-signature"></i>
+                <span>Devis</span>
+            </a>
+            <a href="factures.html" class="nav-item-link">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Factures</span>
+            </a>
+            <a href="documents.html" class="nav-item-link">
+                <i class="fa-solid fa-folder-closed"></i>
+                <span>Documents & PDF</span>
+            </a>
+            <a href="international.html" class="nav-item-link">
+                <i class="fa-solid fa-earth-africa"></i>
+                <span>International & ILEY'COM</span>
+            </a>
+            <a href="parametres.html" class="nav-item-link">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Paramètres</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile-badge">
+                <div class="avatar-circle">ÔB</div>
+                <div class="user-details">
+                    <div class="user-role-label">Administratrice</div>
+                    <div class="user-email-val" id="admin-sidebar-email">contact@otaybox.tn</div>
+                </div>
+            </div>
+            <button class="btn-secondary btn-admin-logout" style="width: 100%; justify-content: center; font-size: 0.85rem;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main-wrap">
+        <header class="admin-topbar">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="commandes.html" class="btn-secondary" style="padding: 6px 12px;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <h1 class="page-main-heading" id="top-order-title">Commande ...</h1>
+            </div>
+            <div class="topbar-actions">
+                <button class="btn-primary" id="btn-create-invoice-from-order">
+                    <i class="fa-solid fa-file-invoice"></i> Créer la facture associée
+                </button>
+            </div>
+        </header>
+
+        <main class="admin-body-content">
+            <div class="order-detail-grid">
+                <!-- Colonne Gauche : Produits, Client, Livraison -->
+                <div>
+                    <!-- C. Produits commandés -->
+                    <div class="detail-card">
+                        <h2 class="detail-card-title"><i class="fa-solid fa-basket-shopping"></i> Produits commandés</h2>
+                        <div class="table-responsive">
+                            <table class="data-table" style="margin-bottom: 0;">
+                                <thead>
+                                    <tr>
+                                        <th>Produit</th>
+                                        <th>SKU</th>
+                                        <th style="text-align: center;">Qté</th>
+                                        <th style="text-align: right;">Prix unit.</th>
+                                        <th style="text-align: right;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="order-items-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- D. Récapitulatif financier -->
+                    <div class="detail-card">
+                        <h2 class="detail-card-title"><i class="fa-solid fa-receipt"></i> Récapitulatif financier</h2>
+                        <div class="info-row">
+                            <span class="info-label">Sous-total articles</span>
+                            <span class="info-val" id="ord-subtotal">0,000 DT</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Frais de livraison</span>
+                            <span class="info-val" id="ord-shipping">0,000 DT</span>
+                        </div>
+                        <div class="info-row" id="row-discount" style="display: none;">
+                            <span class="info-label">Remise commerciale</span>
+                            <span class="info-val" style="color: #c0392b;" id="ord-discount">-0,000 DT</span>
+                        </div>
+                        <div class="info-row" style="font-size: 1.2rem; border-top: 1px solid var(--brand-border); padding-top: 0.75rem; margin-top: 0.5rem;">
+                            <span class="info-label" style="font-weight: 700; color: var(--brand-text);">Total de la commande</span>
+                            <span class="info-val" style="color: var(--brand-primary); font-size: 1.3rem;" id="ord-total">0,000 DT</span>
+                        </div>
+                        <div class="info-row" style="margin-top: 0.5rem;">
+                            <span class="info-label">Mode de règlement</span>
+                            <span class="info-val" id="ord-paymethod">Paiement à la livraison</span>
+                        </div>
+                    </div>
+
+                    <!-- B. Livraison et expédition -->
+                    <div class="detail-card">
+                        <h2 class="detail-card-title"><i class="fa-solid fa-location-dot"></i> Informations de livraison</h2>
+                        <div class="info-row">
+                            <span class="info-label">Gouvernorat</span>
+                            <span class="info-val" id="ord-gov">—</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Délégation / Ville</span>
+                            <span class="info-val" id="ord-city">—</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Adresse complète</span>
+                            <span class="info-val" id="ord-address" style="max-width: 60%;">—</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Instructions client</span>
+                            <span class="info-val" id="ord-notes" style="font-style: italic; max-width: 60%;">Aucune</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colonne Droite : Statuts indépendants, Suivi transport, Notes internes -->
+                <div>
+                    <!-- Formulaire de mise à jour des 3 Statuts Indépendants -->
+                    <div class="detail-card" style="border: 2px solid var(--brand-light);">
+                        <h2 class="detail-card-title" style="color: var(--brand-primary);">
+                            <i class="fa-solid fa-pen-to-square"></i> Gestion des Statuts & Suivi
+                        </h2>
+                        
+                        <form class="status-update-form" id="update-order-form">
+                            <!-- 1. Statut de commande -->
+                            <div>
+                                <label for="select-order-status">1. Statut de commande</label>
+                                <select class="form-control" id="select-order-status">
+                                    <option value="Nouvelle">Nouvelle</option>
+                                    <option value="À confirmer">À confirmer</option>
+                                    <option value="Confirmée">Confirmée</option>
+                                    <option value="En préparation">En préparation</option>
+                                    <option value="Expédiée">Expédiée</option>
+                                    <option value="Livrée">Livrée</option>
+                                    <option value="Annulée">Annulée</option>
+                                    <option value="Retour">Retour</option>
+                                </select>
+                            </div>
+
+                            <!-- 2. Statut de livraison -->
+                            <div>
+                                <label for="select-deliv-status">2. Statut de livraison</label>
+                                <select class="form-control" id="select-deliv-status">
+                                    <option value="Non préparée">Non préparée</option>
+                                    <option value="En préparation">En préparation</option>
+                                    <option value="Remise au transporteur">Remise au transporteur</option>
+                                    <option value="En transit">En transit</option>
+                                    <option value="Livrée">Livrée</option>
+                                    <option value="Échec de livraison">Échec de livraison</option>
+                                    <option value="Retour en cours">Retour en cours</option>
+                                </select>
+                            </div>
+
+                            <!-- 3. Statut de paiement -->
+                            <div>
+                                <label for="select-pay-status">3. Statut de paiement</label>
+                                <select class="form-control" id="select-pay-status">
+                                    <option value="En attente">En attente</option>
+                                    <option value="Payé">Payé</option>
+                                    <option value="Échec ou non encaissé">Échec ou non encaissé</option>
+                                    <option value="Remboursé">Remboursé</option>
+                                </select>
+                            </div>
+
+                            <!-- Transporteur & Suivi -->
+                            <div>
+                                <label for="input-carrier">Transporteur / Livreur</label>
+                                <input type="text" class="form-control" id="input-carrier" placeholder="Ex: Aramex, First Delivery, Livreur interne...">
+                            </div>
+
+                            <div>
+                                <label for="input-tracking">Numéro de suivi (Tracking)</label>
+                                <input type="text" class="form-control" id="input-tracking" placeholder="Référence colis">
+                            </div>
+
+                            <!-- Notes internes privées -->
+                            <div>
+                                <label for="textarea-notes">Notes internes privées</label>
+                                <textarea class="form-control" id="textarea-notes" rows="3" placeholder="Notes visibles uniquement par l'équipe d'administration..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-primary" style="justify-content: center; width: 100%; margin-top: 0.5rem;" id="btn-save-order">
+                                <i class="fa-solid fa-floppy-disk"></i> Enregistrer les modifications
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- A. Informations Client -->
+                    <div class="detail-card">
+                        <h2 class="detail-card-title"><i class="fa-regular fa-user"></i> Coordonnées Client</h2>
+                        <div class="info-row">
+                            <span class="info-label">Nom complet</span>
+                            <span class="info-val" id="ord-client-name">—</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Téléphone</span>
+                            <span class="info-val"><a href="#" id="ord-client-phone" style="color: var(--brand-primary); text-decoration: none;">—</a></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">E-mail</span>
+                            <span class="info-val" id="ord-client-email">Non renseigné</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Origine</span>
+                            <span class="info-val" id="ord-origin">—</span>
+                        </div>
+                    </div>
+
+                    <!-- E. Historique Horodaté d'Audit -->
+                    <div class="detail-card">
+                        <h2 class="detail-card-title"><i class="fa-solid fa-timeline"></i> Historique d'audit</h2>
+                        <ul class="history-timeline" id="order-history-timeline">
+                            <li class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">Chargement...</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        let currentOrder = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id');
+
+            if (!orderId) {
+                alert("Aucun identifiant de commande spécifié.");
+                window.location.href = 'commandes.html';
+                return;
+            }
+
+            try {
+                currentOrder = await window.OtayAPI.getOrderById(orderId);
+                if (!currentOrder) {
+                    alert("Commande introuvable.");
+                    window.location.href = 'commandes.html';
+                    return;
+                }
+
+                renderOrderDetail(currentOrder);
+
+                // Sauvegarde du formulaire de statut
+                document.getElementById('update-order-form').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const saveBtn = document.getElementById('btn-save-order');
+                    saveBtn.disabled = true;
+                    saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enregistrement...';
+
+                    const updates = {
+                        order_status: document.getElementById('select-order-status').value,
+                        delivery_status: document.getElementById('select-deliv-status').value,
+                        payment_status: document.getElementById('select-pay-status').value,
+                        carrier: document.getElementById('input-carrier').value.trim(),
+                        tracking_number: document.getElementById('input-tracking').value.trim(),
+                        internal_notes: document.getElementById('textarea-notes').value.trim()
+                    };
+
+                    const session = window.OtayAPI.getAdminSession();
+                    const adminEmail = session ? session.email : 'Administratrice';
+
+                    try {
+                        currentOrder = await window.OtayAPI.updateOrder(currentOrder.id, updates, adminEmail);
+                        renderOrderDetail(currentOrder);
+                        alert("Modifications enregistrées avec succès !");
+                    } catch (err) {
+                        alert("Erreur lors de la mise à jour : " + err.message);
+                    } finally {
+                        saveBtn.disabled = false;
+                        saveBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Enregistrer les modifications';
+                    }
+                });
+
+                // Génération de facture associée
+                document.getElementById('btn-create-invoice-from-order').addEventListener('click', () => {
+                    window.location.href = `factures.html?action=create_from_order&order_id=${currentOrder.id}`;
+                });
+
+            } catch (err) {
+                console.error(err);
+                alert("Erreur de chargement : " + err.message);
+            }
+        });
+
+        function renderOrderDetail(ord) {
+            document.getElementById('top-order-title').textContent = `Commande ${ord.order_number}`;
+            
+            // Client
+            document.getElementById('ord-client-name').textContent = ord.client_name;
+            const phoneEl = document.getElementById('ord-client-phone');
+            phoneEl.textContent = ord.client_phone;
+            phoneEl.href = `tel:${ord.client_phone}`;
+            document.getElementById('ord-client-email').textContent = ord.client_email || 'Non renseigné';
+            document.getElementById('ord-origin').innerHTML = window.AdminUI.getOriginBadge(ord.origin);
+
+            // Livraison
+            document.getElementById('ord-gov').textContent = ord.governorate || ord.country || 'Tunisie';
+            document.getElementById('ord-city').textContent = ord.city || '—';
+            document.getElementById('ord-address').textContent = ord.address || '—';
+            document.getElementById('ord-notes').textContent = ord.delivery_notes || 'Aucune instruction particulière.';
+
+            // Financier
+            document.getElementById('ord-subtotal').textContent = window.AdminUI.formatDT(ord.subtotal);
+            document.getElementById('ord-shipping').textContent = Number(ord.shipping_fee) === 0 ? 'Offerte (Gratuite)' : window.AdminUI.formatDT(ord.shipping_fee);
+            document.getElementById('ord-total').textContent = window.AdminUI.formatDT(ord.total);
+            document.getElementById('ord-paymethod').textContent = ord.payment_method || 'Paiement à la livraison';
+
+            if (Number(ord.discount) > 0) {
+                document.getElementById('row-discount').style.display = 'flex';
+                document.getElementById('ord-discount').textContent = '-' + window.AdminUI.formatDT(ord.discount);
+            }
+
+            // Statuts dans le formulaire
+            document.getElementById('select-order-status').value = ord.order_status || 'Nouvelle';
+            document.getElementById('select-deliv-status').value = ord.delivery_status || 'Non préparée';
+            document.getElementById('select-pay-status').value = ord.payment_status || 'En attente';
+            document.getElementById('input-carrier').value = ord.carrier || '';
+            document.getElementById('input-tracking').value = ord.tracking_number || '';
+            document.getElementById('textarea-notes').value = ord.internal_notes || '';
+
+            // Articles
+            const tbody = document.getElementById('order-items-tbody');
+            tbody.innerHTML = '';
+            const items = ord.items || ord.order_items || [];
+            items.forEach(i => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${i.product_name}</strong></td>
+                    <td style="color: var(--brand-muted);">${i.sku || '—'}</td>
+                    <td style="text-align: center;">${i.quantity}</td>
+                    <td style="text-align: right;">${window.AdminUI.formatDT(i.unit_price)}</td>
+                    <td style="text-align: right;"><strong>${window.AdminUI.formatDT(i.total_price)}</strong></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Historique d'audit
+            const histUl = document.getElementById('order-history-timeline');
+            histUl.innerHTML = '';
+            const history = ord.history || ord.order_history || [];
+            if (history.length === 0) {
+                histUl.innerHTML = '<li class="timeline-item"><div class="timeline-dot"></div><div class="timeline-note">Création initiale de la commande</div></li>';
+            } else {
+                history.slice().reverse().forEach(h => {
+                    const li = document.createElement('li');
+                    li.className = 'timeline-item';
+                    li.innerHTML = `
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">${window.AdminUI.formatDateTime(h.created_at)} • <em>${h.user_email || 'Admin'}</em></div>
+                        <div class="timeline-action">${h.action} : <span style="color: var(--brand-primary);">${h.new_value || ''}</span></div>
+                        ${h.notes ? `<div class="timeline-note">${h.notes}</div>` : ''}
+                    `;
+                    histUl.appendChild(li);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

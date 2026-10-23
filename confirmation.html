@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commande Confirmée — ÔTAY BOX</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <script>!function(){var t=localStorage.getItem('otay-theme')||'light';document.documentElement.setAttribute('data-theme',t)}();</script>
+
+    <style>
+        .confirmation-page-main {
+            padding-top: 8rem;
+            padding-bottom: 5rem;
+            background-color: var(--bg-main, #FAF8F5);
+            min-height: 85vh;
+        }
+
+        .confirmation-card {
+            max-width: 720px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(47, 42, 37, 0.08);
+            text-align: center;
+        }
+
+        .check-icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #eaf5eb;
+            color: #4b6c4f;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .conf-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: #2F2A25;
+            margin-bottom: 0.75rem;
+        }
+
+        .conf-number-badge {
+            display: inline-block;
+            background-color: #f3f6f3;
+            color: #4b6c4f;
+            border: 1px solid rgba(75, 108, 79, 0.3);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.15rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .conf-message-notice {
+            background-color: #fcf9f2;
+            border-left: 4px solid #d4a373;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 0.95rem;
+            color: #555555;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .summary-box {
+            background: #FAF8F5;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(47, 42, 37, 0.06);
+        }
+
+        .summary-box h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.05rem;
+            color: #2F2A25;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(47, 42, 37, 0.08);
+            padding-bottom: 0.5rem;
+        }
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            color: #615B55;
+        }
+
+        .summary-line.total {
+            border-top: 1px solid rgba(47, 42, 37, 0.15);
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #4b6c4f;
+        }
+
+        .actions-row {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        [data-theme="dark"] .confirmation-card, [data-theme="dark"] .summary-box {
+            background: #1E1E1E;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        [data-theme="dark"] .conf-title, [data-theme="dark"] .summary-box h3 {
+            color: #FFFFFF;
+        }
+        [data-theme="dark"] .conf-message-notice {
+            background: #252320;
+            color: #cccccc;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar fade-in">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="Logo ÔTAY BOX" class="logo-img">
+            </a>
+            
+            <nav class="nav-links">
+                <a href="index.html#about" class="nav-link">À propos</a>
+                <a href="box-detail.html" class="nav-link">Nos Box</a>
+                <a href="boutique.html" class="nav-link">Boutique</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="confirmation-page-main">
+        <div class="container">
+            <div class="confirmation-card">
+                <div class="check-icon-circle">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                
+                <h1 class="conf-title">Merci pour votre commande !</h1>
+                
+                <div>
+                    <span class="conf-number-badge" id="conf-order-number">Commande N° ...</span>
+                </div>
+
+                <div class="conf-message-notice">
+                    <strong><i class="fa-solid fa-phone"></i> Information importante :</strong><br>
+                    Votre commande est bien enregistrée dans notre système. Elle est actuellement <strong>en attente de confirmation téléphonique</strong>. Notre équipe va vous appeler très prochainement au numéro indiqué afin de valider avec vous les détails de la livraison avant l'expédition de votre colis.
+                </div>
+
+                <!-- Récapitulatif -->
+                <div class="summary-box">
+                    <h3><i class="fa-solid fa-receipt"></i> Récapitulatif de votre achat</h3>
+                    
+                    <div id="conf-items-list" style="margin-bottom: 1rem;"></div>
+
+                    <div class="summary-line">
+                        <span>Sous-total articles</span>
+                        <strong id="conf-subtotal">0,000 DT</strong>
+                    </div>
+                    <div class="summary-line">
+                        <span>Frais de livraison</span>
+                        <strong id="conf-shipping">0,000 DT</strong>
+                    </div>
+                    <div class="summary-line total">
+                        <span>Montant à régler à la livraison</span>
+                        <span id="conf-total">0,000 DT</span>
+                    </div>
+                </div>
+
+                <div class="actions-row">
+                    <a href="boutique.html" class="btn btn-primary" style="background-color: #4b6c4f; color: #fff; padding: 0.9rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600;">
+                        <i class="fa-solid fa-arrow-left"></i> Retourner à la boutique
+                    </a>
+                    <a href="https://wa.me/21654050380" target="_blank" class="btn btn-outline" style="padding: 0.9rem 1.5rem; border-radius: 50px; text-decoration: none;">
+                        <i class="fa-brands fa-whatsapp"></i> Une question ? Écrivez-nous
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content-grid">
+            <div class="footer-col brand-col">
+                <h3 class="footer-logo-text">ÔTAY BOX</h3>
+                <p class="footer-desc">Marque tunisienne de box bien-être.<br><i class="fa-regular fa-envelope"></i> contact@otaybox.tn<br><i class="fa-solid fa-phone"></i> +216 54 050 380</p>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading">Légal & Aide</h4>
+                <ul class="footer-links">
+                    <li><a href="cgv.html">Conditions Générales de Vente</a></li>
+                    <li><a href="confidentialite.html">Politique de confidentialité</a></li>
+                    <li><a href="livraison.html">Livraison & Retours</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderNumFromUrl = urlParams.get('order');
+
+            let lastOrder = null;
+            try {
+                lastOrder = JSON.parse(sessionStorage.getItem('otay_last_order'));
+            } catch (e) {}
+
+            const orderNum = (lastOrder && lastOrder.orderNumber) ? lastOrder.orderNumber : (orderNumFromUrl || 'OTB-CMD-2026-0001');
+            document.getElementById('conf-order-number').textContent = `Commande N° ${orderNum}`;
+
+            if (lastOrder) {
+                document.getElementById('conf-subtotal').textContent = Number(lastOrder.subtotal).toFixed(3) + ' DT';
+                document.getElementById('conf-shipping').textContent = Number(lastOrder.shippingFee) === 0 ? 'Offerte (Gratuite)' : Number(lastOrder.shippingFee).toFixed(3) + ' DT';
+                document.getElementById('conf-total').textContent = Number(lastOrder.total).toFixed(3) + ' DT';
+
+                const itemsContainer = document.getElementById('conf-items-list');
+                itemsContainer.innerHTML = '';
+                (lastOrder.items || []).forEach(item => {
+                    const line = document.createElement('div');
+                    line.className = 'summary-line';
+                    line.style.borderBottom = '1px solid rgba(47, 42, 37, 0.05)';
+                    line.innerHTML = `
+                        <span>${item.qty} × ${item.name}</span>
+                        <strong>${(item.total || (item.price * item.qty)).toFixed(3)} DT</strong>
+                    `;
+                    itemsContainer.appendChild(line);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
