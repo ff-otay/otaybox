@@ -13,10 +13,10 @@
 
 window.OTAY_CONFIG = {
     // URL de votre projet Supabase (ex: 'https://xyzcompany.supabase.co')
-    SUPABASE_URL: '',
+    SUPABASE_URL: 'https://aoxrewaduwhtmbofaqni.supabase.co',
 
     // Clé publique anonyme (anon / publishable)
-    SUPABASE_ANON_KEY: '',
+    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFveHJld2FkdXdodG1ib2ZhcW5pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxNzgwMjEsImV4cCI6MjEwODc1NDAyMX0.x0qRbg_NmN5U_Xk9PK37w5nhZSbl-e8dTdXDd9eyFPE',
 
     // Règle de livraison par défaut en Tunisie (en DT)
     SHIPPING_STANDARD_FEE: 9.000,

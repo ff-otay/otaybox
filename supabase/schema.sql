@@ -493,5 +493,19 @@ DROP POLICY IF EXISTS "Admins full access invoice_items" ON invoice_items;
 CREATE POLICY "Admins full access invoice_items" ON invoice_items
     FOR ALL TO authenticated USING (TRUE);
 
+-- -----------------------------------------------------------------------------
+-- 11. Droits et Privilèges SQL pour les rôles Supabase (anon & authenticated)
+-- -----------------------------------------------------------------------------
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+
+-- Lecture publique pour les visiteurs (catalogue et règles de livraison)
+GRANT SELECT ON TABLE products TO anon, authenticated;
+GRANT SELECT ON TABLE settings TO anon, authenticated;
+
+-- Accès complet pour l'administrateur authentifié
+GRANT ALL ON ALL TABLES IN SCHEMA public TO authenticated;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO authenticated;
+GRANT ALL ON ALL ROUTINES IN SCHEMA public TO authenticated;
+
 -- Autoriser l'exécution de la fonction RPC de commande par le public
 GRANT EXECUTE ON FUNCTION create_verified_order TO anon, authenticated;
