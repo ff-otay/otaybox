@@ -378,19 +378,16 @@
                 const customer = orderData.customer || {};
                 const totalFormatted = (typeof orderData.total === 'number') ? orderData.total.toFixed(3) + ' TND' : orderData.total;
 
+                // Notification sobre et sécurisée : aucune donnée personnelle du client (vie privée garantie)
                 const notificationText = 
 `🔔 NOUVELLE COMMANDE ÔTAY BOX !
 ━━━━━━━━━━━━━━━━━━━━
-📦 Réf : ${orderData.orderNumber}
-💰 Montant : ${totalFormatted}
-👤 Client : ${customer.clientName || customer.client_name || 'N/A'}
-📞 Tél : ${customer.clientPhone || customer.client_phone || 'N/A'}
-📍 Adresse : ${customer.governorate || ''}, ${customer.city || ''} - ${customer.address || ''}
-${customer.deliveryNotes ? '📝 Notes : ' + customer.deliveryNotes + '\n' : ''}
+📦 Commande : #${orderData.orderNumber}
+💰 Montant total : ${totalFormatted}
 🛍️ Articles :
 ${itemsList}
 
-🔗 Dashboard : https://otaybox.tn/admin/`;
+🔗 Dashboard sécurisé : https://otaybox.tn/admin/`;
 
                 const results = { ntfy: false, telegram: false, email: false, resend: false };
 
@@ -400,12 +397,12 @@ ${itemsList}
                     const ntfyRes = await fetch(`https://ntfy.sh/${encodeURIComponent(ntfyTopic)}`, {
                         method: 'POST',
                         headers: {
-                            'Title': `Nouvelle commande OTAY BOX (${orderData.orderNumber})`,
+                            'Title': `Nouvelle commande OTAY BOX (#${orderData.orderNumber})`,
                             'Priority': 'urgent',
                             'Tags': 'package,tea,bell',
                             'Click': 'https://otaybox.tn/admin/'
                         },
-                        body: `Client : ${customer.clientName || 'N/A'}\nTél : ${customer.clientPhone || 'N/A'}\nMontant : ${totalFormatted}\nVille : ${customer.governorate || ''}\nArticles :\n${itemsList}`
+                        body: `Nouvelle commande #${orderData.orderNumber}\nMontant : ${totalFormatted}\nArticles :\n${itemsList}`
                     });
                     results.ntfy = ntfyRes.ok;
                 } catch (pushErr) {
@@ -431,25 +428,28 @@ ${itemsList}
 
                 // 3. Notification Sécurisée via Supabase Edge Function & Resend (Sans clé API dans le JS public, sans données personnelles du client)
                 const client = getSupabase();
-                if (client) {
-                    try {
-                        const safeOrderPayload = {
-                            order_number: orderData.orderNumber || (customer && customer.order_number) || 'COMMANDE',
-                            id: orderData.orderId || orderData.orderNumber,
-                            origin: (customer && customer.origin) || 'otaybox.tn',
-                            subtotal: orderData.subtotal,
-                            shipping_fee: orderData.shippingFee,
-                            total: orderData.total,
-                            payment_method: 'Paiement à la livraison',
-                            payment_status: 'En attente',
-                            items: (orderData.items || []).map(i => ({
-                                product_name: i.name || i.product_name || i.title,
-                                quantity: i.qty || i.quantity || 1,
-                                unit_price: i.price || i.unit_price || 0,
-                                total_price: (i.total || ((i.price || i.unit_price || 0) * (i.qty || i.quantity || 1)))
-                            }))
-                        };
+                const anonKey = (window.OTAY_CONFIG && window.OTAY_CONFIG.SUPABASE_ANON_KEY) || '';
+                const supabaseUrl = (window.OTAY_CONFIG && window.OTAY_CONFIG.SUPABASE_URL) || '';
 
+                const safeOrderPayload = {
+                    order_number: orderData.orderNumber || (customer && customer.order_number) || 'COMMANDE',
+                    id: orderData.orderId || orderData.orderNumber,
+                    origin: (customer && customer.origin) || 'otaybox.tn',
+                    subtotal: orderData.subtotal,
+                    shipping_fee: orderData.shippingFee,
+                    total: orderData.total,
+                    payment_method: 'Paiement à la livraison',
+                    payment_status: 'En attente',
+                    items: (orderData.items || []).map(i => ({
+                        product_name: i.name || i.product_name || i.title,
+                        quantity: i.qty || i.quantity || 1,
+                        unit_price: i.price || i.unit_price || 0,
+                        total_price: (i.total || ((i.price || i.unit_price || 0) * (i.qty || i.quantity || 1)))
+                    }))
+                };
+
+                if (client && client.functions) {
+                    try {
                         const { data: fnData, error: fnError } = await client.functions.invoke('send-order-notification', {
                             body: { order: safeOrderPayload }
                         });
@@ -465,9 +465,27 @@ ${itemsList}
                         console.warn("Erreur appel Supabase Edge Function:", fnErr);
                         results.resend = false;
                     }
+                } else if (supabaseUrl && anonKey) {
+                    try {
+                        const fnUrl = `${supabaseUrl.replace(/\/+$/, '')}/functions/v1/send-order-notification`;
+                        const rawRes = await fetch(fnUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'apikey': anonKey,
+                                'Authorization': `Bearer ${anonKey}`
+                            },
+                            body: JSON.stringify({ order: safeOrderPayload })
+                        });
+                        results.resend = rawRes.ok;
+                        results.edge_function = rawRes.ok;
+                    } catch (fnErr) {
+                        console.warn("Erreur appel direct Edge Function:", fnErr);
+                        results.resend = false;
+                    }
                 }
 
-                // 4. Notification Email via Webhook (Supabase Edge Function / Formspree / Make)
+                // 4. Notification Email via Webhook externe optionnel (Formspree / Make)
                 if (settings.email_webhook_url) {
                     try {
                         const emailRes = await fetch(settings.email_webhook_url, {
@@ -477,7 +495,7 @@ ${itemsList}
                                 subject: `[ÔTAY BOX] Nouvelle Commande #${orderData.orderNumber} - ${totalFormatted}`,
                                 message: notificationText,
                                 email: settings.admin_email || 'contact@otaybox.tn',
-                                order: orderData
+                                order: safeOrderPayload
                             })
                         });
                         results.email = emailRes.ok;

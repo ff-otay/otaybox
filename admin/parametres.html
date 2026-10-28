@@ -151,10 +151,10 @@
                         </div>
                         <div>
                             <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">
-                                <i class="fa-solid fa-globe" style="color: #4b6c4f;"></i> Webhook E-mail (ex: Formspree / Resend)
+                                <i class="fa-solid fa-globe" style="color: #4b6c4f;"></i> Webhook Externe Optionnel (ex: Formspree / Make)
                             </label>
-                            <input type="url" id="set-notif-webhook" class="filter-select" style="width: 100%;" placeholder="https://formspree.io/f/votre-cle">
-                            <span style="font-size: 0.75rem; color: var(--brand-muted);">Optionnel : URL de votre service mail (ex: Formspree gratuit).</span>
+                            <input type="url" id="set-notif-webhook" class="filter-select" style="width: 100%;" placeholder="Optionnel - Laisser vide (géré par Resend &amp; Supabase)">
+                            <span style="font-size: 0.75rem; color: var(--brand-muted);"><strong>Non requis avec Resend</strong> : vos e-mails sont expédiés directement par votre Edge Function Supabase.</span>
                         </div>
                     </div>
 
