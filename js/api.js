@@ -9,9 +9,9 @@
 
     // Catalogue officiel de référence (garantit l'intégrité des prix côté client et serveur)
     const OFFICIAL_CATALOG = [
-        { id: 1, sku: 'OTB-PRD-001', name: 'Box Jardin de douceur', category: 'infusions', subtitle: 'Tisane artisanale', price: 59.000, img: 'assets/produit.webp' },
+        { id: 1, sku: 'OTB-PRD-001', name: 'Box Jardin de douceur', category: 'coffrets', subtitle: 'Coffret bien-être signature', price: 59.000, img: 'assets/produit.webp' },
         { id: 6, sku: 'OTB-PRD-006', name: 'Infusette cuillère cœur', category: 'accessoires', subtitle: 'Accessoire en inox', price: 20.000, img: 'assets/Infusette.webp' },
-        { id: 9, sku: 'OTB-PRD-009', name: '3 Tisanes collection Jardin de douceur', category: 'infusions', subtitle: 'Douceur bien-être', price: 24.000, img: 'assets/produit3.webp' },
+        { id: 9, sku: 'OTB-PRD-009', name: '3 Tisanes collection Jardin de douceur', category: 'tisanes', subtitle: 'Douceur bien-être', price: 24.000, img: 'assets/produit3.webp' },
         { id: 2, sku: 'OTB-PRD-002', name: 'Bubble Mug en céramique', category: 'accessoires', subtitle: 'Accessoire artisanal', price: 25.000, img: 'assets/produit1.webp' }
     ];
 
@@ -221,7 +221,7 @@
                     throw new Error("Erreur serveur lors de l'enregistrement : " + error.message);
                 }
 
-                return {
+                const resultPayload = {
                     success: true,
                     orderId: data.order_id,
                     orderNumber: data.order_number,
@@ -231,6 +231,11 @@
                     items: calculation.items,
                     customer: formData
                 };
+
+                // Notification automatique de commande
+                this.notifyNewOrder(resultPayload).catch(e => console.warn('Notification log:', e));
+
+                return resultPayload;
             }
 
             // Mode simulation / local si Supabase n'est pas encore lié
@@ -291,7 +296,7 @@
             orders.unshift(newOrder);
             saveLocalOrders(orders);
 
-            return {
+            const resultPayload = {
                 success: true,
                 orderId: newOrder.id,
                 orderNumber: newOrder.order_number,
@@ -301,6 +306,134 @@
                 items: calculation.items,
                 customer: formData
             };
+
+            // Notification automatique de commande
+            this.notifyNewOrder(resultPayload).catch(e => console.warn('Notification log:', e));
+
+            return resultPayload;
+        },
+
+        /**
+         * Récupère les paramètres de notification (Email, Téléphone, Telegram, Webhook)
+         */
+        async getNotificationSettings() {
+            const client = getSupabase();
+            if (client) {
+                try {
+                    const { data } = await client.from('settings').select('value').eq('key', 'order_notifications').single();
+                    if (data && data.value) return data.value;
+                } catch (e) {
+                    // Fallback
+                }
+            }
+            try {
+                const local = localStorage.getItem('otay_notification_settings');
+                if (local) return JSON.parse(local);
+            } catch (e) {}
+
+            return {
+                enabled: true,
+                admin_email: (window.OTAY_CONFIG && window.OTAY_CONFIG.ADMIN_NOTIFICATION_EMAIL) || 'contact@otaybox.tn',
+                admin_phone: '+216 54 050 380',
+                email_webhook_url: '',
+                telegram_bot_token: '',
+                telegram_chat_id: '',
+                whatsapp_notify: true
+            };
+        },
+
+        /**
+         * Sauvegarde les paramètres de notification
+         */
+        async saveNotificationSettings(settings) {
+            try {
+                localStorage.setItem('otay_notification_settings', JSON.stringify(settings));
+            } catch (e) {}
+
+            const client = getSupabase();
+            if (client) {
+                try {
+                    await client.from('settings').upsert({
+                        key: 'order_notifications',
+                        value: settings,
+                        updated_at: new Date().toISOString()
+                    });
+                } catch (e) {
+                    console.warn('Sauvegarde settings notification non bloquante:', e);
+                }
+            }
+            return settings;
+        },
+
+        /**
+         * Envoie une notification instantanée à l'administratrice (Email / Téléphone)
+         */
+        async notifyNewOrder(orderData) {
+            try {
+                const settings = await this.getNotificationSettings();
+                if (!settings || !settings.enabled) return { notified: false, reason: 'disabled' };
+
+                const itemsList = (orderData.items || []).map(i => `• ${i.qty || i.quantity || 1}x ${i.name || i.product_name || i.title} (${((i.price || i.unit_price || 0)).toFixed ? (i.price || i.unit_price).toFixed(3) : i.price} TND)`).join('\n');
+                const customer = orderData.customer || {};
+                const totalFormatted = (typeof orderData.total === 'number') ? orderData.total.toFixed(3) + ' TND' : orderData.total;
+
+                const notificationText = 
+`🔔 NOUVELLE COMMANDE ÔTAY BOX !
+━━━━━━━━━━━━━━━━━━━━
+📦 Réf : ${orderData.orderNumber}
+💰 Montant : ${totalFormatted}
+👤 Client : ${customer.clientName || customer.client_name || 'N/A'}
+📞 Tél : ${customer.clientPhone || customer.client_phone || 'N/A'}
+📍 Adresse : ${customer.governorate || ''}, ${customer.city || ''} - ${customer.address || ''}
+${customer.deliveryNotes ? '📝 Notes : ' + customer.deliveryNotes + '\n' : ''}
+🛍️ Articles :
+${itemsList}
+
+🔗 Dashboard : https://otaybox.tn/admin/`;
+
+                const results = { telegram: false, email: false };
+
+                // 1. Notification Smartphone via Telegram Bot (Gratuit, instantané avec alerte sonore)
+                if (settings.telegram_bot_token && settings.telegram_chat_id) {
+                    try {
+                        const tgRes = await fetch(`https://api.telegram.org/bot${settings.telegram_bot_token}/sendMessage`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                chat_id: settings.telegram_chat_id,
+                                text: notificationText
+                            })
+                        });
+                        results.telegram = tgRes.ok;
+                    } catch (tgErr) {
+                        console.warn('Erreur envoi notification Telegram:', tgErr);
+                    }
+                }
+
+                // 2. Notification Email via Webhook (Formspree / Resend / Service mail)
+                if (settings.email_webhook_url) {
+                    try {
+                        const emailRes = await fetch(settings.email_webhook_url, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                subject: `[ÔTAY BOX] Nouvelle Commande #${orderData.orderNumber} - ${totalFormatted}`,
+                                message: notificationText,
+                                email: settings.admin_email || 'contact@otaybox.tn',
+                                order: orderData
+                            })
+                        });
+                        results.email = emailRes.ok;
+                    } catch (emErr) {
+                        console.warn('Erreur envoi notification Email Webhook:', emErr);
+                    }
+                }
+
+                return { notified: true, results, text: notificationText };
+            } catch (err) {
+                console.warn('Erreur non bloquante dans notifyNewOrder:', err);
+                return { notified: false, error: err.message };
+            }
         },
 
         /**

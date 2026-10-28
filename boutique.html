@@ -55,11 +55,9 @@
                 <div class="nav-item-dropdown">
                     <a href="boutique.html" class="nav-link active">Boutique <i class="fa-solid fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
                     <div class="dropdown-menu">
-                        <a href="boutique.html#infusions" class="dropdown-link">Infusions & Tisanes</a>
+                        <a href="boutique.html#coffrets" class="dropdown-link">Nos Coffrets</a>
                         <a href="boutique.html#accessoires" class="dropdown-link">Accessoires de thé</a>
-                        <a href="boutique.html#bougies" class="dropdown-link">Bougies & Parfums</a>
-                        <a href="boutique.html#savons" class="dropdown-link">Savons & Soins naturels</a>
-                        <a href="boutique.html#lifestyle" class="dropdown-link">Lifestyle & Détente</a>
+                        <a href="boutique.html#tisanes" class="dropdown-link">Tisanes & Infusions</a>
                     </div>
                 </div>
                 <a href="index.html#contact" class="nav-link">Contact</a>
@@ -134,11 +132,9 @@
                     <h3 class="sidebar-title">Catégories</h3>
                     <ul class="sidebar-menu">
                         <li><button class="sidebar-filter-btn active" data-filter="all">Toute la boutique</button></li>
-                        <li><button class="sidebar-filter-btn" data-filter="infusions">Infusions & Tisanes</button></li>
+                        <li><button class="sidebar-filter-btn" data-filter="coffrets">Nos Coffrets</button></li>
                         <li><button class="sidebar-filter-btn" data-filter="accessoires">Accessoires de thé</button></li>
-                        <li><button class="sidebar-filter-btn" data-filter="bougies">Bougies & Parfums</button></li>
-                        <li><button class="sidebar-filter-btn" data-filter="savons">Savons & Soins naturels</button></li>
-                        <li><button class="sidebar-filter-btn" data-filter="lifestyle">Lifestyle & Détente</button></li>
+                        <li><button class="sidebar-filter-btn" data-filter="tisanes">Tisanes & Infusions</button></li>
                     </ul>
                 </aside>
 
@@ -1045,11 +1041,16 @@
             function renderProducts(filter = 'all', searchQuery = '') {
                 let filtered = productsData;
                 if (filter !== 'all') {
-                    filtered = filtered.filter(p => p.category === filter);
+                    filtered = filtered.filter(p => {
+                        if (p.category === filter) return true;
+                        if (filter === 'coffrets' && (p.category === 'box' || p.category === 'coffrets')) return true;
+                        if (filter === 'tisanes' && (p.category === 'infusions' || p.category === 'tisanes')) return true;
+                        return false;
+                    });
                 }
                 if (searchQuery) {
                     const q = searchQuery.toLowerCase();
-                    filtered = filtered.filter(p => p.title.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+                    filtered = filtered.filter(p => p.title.toLowerCase().includes(q) || (p.category && p.category.toLowerCase().includes(q)));
                 }
 
                 productsCount.textContent = filtered.length;
@@ -1069,8 +1070,29 @@
                     const heartClass = isLiked ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
                     const heartColor = isLiked ? 'style="color: #E2725B;"' : '';
                     
-                    let starsHTML = '';
-                    for (let i = 0; i < p.stars; i++) starsHTML += '<i class="fa-solid fa-star"></i>';
+                    // Catégorie réelle du produit
+                    const catMeta = (typeof window.getCategoryMeta === 'function') 
+                        ? window.getCategoryMeta(p.category) 
+                        : { name: p.categoryName || p.category };
+
+                    // Avis réels : Lien vers l'avis Google authentique pour le coffret, pas de fausses étoiles
+                    let reviewHTML = '';
+                    if (p.id === 1 || p.hasGoogleReview) {
+                        reviewHTML = `
+                            <a href="${p.googleReviewUrl || 'https://share.google/dgQhvFrvPj3LWtspy'}" target="_blank" rel="noopener" class="prod-google-review-badge" title="Consulter l'avis authentique sur Google" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 4px; font-size: 0.74rem; margin: 3px 0 6px 0;">
+                                <i class="fa-brands fa-google" style="color: #4285F4; font-size: 0.85rem;"></i>
+                                <span style="color: #FFB800;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+                                <strong style="color: #2F2A25;">5.0</strong>
+                                <span style="color: #777; text-decoration: underline;">(1 avis Google)</span>
+                            </a>
+                        `;
+                    } else {
+                        reviewHTML = `
+                            <div class="prod-artisan-badge" style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem; color: #4b6c4f; margin: 3px 0 6px 0;">
+                                <i class="fa-solid fa-seedling"></i> Fait main & naturel
+                            </div>
+                        `;
+                    }
                     
                     card.innerHTML = `
                         <div class="prod-img-wrapper">
@@ -1079,16 +1101,17 @@
                             <button class="prod-cart-btn-overlay add-to-cart-btn" aria-label="Ajouter au panier"><i class="fa-solid fa-plus"></i></button>
                         </div>
                         <div class="prod-details">
+                            <span class="prod-category-label" style="font-size: 0.72rem; color: #8C857E; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">${catMeta.name}</span>
                             <h3>${p.title}</h3>
                             <p class="prod-sub">${p.sub}</p>
-                            <div class="prod-stars">${starsHTML}<span class="prod-reviews-count">(${p.reviews})</span></div>
+                            ${reviewHTML}
                             <p class="prod-price">${p.price}</p>
                         </div>
                     `;
                     // Make the whole card clickable to product detail
                     card.addEventListener('click', (e) => {
                         // Prevent click when add-to-cart or heart button is clicked
-                        if (e.target.closest('.add-to-cart-btn') || e.target.closest('.prod-heart-btn')) return;
+                        if (e.target.closest('.add-to-cart-btn') || e.target.closest('.prod-heart-btn') || e.target.closest('.prod-google-review-badge')) return;
                         window.location.href = `product.html?id=${p.id}`;
                     });
                     productsGrid.appendChild(card);
@@ -1150,9 +1173,33 @@
                     btn.classList.add('active');
                     const filter = btn.getAttribute('data-filter');
                     currentFilter = filter;
-                renderProducts(filter, currentSearch);
+                    renderProducts(filter, currentSearch);
                 });
             });
+
+            // Détection et ajout dynamique de nouvelles catégories dans le menu latéral
+            const categoryList = document.querySelector('.sidebar-menu');
+            if (categoryList && typeof productsData !== 'undefined') {
+                const standardFilters = ['all', 'coffrets', 'accessoires', 'tisanes'];
+                const extraCategories = [...new Set(productsData.map(p => p.category))].filter(c => c && !standardFilters.includes(c) && c !== 'box' && c !== 'infusions');
+                
+                extraCategories.forEach(cat => {
+                    const catMeta = (typeof window.getCategoryMeta === 'function') ? window.getCategoryMeta(cat) : { name: cat };
+                    const li = document.createElement('li');
+                    const btn = document.createElement('button');
+                    btn.className = 'sidebar-filter-btn';
+                    btn.setAttribute('data-filter', cat);
+                    btn.textContent = catMeta.name;
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.sidebar-filter-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        currentFilter = cat;
+                        renderProducts(cat, currentSearch);
+                    });
+                    li.appendChild(btn);
+                    categoryList.appendChild(li);
+                });
+            }
 
             // Click View all button
             const btnViewAll = document.querySelector('.btn-view-all');

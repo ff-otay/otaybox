@@ -9,12 +9,120 @@
     document.documentElement.setAttribute('data-theme', saved);
 })();
 
-// Global Product Data
+// Global Categories Configuration (3 Catégories officielles + Extensibilité dynamique)
+window.OTAY_CATEGORIES = {
+    coffrets: {
+        id: 'coffrets',
+        slug: 'coffrets',
+        name: 'Nos Coffrets',
+        badge: 'Nos Coffrets',
+        icon: 'fa-box-open',
+        title: 'Nos Coffrets Bien-Être ÔTAY BOX',
+        desc: "L'harmonie parfaite entre infusions d'exception, céramiques artisanales et douceurs sensorielles réunies dans un coffret raffiné.",
+        cover: 'assets/category-coffrets.png',
+        link: 'boutique.html#coffrets'
+    },
+    accessoires: {
+        id: 'accessoires',
+        slug: 'accessoires',
+        name: 'Accessoires de thé',
+        badge: 'Accessoires',
+        icon: 'fa-mug-saucer',
+        title: 'Accessoires & Rituels de Thé',
+        desc: 'Des pièces artisanales raffinées, infuseurs en inox et mugs en céramique pour sublimer chaque instant de votre dégustation.',
+        cover: 'assets/category-accessoires.jpg',
+        link: 'boutique.html#accessoires'
+    },
+    tisanes: {
+        id: 'tisanes',
+        slug: 'tisanes',
+        name: 'Tisanes & Infusions',
+        badge: 'Tisanes & Infusions',
+        icon: 'fa-leaf',
+        title: 'Tisanes & Infusions Artisanales',
+        desc: "Des mélanges de plantes et d'arômes naturels soigneusement sélectionnés pour éveiller vos sens et vous offrir une parenthèse d'apaisement.",
+        cover: 'assets/category-tisanes.jpg',
+        link: 'boutique.html#tisanes'
+    }
+};
+
+/**
+ * Helper dynamique pour résoudre la catégorie d'un produit.
+ * Permet à l'administratrice d'ajouter n'importe quelle nouvelle catégorie dans le futur
+ * sans bloquer l'affichage : une nouvelle catégorie sera automatiquement formatée.
+ */
+window.getCategoryMeta = function(categoryKey) {
+    if (!categoryKey) return window.OTAY_CATEGORIES.coffrets;
+    const key = String(categoryKey).toLowerCase().trim();
+    // Alias rétrocompatibles
+    if (key === 'box' || key === 'coffret') return window.OTAY_CATEGORIES.coffrets;
+    if (key === 'infusions' || key === 'infusion' || key === 'tisane') return window.OTAY_CATEGORIES.tisanes;
+    if (key === 'accessoire') return window.OTAY_CATEGORIES.accessoires;
+    
+    if (window.OTAY_CATEGORIES[key]) {
+        return window.OTAY_CATEGORIES[key];
+    }
+    
+    // Détection et création dynamique pour toute nouvelle catégorie ajoutée
+    const formattedName = key.charAt(0).toUpperCase() + key.slice(1);
+    return {
+        id: key,
+        slug: key,
+        name: formattedName,
+        badge: formattedName,
+        icon: 'fa-tag',
+        title: `Collection ${formattedName}`,
+        desc: `Découvrez nos créations artisanales pour la catégorie ${formattedName}.`,
+        cover: 'assets/hero-image.webp',
+        link: `boutique.html#${key}`
+    };
+};
+
+// Global Product Data avec catégories réelles et avis réels Google
 const productsData = [
-    { id: 1, title: "Box Jardin de douceur", category: "infusions", sub: "Tisane artisanale", price: "59,00 TND", stars: 5, reviews: 56, img: "assets/produit.webp" },
-    { id: 6, title: "Infusette cuillère cœur", category: "accessoires", sub: "Accessoire en inox", price: "20,00 TND", stars: 5, reviews: 15, img: "assets/Infusette.webp" },
-    { id: 9, title: "3 Tisanes collection Jardin de douceur", category: "infusions", sub: "Douceur bien-être", price: "24,00 TND", stars: 5, reviews: 29, img: "assets/produit3.webp" },
-    { id: 2, title: "Bubble Mug en céramique", category: "accessoires", sub: "Accessoire artisanal", price: "25,00 TND", stars: 5, reviews: 23, img: "assets/produit1.webp" }
+    {
+        id: 1,
+        title: "Box Jardin de douceur",
+        category: "coffrets",
+        categoryName: "Nos Coffrets",
+        sub: "Coffret bien-être signature",
+        price: "59,00 TND",
+        hasGoogleReview: true,
+        googleRating: 5.0,
+        googleReviewCount: 1,
+        googleReviewUrl: "https://share.google/dgQhvFrvPj3LWtspy",
+        img: "assets/produit.webp"
+    },
+    {
+        id: 6,
+        title: "Infusette cuillère cœur",
+        category: "accessoires",
+        categoryName: "Accessoires",
+        sub: "Accessoire en inox",
+        price: "20,00 TND",
+        hasGoogleReview: false,
+        img: "assets/Infusette.webp"
+    },
+    {
+        id: 9,
+        title: "3 Tisanes collection Jardin de douceur",
+        category: "tisanes",
+        categoryName: "Tisanes & Infusions",
+        sub: "Douceur bien-être",
+        price: "24,00 TND",
+        hasGoogleReview: false,
+        img: "assets/produit3.webp"
+    },
+    {
+        id: 2,
+        title: "Bubble Mug en céramique",
+        category: "accessoires",
+        categoryName: "Accessoires",
+        sub: "Accessoire artisanal",
+        price: "25,00 TND",
+        hasGoogleReview: false,
+        img: "assets/produit1.webp"
+    }
 ];
 
 // Global Cart Management

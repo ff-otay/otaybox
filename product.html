@@ -18,10 +18,20 @@
 
     <style>
         /* Product Page Specific Styles */
+        .navbar {
+            background-color: #FAF8F5 !important;
+            border-bottom: 1px solid rgba(47, 42, 37, 0.08) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+        [data-theme="dark"] .navbar {
+            background-color: #181c19 !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+
         .product-page-main {
             background-color: #FAF8F5;
             min-height: 80vh;
-            padding-top: 3.5rem;
+            padding-top: 2.5rem;
             padding-bottom: 4rem;
         }
 
@@ -29,9 +39,9 @@
         .category-cover-hero {
             position: relative;
             width: 100%;
-            min-height: 290px;
-            padding-top: 7.5rem;
-            padding-bottom: 3rem;
+            margin-top: 76px; /* Sits cleanly below fixed navbar */
+            min-height: 250px;
+            padding: 3rem 1.5rem;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -47,7 +57,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(35, 40, 36, 0.82) 0%, rgba(75, 108, 79, 0.72) 100%);
+            /* Warm natural vignette showing the authentic photo with excellent contrast */
+            background: linear-gradient(90deg, rgba(35, 30, 26, 0.82) 0%, rgba(47, 42, 37, 0.58) 55%, rgba(47, 42, 37, 0.30) 100%);
             z-index: 1;
         }
         .category-cover-content {
@@ -464,11 +475,9 @@
                 <div class="nav-item-dropdown">
                     <a href="boutique.html" class="nav-link">Boutique <i class="fa-solid fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
                     <div class="dropdown-menu">
-                        <a href="boutique.html#infusions" class="dropdown-link">Infusions & Tisanes</a>
+                        <a href="boutique.html#coffrets" class="dropdown-link">Nos Coffrets</a>
                         <a href="boutique.html#accessoires" class="dropdown-link">Accessoires de thé</a>
-                        <a href="boutique.html#bougies" class="dropdown-link">Bougies & Parfums</a>
-                        <a href="boutique.html#savons" class="dropdown-link">Savons & Soins naturels</a>
-                        <a href="boutique.html#lifestyle" class="dropdown-link">Lifestyle & Détente</a>
+                        <a href="boutique.html#tisanes" class="dropdown-link">Tisanes & Infusions</a>
                     </div>
                 </div>
                 <a href="index.html#contact" class="nav-link">Contact</a>
@@ -634,76 +643,21 @@
                 product = productsData[0]; // fallback
             }
 
-            // Category metadata with cover photos and styling
-            const categoryMetadata = {
-                infusions: {
-                    name: "Infusions & Tisanes",
-                    badge: "Collection Infusions & Tisanes",
-                    icon: "fa-leaf",
-                    title: "Infusions & Tisanes Artisanales",
-                    desc: "Des mélanges de plantes et d'arômes naturels soigneusement sélectionnés pour éveiller vos sens et vous offrir une parenthèse de sérénité.",
-                    cover: "assets/herbal_infusions_tea_1779202539010.webp",
-                    link: "boutique.html#infusions",
-                    linkLabel: "Explorer la collection Infusions"
-                },
-                accessoires: {
-                    name: "Accessoires de thé",
-                    badge: "Collection Accessoires de Thé",
-                    icon: "fa-mug-saucer",
-                    title: "Accessoires & Rituels de Thé",
-                    desc: "Des pièces raffinées, tasses en céramique et infuseurs façonnés pour sublimer chaque geste de votre rituel de dégustation.",
-                    cover: "assets/tea_accessory_mug_1779202706641.png",
-                    link: "boutique.html#accessoires",
-                    linkLabel: "Explorer nos accessoires"
-                },
-                bougies: {
-                    name: "Bougies & Parfums",
-                    badge: "Collection Bougies & Parfums",
-                    icon: "fa-fire-flame-curved",
-                    title: "Bougies & Parfums d'Ambiance",
-                    desc: "Des senteurs chaudes et réconfortantes pour créer un cocon de douceur et illuminer vos soirées d'une lueur apaisante.",
-                    cover: "assets/cover-conf.jpg",
-                    link: "boutique.html#bougies",
-                    linkLabel: "Explorer nos bougies & senteurs"
-                },
-                savons: {
-                    name: "Savons & Soins naturels",
-                    badge: "Collection Savons & Soins",
-                    icon: "fa-pump-soap",
-                    title: "Savons & Soins Naturels",
-                    desc: "Des créations artisanales douces et respectueuses, enrichies en ingrédients naturels pour choyer délicatement votre peau.",
-                    cover: "assets/cover-cgv.jpg",
-                    link: "boutique.html#savons",
-                    linkLabel: "Explorer nos soins naturels"
-                },
-                lifestyle: {
-                    name: "Lifestyle & Détente",
-                    badge: "Collection Lifestyle & Détente",
-                    icon: "fa-spa",
-                    title: "Lifestyle & Art de Vivre",
-                    desc: "Des objets réconfortants et poétiques conçus pour ralentir, cultiver la bienveillance et savourer l'instant présent.",
-                    cover: "assets/yukon-haughton-Fkt0y2UZg88-unsplash.webp",
-                    link: "boutique.html#lifestyle",
-                    linkLabel: "Explorer l'univers Lifestyle"
-                },
-                box: {
-                    name: "Nos Box & Coffrets",
-                    badge: "Coffrets Signatures ÔTAY",
+            // Résolution dynamique de la catégorie via window.getCategoryMeta (permet d'ajouter n'importe quelle catégorie)
+            const catInfo = (typeof window.getCategoryMeta === 'function') 
+                ? window.getCategoryMeta(product.category) 
+                : {
+                    name: "Nos Coffrets",
+                    badge: "Nos Coffrets",
                     icon: "fa-box-open",
                     title: "Nos Coffrets Bien-Être ÔTAY BOX",
-                    desc: "L'harmonie parfaite entre infusions d'exception, céramiques artisanales et surprises sensorielles, réunies dans un écrin élégant.",
-                    cover: "assets/hero-image.webp",
-                    link: "box-detail.html",
-                    linkLabel: "Découvrir tous les coffrets"
-                }
-            };
+                    desc: "L'harmonie parfaite entre infusions d'exception et céramiques artisanales.",
+                    cover: "assets/category-coffrets.png",
+                    link: "boutique.html#coffrets",
+                    linkLabel: "Explorer la collection"
+                };
 
-            const catKey = (product.category && categoryMetadata[product.category.toLowerCase()]) 
-                ? product.category.toLowerCase() 
-                : 'infusions';
-            const catInfo = categoryMetadata[catKey];
-
-            // Update dynamic cover banner
+            // Mise à jour de la bannière de couverture
             const heroCover = document.getElementById('category-cover-hero');
             const catIcon = document.getElementById('cat-cover-icon');
             const catBadgeText = document.getElementById('cat-cover-badge-text');
@@ -719,7 +673,7 @@
             if (catDesc) catDesc.textContent = catInfo.desc;
             if (catLink && catLinkText) {
                 catLink.href = catInfo.link;
-                catLinkText.textContent = catInfo.linkLabel;
+                catLinkText.textContent = catInfo.linkLabel || `Explorer nos ${catInfo.name}`;
             }
 
 			const schema = {
@@ -754,8 +708,29 @@ document.head.appendChild(scriptSchema);
             const relatedContainer = document.getElementById('related-products');
             
             if (container && extraInfo && relatedContainer) {
-                let starsHTML = '';
-                for (let i = 0; i < product.stars; i++) starsHTML += '<i class="fa-solid fa-star"></i>';
+                // Gestion des avis réels : Lien vers l'avis Google authentique pour le coffret, pas de fausses étoiles
+                let ratingHTML = '';
+                if (product.id === 1 || product.hasGoogleReview) {
+                    ratingHTML = `
+                        <div class="product-rating">
+                            <a href="${product.googleReviewUrl || 'https://share.google/dgQhvFrvPj3LWtspy'}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: inherit;" title="Consulter l'avis authentique sur Google">
+                                <i class="fa-brands fa-google" style="color: #4285F4; font-size: 1.05rem;"></i>
+                                <span style="color: #FFB800;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+                                <strong style="color: #2F2A25;">5.0</strong>
+                                <span style="text-decoration: underline; color: #6E6862; font-size: 0.85rem;">(1 avis Google vérifié &rarr;)</span>
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    ratingHTML = `
+                        <div class="product-rating" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #4b6c4f;">
+                            <i class="fa-solid fa-seedling"></i>
+                            <span>Produit artisanal authentique</span>
+                            <span style="color: #ccc;">•</span>
+                            <a href="https://share.google/dgQhvFrvPj3LWtspy" target="_blank" rel="noopener" style="color: #6E6862; text-decoration: underline; font-size: 0.8rem;">Avis vérifiés sur Google</a>
+                        </div>
+                    `;
+                }
                 
                 container.innerHTML = `
                     <div class="product-gallery">
@@ -782,7 +757,7 @@ document.head.appendChild(scriptSchema);
                         
                         <div class="product-price-row">
                             <div class="product-price">${product.price}</div>
-                            <div class="product-rating">${starsHTML} <span>(${product.reviews} avis)</span></div>
+                            ${ratingHTML}
                         </div>
                         
                         <div class="product-short-desc">
@@ -856,7 +831,7 @@ document.head.appendChild(scriptSchema);
                     }
                 });
                 
-                // Render Related Products
+                // Render Related Products (sans fausses étoiles)
                 const relatedGrid = document.getElementById('related-products-grid');
                 let related = productsData.filter(p => p.category === product.category && p.id !== product.id);
                 if (related.length === 0) {
@@ -870,8 +845,13 @@ document.head.appendChild(scriptSchema);
                     const card = document.createElement('div');
                     card.className = 'product-card-mock'; 
                     
-                    let pStars = '';
-                    for (let i = 0; i < p.stars; i++) pStars += '<i class="fa-solid fa-star"></i>';
+                    const pCatMeta = (typeof window.getCategoryMeta === 'function') ? window.getCategoryMeta(p.category) : { name: p.category };
+                    let pReviewHTML = '';
+                    if (p.id === 1 || p.hasGoogleReview) {
+                        pReviewHTML = `<div style="display: flex; align-items: center; gap: 4px; color: #555; font-size: 0.72rem; margin-bottom: 8px;"><i class="fa-brands fa-google" style="color: #4285F4;"></i> <i class="fa-solid fa-star" style="color: #FFB800;"></i> <strong>5.0</strong> (1 avis)</div>`;
+                    } else {
+                        pReviewHTML = `<div style="display: flex; align-items: center; gap: 4px; color: #4b6c4f; font-size: 0.72rem; margin-bottom: 8px;"><i class="fa-solid fa-seedling"></i> Fait main & naturel</div>`;
+                    }
                     
                     card.innerHTML = `
                         <div class="prod-img-wrapper" style="position: relative; width: 100%; padding-top: 100%; overflow: hidden; background: #F8F6F2;">
@@ -881,12 +861,33 @@ document.head.appendChild(scriptSchema);
                             </button>
                         </div>
                         <div class="prod-details" style="padding: 1.2rem; display: flex; flex-direction: column; flex-grow: 1;">
+                            <span style="font-size: 0.7rem; color: #8C857E; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">${pCatMeta.name}</span>
                             <h3 style="font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 500; color: #2F2A25; margin-bottom: 4px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${p.title}</h3>
-                            <p class="prod-sub" style="font-size: 0.75rem; color: #8C857E; margin-bottom: 8px;">${p.sub}</p>
-                            <div class="prod-stars" style="display: flex; align-items: center; gap: 2px; color: #FFB800; font-size: 0.7rem; margin-bottom: 10px;">${pStars}</div>
+                            <p class="prod-sub" style="font-size: 0.75rem; color: #8C857E; margin-bottom: 6px;">${p.sub}</p>
+                            ${pReviewHTML}
                             <p class="prod-price" style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.95rem; color: #2F2A25; margin-top: auto;">${p.price}</p>
                         </div>
                     `;
+                    
+                    card.addEventListener('click', (e) => {
+                        if (e.target.closest('.rel-add-btn')) return;
+                        window.location.href = `product.html?id=${p.id}`;
+                    });
+                    
+                    const relAddBtn = card.querySelector('.rel-add-btn');
+                    relAddBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        if (window.otayCart) {
+                            window.otayCart.add(p, 1);
+                        }
+                        const og = this.innerHTML;
+                        this.innerHTML = '<i class="fa-solid fa-check"></i>';
+                        setTimeout(() => { this.innerHTML = og; }, 2000);
+                    });
+                    
+                    relatedGrid.appendChild(card);
+                });
                     
                     card.addEventListener('click', (e) => {
                         if (e.target.closest('.rel-add-btn')) return;

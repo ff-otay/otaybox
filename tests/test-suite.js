@@ -253,6 +253,22 @@ async function main() {
         }
     });
 
+    // TEST 12 : Système de notification de commande (Email & Téléphone)
+    await runAsyncTest('Test 12 : Configuration et émission des notifications de commande', async () => {
+        const settings = await OtayAPI.getNotificationSettings();
+        assert(settings, "Les paramètres de notification doivent être accessibles");
+        assert.strictEqual(settings.admin_email, 'contact@otaybox.tn', "Email administrateur par défaut");
+
+        const notifyRes = await OtayAPI.notifyNewOrder({
+            orderNumber: 'OTB-CMD-2026-TEST',
+            total: 59.000,
+            customer: { clientName: 'Foulen Ben Foulen', clientPhone: '+216 54 000 000', governorate: 'Tunis', city: 'Marsa', address: 'Rue des Fleurs' },
+            items: [{ name: 'Box Jardin de douceur', qty: 1, price: 59.000 }]
+        });
+        assert(notifyRes.notified, "L'émission de notification doit être validée");
+        assert(notifyRes.text.includes('OTB-CMD-2026-TEST'), "Le texte de notification doit contenir le numéro de commande");
+    });
+
     console.log(`\n=== RÉSULTATS : ${passedTests} / ${totalTests} TESTS RÉUSSIS (100%) ===\n`);
 }
 

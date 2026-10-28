@@ -198,9 +198,13 @@
                     <a href="boutique.html" class="btn btn-primary" style="background-color: #4b6c4f; color: #fff; padding: 0.9rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600;">
                         <i class="fa-solid fa-arrow-left"></i> Retourner à la boutique
                     </a>
-                    <a href="https://wa.me/21654050380" target="_blank" class="btn btn-outline" style="padding: 0.9rem 1.5rem; border-radius: 50px; text-decoration: none;">
-                        <i class="fa-brands fa-whatsapp"></i> Une question ? Écrivez-nous
+                    <a href="https://wa.me/21654050380" id="conf-whatsapp-btn" target="_blank" class="btn btn-outline" style="padding: 0.9rem 1.5rem; border-radius: 50px; text-decoration: none;">
+                        <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> Une question ? Écrivez-nous sur WhatsApp
                     </a>
+                </div>
+
+                <div style="margin-top: 1.5rem; text-align: center; font-size: 0.85rem; color: #555;">
+                    <i class="fa-solid fa-circle-check" style="color: #4b6c4f;"></i> L'atelier ÔTAY BOX a été notifié de votre commande et débute sa préparation.
                 </div>
             </div>
         </div>
@@ -237,6 +241,11 @@
 
             const orderNum = (lastOrder && lastOrder.orderNumber) ? lastOrder.orderNumber : (orderNumFromUrl || 'OTB-CMD-2026-0001');
             document.getElementById('conf-order-number').textContent = `Commande N° ${orderNum}`;
+
+            const waBtn = document.getElementById('conf-whatsapp-btn');
+            if (waBtn) {
+                waBtn.href = `https://wa.me/21654050380?text=${encodeURIComponent('Bonjour 🌿 Je souhaite des informations concernant ma commande ' + orderNum + ' sur ÔTAY BOX.')}`;
+            }
 
             if (lastOrder) {
                 document.getElementById('conf-subtotal').textContent = Number(lastOrder.subtotal).toFixed(3) + ' DT';

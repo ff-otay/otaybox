@@ -121,6 +121,75 @@
                 </form>
             </div>
 
+            <!-- Paramètres des Notifications de Commande (E-mail & Smartphone) -->
+            <div class="panel-card" style="margin-bottom: 2rem;">
+                <div class="panel-card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 class="panel-card-title"><i class="fa-solid fa-bell"></i> Notifications de Nouvelles Commandes (E-mail & Smartphone)</h2>
+                    <span style="font-size: 0.8rem; background: rgba(75, 108, 79, 0.12); color: #4b6c4f; padding: 4px 10px; border-radius: 50px; font-weight: 600;">
+                        <i class="fa-solid fa-bolt"></i> Alertes en temps réel
+                    </span>
+                </div>
+                <form id="notification-settings-form" style="padding: 1.5rem;">
+                    <p style="font-size: 0.85rem; color: var(--brand-muted); margin-bottom: 1.25rem; line-height: 1.5;">
+                        Soyez informée instantanément à chaque nouvelle commande passée sur <strong>otaybox.tn</strong>, sur votre téléphone portable et/ou par e-mail.
+                    </p>
+
+                    <div style="margin-bottom: 1.25rem;">
+                        <label style="display: flex; align-items: center; gap: 10px; font-weight: 600; cursor: pointer;">
+                            <input type="checkbox" id="set-notif-enabled" checked style="width: 18px; height: 18px; accent-color: #4b6c4f;">
+                            <span>Activer les notifications automatiques lors d'une nouvelle commande</span>
+                        </label>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.25rem;">
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">
+                                <i class="fa-regular fa-envelope" style="color: #4b6c4f;"></i> E-mail de notification
+                            </label>
+                            <input type="email" id="set-notif-email" class="filter-select" style="width: 100%;" value="contact@otaybox.tn" required>
+                            <span style="font-size: 0.75rem; color: var(--brand-muted);">Adresse qui recevra le récapitulatif complet de chaque commande.</span>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">
+                                <i class="fa-solid fa-globe" style="color: #4b6c4f;"></i> Webhook E-mail (ex: Formspree / Resend)
+                            </label>
+                            <input type="url" id="set-notif-webhook" class="filter-select" style="width: 100%;" placeholder="https://formspree.io/f/votre-cle">
+                            <span style="font-size: 0.75rem; color: var(--brand-muted);">Optionnel : URL de votre service mail (ex: Formspree gratuit).</span>
+                        </div>
+                    </div>
+
+                    <!-- Notification Téléphone Instantanée via Telegram -->
+                    <div style="background: #f8faf8; border: 1px solid rgba(75, 108, 79, 0.2); border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.75rem;">
+                            <i class="fa-brands fa-telegram" style="font-size: 1.4rem; color: #2AABEE;"></i>
+                            <strong style="font-size: 0.95rem;">Alerte Push sur Smartphone via Telegram (100% Gratuit & Instantané)</strong>
+                        </div>
+                        <p style="font-size: 0.82rem; color: #555; line-height: 1.5; margin-bottom: 1rem;">
+                            Permet à votre téléphone de sonner et vibrer dès qu'une commande est validée, avec le détail complet du client, de l'adresse et des articles.
+                        </p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 4px;">Telegram Bot Token</label>
+                                <input type="text" id="set-notif-tg-token" class="filter-select" style="width: 100%; font-family: monospace; font-size: 0.8rem;" placeholder="Ex: 123456789:ABCdefGhIJKlmNoPQR">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 4px;">Telegram Chat ID</label>
+                                <input type="text" id="set-notif-tg-chat" class="filter-select" style="width: 100%; font-family: monospace; font-size: 0.8rem;" placeholder="Ex: 987654321">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                        <button type="submit" class="btn-primary" id="btn-save-notif">
+                            <i class="fa-solid fa-check"></i> Enregistrer les alertes
+                        </button>
+                        <button type="button" class="btn-secondary" id="btn-test-notif" style="padding: 10px 18px; border-radius: 6px; border: 1px solid #4b6c4f; background: transparent; color: #4b6c4f; font-weight: 600; cursor: pointer;">
+                            <i class="fa-solid fa-paper-plane"></i> Tester l'envoi de notification
+                        </button>
+                    </div>
+                </form>
+            </div>
+
             <!-- Mentions Légales & Identifiants Tunisiens pour Devis et Factures -->
             <div class="panel-card">
                 <div class="panel-card-header">
@@ -217,6 +286,16 @@
             document.getElementById('set-shipping-fee').value = rules.standardFee;
             document.getElementById('set-free-threshold').value = rules.freeThreshold;
 
+            // Chargement paramètres notifications
+            const notifSettings = await window.OtayAPI.getNotificationSettings();
+            if (notifSettings) {
+                document.getElementById('set-notif-enabled').checked = notifSettings.enabled !== false;
+                document.getElementById('set-notif-email').value = notifSettings.admin_email || 'contact@otaybox.tn';
+                document.getElementById('set-notif-webhook').value = notifSettings.email_webhook_url || '';
+                document.getElementById('set-notif-tg-token').value = notifSettings.telegram_bot_token || '';
+                document.getElementById('set-notif-tg-chat').value = notifSettings.telegram_chat_id || '';
+            }
+
             // Formulaires de sauvegarde
             document.getElementById('shipping-settings-form').addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -225,6 +304,67 @@
                 window.OTAY_CONFIG.SHIPPING_STANDARD_FEE = fee;
                 window.OTAY_CONFIG.SHIPPING_FREE_THRESHOLD = thresh;
                 alert("Règles de livraison mises à jour avec succès !");
+            });
+
+            document.getElementById('notification-settings-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-save-notif');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enregistrement...';
+
+                const newSettings = {
+                    enabled: document.getElementById('set-notif-enabled').checked,
+                    admin_email: document.getElementById('set-notif-email').value.trim(),
+                    email_webhook_url: document.getElementById('set-notif-webhook').value.trim(),
+                    telegram_bot_token: document.getElementById('set-notif-tg-token').value.trim(),
+                    telegram_chat_id: document.getElementById('set-notif-tg-chat').value.trim(),
+                    whatsapp_notify: true
+                };
+
+                await window.OtayAPI.saveNotificationSettings(newSettings);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Enregistré !';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Enregistrer les alertes';
+                }, 2000);
+            });
+
+            document.getElementById('btn-test-notif').addEventListener('click', async () => {
+                const testBtn = document.getElementById('btn-test-notif');
+                testBtn.disabled = true;
+                testBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi du test...';
+
+                const testOrder = {
+                    orderNumber: 'OTB-CMD-2026-TEST',
+                    total: 59.000,
+                    customer: {
+                        clientName: 'Test Administratrice',
+                        clientPhone: '+216 54 050 380',
+                        governorate: 'Tunis',
+                        city: 'La Marsa',
+                        address: 'Boutique Test ÔTAY'
+                    },
+                    items: [
+                        { name: 'Box Jardin de douceur (Test)', qty: 1, price: 59.000 }
+                    ]
+                };
+
+                const res = await window.OtayAPI.notifyNewOrder(testOrder);
+                testBtn.disabled = false;
+                testBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Tester l\'envoi de notification';
+
+                let msg = "Résultat du test de notification :\n";
+                if (res.results && res.results.telegram) msg += "✅ Alerte Telegram envoyée avec succès sur votre téléphone !\n";
+                else if (document.getElementById('set-notif-tg-token').value) msg += "⚠️ Erreur Telegram : vérifiez votre Token et Chat ID.\n";
+                
+                if (res.results && res.results.email) msg += "✅ Webhook e-mail déclenché avec succès !\n";
+                else if (document.getElementById('set-notif-webhook').value) msg += "⚠️ Erreur Webhook e-mail : vérifiez l'URL fournie.\n";
+
+                if (!document.getElementById('set-notif-tg-token').value && !document.getElementById('set-notif-webhook').value) {
+                    msg += "ℹ️ Message de notification généré avec succès :\n\n" + res.text;
+                }
+
+                alert(msg);
             });
 
             document.getElementById('legal-settings-form').addEventListener('submit', (e) => {
