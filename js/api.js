@@ -336,10 +336,12 @@
                 admin_email: (window.OTAY_CONFIG && window.OTAY_CONFIG.ADMIN_NOTIFICATION_EMAIL) || 'contact@otaybox.tn',
                 admin_phone: '+216 54 050 380',
                 ntfy_topic: 'otaybox-commandes-2026',
+                resend_api_key: '',
+                resend_from: 'ÔTAY BOX <onboarding@resend.dev>',
                 email_webhook_url: '',
                 telegram_bot_token: '',
                 telegram_chat_id: '',
-                whatsapp_notify: true
+                whatsapp_notify: false
             };
         },
 
@@ -392,7 +394,7 @@ ${itemsList}
 
 🔗 Dashboard : https://otaybox.tn/admin/`;
 
-                const results = { ntfy: false, telegram: false, email: false };
+                const results = { ntfy: false, telegram: false, email: false, resend: false };
 
                 // 1. Notification Smartphone instantanée Push (ntfy.sh - 100% gratuit, sans token, alerte sonore directe sur mobile)
                 try {
@@ -429,7 +431,85 @@ ${itemsList}
                     }
                 }
 
-                // 2. Notification Email via Webhook (Formspree / Resend / Service mail)
+                // 3. Notification Email Transactionnel via Resend (https://resend.com)
+                if (settings.resend_api_key) {
+                    try {
+                        const itemsTable = (orderData.items || []).map(i => {
+                            const unit = (i.price || i.unit_price || 0).toFixed(3);
+                            const qty = i.qty || i.quantity || 1;
+                            const lineTotal = ((i.price || i.unit_price || 0) * qty).toFixed(3);
+                            return `<tr>
+                                <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>${qty}x</strong> ${i.name || i.title || i.product_name}</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">${unit} DT</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right; font-weight: bold; color: #4b6c4f;">${lineTotal} DT</td>
+                            </tr>`;
+                        }).join('');
+
+                        const emailHtml = `
+                            <div style="font-family: Arial, sans-serif; max-width: 620px; margin: 0 auto; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden; background: #ffffff;">
+                                <div style="background-color: #4b6c4f; padding: 25px 20px; text-align: center; color: #ffffff;">
+                                    <h1 style="margin: 0; font-size: 26px; letter-spacing: 2px;">ÔTAY BOX</h1>
+                                    <p style="margin: 6px 0 0; font-size: 14px; opacity: 0.95;">Nouvelle commande reçue sur otaybox.tn</p>
+                                </div>
+                                <div style="padding: 25px; background-color: #faf8f5;">
+                                    <div style="background-color: #ffffff; padding: 18px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #4b6c4f; box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+                                        <h2 style="margin: 0 0 8px; font-size: 19px; color: #2f2a25;">Commande #${orderData.orderNumber}</h2>
+                                        <p style="margin: 4px 0; color: #555; font-size: 14px;"><strong>Montant total à encaisser :</strong> <span style="font-size: 18px; font-weight: bold; color: #4b6c4f;">${totalFormatted}</span></p>
+                                        <p style="margin: 4px 0; color: #777; font-size: 13px;">Paiement à la livraison</p>
+                                    </div>
+
+                                    <h3 style="color: #2f2a25; font-size: 16px; border-bottom: 2px solid #4b6c4f; padding-bottom: 6px; margin-top: 20px;">Client & Coordonnées de livraison</h3>
+                                    <table style="width: 100%; font-size: 14px; color: #333; line-height: 1.6;">
+                                        <tr><td style="width: 130px; font-weight: bold;">Nom :</td><td>${customer.clientName || customer.client_name || 'N/A'}</td></tr>
+                                        <tr><td style="font-weight: bold;">Téléphone :</td><td><a href="tel:${customer.clientPhone || customer.client_phone}" style="color: #4b6c4f; font-weight: bold; text-decoration: underline;">${customer.clientPhone || customer.client_phone || 'N/A'}</a></td></tr>
+                                        <tr><td style="font-weight: bold;">Email :</td><td>${customer.clientEmail || customer.client_email || 'Non communiqué'}</td></tr>
+                                        <tr><td style="font-weight: bold;">Gouvernorat :</td><td>${customer.governorate || ''}</td></tr>
+                                        <tr><td style="font-weight: bold;">Ville :</td><td>${customer.city || ''}</td></tr>
+                                        <tr><td style="font-weight: bold;">Adresse exacte :</td><td>${customer.address || ''}</td></tr>
+                                        ${customer.deliveryNotes ? `<tr><td style="font-weight: bold;">Notes :</td><td style="color: #c0392b;">${customer.deliveryNotes}</td></tr>` : ''}
+                                    </table>
+
+                                    <h3 style="color: #2f2a25; font-size: 16px; border-bottom: 2px solid #4b6c4f; padding-bottom: 6px; margin-top: 25px;">Articles commandés</h3>
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 14px; background: #ffffff; border-radius: 6px;">
+                                        <thead>
+                                            <tr style="background: #f0ede6; text-align: left;">
+                                                <th style="padding: 10px;">Article</th>
+                                                <th style="padding: 10px; text-align: right;">Prix unitaire</th>
+                                                <th style="padding: 10px; text-align: right;">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${itemsTable}
+                                        </tbody>
+                                    </table>
+
+                                    <div style="margin-top: 30px; text-align: center;">
+                                        <a href="https://otaybox.tn/admin/" style="background-color: #4b6c4f; color: #ffffff; padding: 13px 28px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px; display: inline-block;">Ouvrir le Dashboard Admin</a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        const resendRes = await fetch('https://api.resend.com/emails', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${settings.resend_api_key}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                from: settings.resend_from || 'ÔTAY BOX <onboarding@resend.dev>',
+                                to: [settings.admin_email || 'contact@otaybox.tn'],
+                                subject: `📦 Nouvelle commande ÔTAY BOX #${orderData.orderNumber} (${totalFormatted})`,
+                                html: emailHtml
+                            })
+                        });
+                        results.resend = resendRes.ok;
+                    } catch (resendErr) {
+                        console.warn('Erreur envoi notification Resend:', resendErr);
+                    }
+                }
+
+                // 4. Notification Email via Webhook (Supabase Edge Function / Formspree / Make)
                 if (settings.email_webhook_url) {
                     try {
                         const emailRes = await fetch(settings.email_webhook_url, {

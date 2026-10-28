@@ -55,7 +55,7 @@
                 <div class="nav-item-dropdown">
                     <a href="boutique.html" class="nav-link active">Boutique <i class="fa-solid fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
                     <div class="dropdown-menu">
-                        <a href="boutique.html#coffrets" class="dropdown-link">Nos Coffrets</a>
+                        <a href="boutique.html#coffrets" class="dropdown-link">Nos Box</a>
                         <a href="boutique.html#accessoires" class="dropdown-link">Accessoires de thé</a>
                         <a href="boutique.html#tisanes" class="dropdown-link">Tisanes & Infusions</a>
                     </div>
@@ -132,7 +132,7 @@
                     <h3 class="sidebar-title">Catégories</h3>
                     <ul class="sidebar-menu">
                         <li><button class="sidebar-filter-btn active" data-filter="all">Toute la boutique</button></li>
-                        <li><button class="sidebar-filter-btn" data-filter="coffrets">Nos Coffrets</button></li>
+                        <li><button class="sidebar-filter-btn" data-filter="coffrets">Nos Box</button></li>
                         <li><button class="sidebar-filter-btn" data-filter="accessoires">Accessoires de thé</button></li>
                         <li><button class="sidebar-filter-btn" data-filter="tisanes">Tisanes & Infusions</button></li>
                     </ul>
@@ -1106,7 +1106,11 @@
                     card.addEventListener('click', (e) => {
                         // Prevent click when add-to-cart or heart button is clicked
                         if (e.target.closest('.add-to-cart-btn') || e.target.closest('.prod-heart-btn') || e.target.closest('.prod-google-review-badge')) return;
-                        window.location.href = `product.html?id=${p.id}`;
+                        if (p.id === 1 || p.category === 'box' || p.link === 'box-detail.html') {
+                            window.location.href = 'box-detail.html';
+                        } else {
+                            window.location.href = `product.html?id=${p.id}`;
+                        }
                     });
                     productsGrid.appendChild(card);
                 });

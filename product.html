@@ -475,7 +475,7 @@
                 <div class="nav-item-dropdown">
                     <a href="boutique.html" class="nav-link">Boutique <i class="fa-solid fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
                     <div class="dropdown-menu">
-                        <a href="boutique.html#coffrets" class="dropdown-link">Nos Coffrets</a>
+                        <a href="boutique.html#coffrets" class="dropdown-link">Nos Box</a>
                         <a href="boutique.html#accessoires" class="dropdown-link">Accessoires de thé</a>
                         <a href="boutique.html#tisanes" class="dropdown-link">Tisanes & Infusions</a>
                     </div>
@@ -519,18 +519,18 @@
     </header>
 
     <!-- Category Cover Hero Banner -->
-    <section class="category-cover-hero" id="category-cover-hero" aria-label="Catégorie du produit" style="background-image: url('assets/category-coffrets.jpg');">
+    <section class="category-cover-hero" id="category-cover-hero" aria-label="Catégorie du produit" style="background-image: url('assets/category-nos-box-cover.jpg');">
         <div class="category-cover-overlay"></div>
         <div class="container category-cover-content">
             <div class="category-cover-badge" id="cat-cover-badge">
                 <i class="fa-solid fa-box-open" id="cat-cover-icon"></i>
-                <span id="cat-cover-badge-text">Nos Coffrets</span>
+                <span id="cat-cover-badge-text">Nos Box</span>
             </div>
-            <h1 class="category-cover-heading" id="cat-cover-title">Nos Coffrets Bien-Être ÔTAY BOX</h1>
+            <h1 class="category-cover-heading" id="cat-cover-title">Nos Box Bien-Être ÔTAY BOX</h1>
             <p class="category-cover-desc" id="cat-cover-desc">L'harmonie parfaite entre infusions d'exception et céramiques artisanales.</p>
             <div>
-                <a href="boutique.html#coffrets" class="category-cover-link" id="cat-cover-link">
-                    <span id="cat-cover-link-text">Explorer nos Coffrets</span>
+                <a href="box-detail.html" class="category-cover-link" id="cat-cover-link">
+                    <span id="cat-cover-link-text">Découvrir nos Box</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
@@ -647,14 +647,14 @@
             const catInfo = (typeof window.getCategoryMeta === 'function') 
                 ? window.getCategoryMeta(product.category) 
                 : {
-                    name: "Nos Coffrets",
-                    badge: "Nos Coffrets",
+                    name: "Nos Box",
+                    badge: "Nos Box",
                     icon: "fa-box-open",
-                    title: "Nos Coffrets Bien-Être ÔTAY BOX",
+                    title: "Nos Box Bien-Être ÔTAY BOX",
                     desc: "L'harmonie parfaite entre infusions d'exception et céramiques artisanales.",
-                    cover: "assets/category-coffrets.jpg",
-                    link: "boutique.html#coffrets",
-                    linkLabel: "Explorer la collection"
+                    cover: "assets/category-nos-box-cover.jpg",
+                    link: "box-detail.html",
+                    linkLabel: "Découvrir nos Box"
                 };
 
             // Mise à jour de la bannière de couverture
@@ -862,7 +862,11 @@ document.head.appendChild(scriptSchema);
                     
                     card.addEventListener('click', (e) => {
                         if (e.target.closest('.rel-add-btn')) return;
-                        window.location.href = `product.html?id=${p.id}`;
+                        if (p.id === 1 || p.category === 'box' || p.link === 'box-detail.html') {
+                            window.location.href = 'box-detail.html';
+                        } else {
+                            window.location.href = `product.html?id=${p.id}`;
+                        }
                     });
                     
                     const relAddBtn = card.querySelector('.rel-add-btn');

@@ -14,13 +14,13 @@ window.OTAY_CATEGORIES = {
     coffrets: {
         id: 'coffrets',
         slug: 'coffrets',
-        name: 'Nos Coffrets',
-        badge: 'Nos Coffrets',
+        name: 'Nos Box',
+        badge: 'Nos Box',
         icon: 'fa-box-open',
-        title: 'Nos Coffrets Bien-Être ÔTAY BOX',
-        desc: "L'harmonie parfaite entre infusions d'exception, céramiques artisanales et douceurs sensorielles réunies dans un coffret raffiné.",
-        cover: 'assets/category-coffrets.jpg',
-        link: 'boutique.html#coffrets'
+        title: 'Nos Box Bien-Être ÔTAY BOX',
+        desc: "L'harmonie parfaite entre infusions d'exception, céramiques artisanales et douceurs sensorielles réunies dans une box raffinée.",
+        cover: 'assets/category-nos-box-cover.jpg',
+        link: 'box-detail.html'
     },
     accessoires: {
         id: 'accessoires',
@@ -30,7 +30,7 @@ window.OTAY_CATEGORIES = {
         icon: 'fa-mug-saucer',
         title: 'Accessoires & Rituels de Thé',
         desc: 'Des pièces artisanales raffinées, infuseurs en inox et mugs en céramique pour sublimer chaque instant de votre dégustation.',
-        cover: 'assets/category-accessoires.jpg',
+        cover: 'assets/category-accessoires-cover.jpg',
         link: 'boutique.html#accessoires'
     },
     tisanes: {
@@ -41,7 +41,7 @@ window.OTAY_CATEGORIES = {
         icon: 'fa-leaf',
         title: 'Tisanes & Infusions Artisanales',
         desc: "Des mélanges de plantes et d'arômes naturels soigneusement sélectionnés pour éveiller vos sens et vous offrir une parenthèse d'apaisement.",
-        cover: 'assets/category-tisanes.jpg',
+        cover: 'assets/category-tisanes-cover.jpg',
         link: 'boutique.html#tisanes'
     }
 };
@@ -84,14 +84,15 @@ const productsData = [
         id: 1,
         title: "Box Jardin de douceur",
         category: "coffrets",
-        categoryName: "Nos Coffrets",
-        sub: "Coffret bien-être signature",
+        categoryName: "Nos Box",
+        sub: "Box bien-être signature",
         price: "59,00 TND",
         hasGoogleReview: true,
         googleRating: 5.0,
         googleReviewCount: 1,
         googleReviewUrl: "https://share.google/dgQhvFrvPj3LWtspy",
-        img: "assets/produit.webp"
+        img: "assets/produit.webp",
+        link: "box-detail.html"
     },
     {
         id: 6,
