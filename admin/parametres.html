@@ -158,7 +158,33 @@
                         </div>
                     </div>
 
-                    <!-- Notification Téléphone Instantanée via Telegram -->
+                    <!-- Notification Téléphone Instantanée Push (ntfy.sh - Sans clé ni token) -->
+                    <div style="background: #eef6f0; border: 1.5px solid #4b6c4f; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-mobile-screen-button" style="font-size: 1.4rem; color: #4b6c4f;"></i>
+                                <strong style="font-size: 0.95rem; color: #2F2A25;">Alerte Smartphone Directe (Push avec son & vibration — 100% Gratuit)</strong>
+                            </div>
+                            <span style="font-size: 0.75rem; background: #4b6c4f; color: #fff; padding: 3px 8px; border-radius: 20px; font-weight: 600;">Recommandé &amp; Prêt à l'emploi</span>
+                        </div>
+                        <p style="font-size: 0.84rem; color: #444; line-height: 1.5; margin-bottom: 0.85rem;">
+                            Votre smartphone sonne instantanément dès qu'un client valide son panier, affichant son nom, téléphone, adresse et le montant total en DT.
+                        </p>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 4px;">Canal de notification privé (Topic ntfy)</label>
+                                <input type="text" id="set-notif-ntfy" class="filter-select" style="width: 100%; font-family: monospace; font-size: 0.85rem;" value="otaybox-commandes-2026">
+                            </div>
+                        </div>
+                        <div style="background: #ffffff; padding: 10px 14px; border-radius: 6px; border: 1px dashed rgba(75, 108, 79, 0.4); font-size: 0.8rem; color: #333; line-height: 1.5;">
+                            <strong>📱 Comment activer les alertes sur votre téléphone en 30 secondes :</strong><br>
+                            1. Téléchargez l'application gratuite <strong>ntfy</strong> sur l'App Store (iPhone) ou Google Play Store (Android).<br>
+                            2. Ouvrez l'application, touchez <strong>« + » (S'abonner)</strong> et entrez : <code style="background: #f1f1f1; padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #4b6c4f;">otaybox-commandes-2026</code><br>
+                            3. C'est tout ! Vous recevrez une alerte sonore à chaque commande. Vous pouvez aussi ouvrir <a href="https://ntfy.sh/otaybox-commandes-2026" target="_blank" style="color: #4b6c4f; font-weight: 600; text-decoration: underline;">https://ntfy.sh/otaybox-commandes-2026</a> dans n'importe quel navigateur.
+                        </div>
+                    </div>
+
+                    <!-- Notification Téléphone Instantanée via Telegram (Optionnel) -->
                     <div style="background: #f8faf8; border: 1px solid rgba(75, 108, 79, 0.2); border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem;">
                         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.75rem;">
                             <i class="fa-brands fa-telegram" style="font-size: 1.4rem; color: #2AABEE;"></i>
@@ -292,6 +318,7 @@
                 document.getElementById('set-notif-enabled').checked = notifSettings.enabled !== false;
                 document.getElementById('set-notif-email').value = notifSettings.admin_email || 'contact@otaybox.tn';
                 document.getElementById('set-notif-webhook').value = notifSettings.email_webhook_url || '';
+                document.getElementById('set-notif-ntfy').value = notifSettings.ntfy_topic || 'otaybox-commandes-2026';
                 document.getElementById('set-notif-tg-token').value = notifSettings.telegram_bot_token || '';
                 document.getElementById('set-notif-tg-chat').value = notifSettings.telegram_chat_id || '';
             }
@@ -316,6 +343,7 @@
                     enabled: document.getElementById('set-notif-enabled').checked,
                     admin_email: document.getElementById('set-notif-email').value.trim(),
                     email_webhook_url: document.getElementById('set-notif-webhook').value.trim(),
+                    ntfy_topic: document.getElementById('set-notif-ntfy').value.trim() || 'otaybox-commandes-2026',
                     telegram_bot_token: document.getElementById('set-notif-tg-token').value.trim(),
                     telegram_chat_id: document.getElementById('set-notif-tg-chat').value.trim(),
                     whatsapp_notify: true
@@ -354,14 +382,15 @@
                 testBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Tester l\'envoi de notification';
 
                 let msg = "Résultat du test de notification :\n";
+                if (res.results && res.results.ntfy) msg += "✅ Alerte push envoyée sur votre smartphone (ntfy) !\n";
                 if (res.results && res.results.telegram) msg += "✅ Alerte Telegram envoyée avec succès sur votre téléphone !\n";
                 else if (document.getElementById('set-notif-tg-token').value) msg += "⚠️ Erreur Telegram : vérifiez votre Token et Chat ID.\n";
                 
                 if (res.results && res.results.email) msg += "✅ Webhook e-mail déclenché avec succès !\n";
                 else if (document.getElementById('set-notif-webhook').value) msg += "⚠️ Erreur Webhook e-mail : vérifiez l'URL fournie.\n";
 
-                if (!document.getElementById('set-notif-tg-token').value && !document.getElementById('set-notif-webhook').value) {
-                    msg += "ℹ️ Message de notification généré avec succès :\n\n" + res.text;
+                if (!res.results || (!res.results.telegram && !res.results.email && !res.results.ntfy)) {
+                    msg += "\nℹ️ Message de notification généré :\n\n" + res.text;
                 }
 
                 alert(msg);

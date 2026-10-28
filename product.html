@@ -40,10 +40,10 @@
             position: relative;
             width: 100%;
             margin-top: 76px; /* Sits cleanly below fixed navbar */
-            min-height: 250px;
-            padding: 3rem 1.5rem;
+            min-height: 290px;
+            padding: 3.5rem 1.5rem;
             background-size: cover;
-            background-position: center;
+            background-position: center center;
             background-repeat: no-repeat;
             display: flex;
             align-items: center;
@@ -57,8 +57,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            /* Warm natural vignette showing the authentic photo with excellent contrast */
-            background: linear-gradient(90deg, rgba(35, 30, 26, 0.82) 0%, rgba(47, 42, 37, 0.58) 55%, rgba(47, 42, 37, 0.30) 100%);
+            /* Transparence douce pour que la vraie photo de catégorie soit parfaitement lumineuse et visible */
+            background: linear-gradient(90deg, rgba(15, 20, 15, 0.58) 0%, rgba(15, 20, 15, 0.28) 55%, rgba(0, 0, 0, 0.08) 100%);
             z-index: 1;
         }
         .category-cover-content {
@@ -519,18 +519,18 @@
     </header>
 
     <!-- Category Cover Hero Banner -->
-    <section class="category-cover-hero" id="category-cover-hero" aria-label="Catégorie du produit" style="background-image: url('assets/herbal_infusions_tea_1779202539010.webp');">
+    <section class="category-cover-hero" id="category-cover-hero" aria-label="Catégorie du produit" style="background-image: url('assets/category-coffrets.jpg');">
         <div class="category-cover-overlay"></div>
         <div class="container category-cover-content">
             <div class="category-cover-badge" id="cat-cover-badge">
-                <i class="fa-solid fa-leaf" id="cat-cover-icon"></i>
-                <span id="cat-cover-badge-text">Collection Infusions &amp; Tisanes</span>
+                <i class="fa-solid fa-box-open" id="cat-cover-icon"></i>
+                <span id="cat-cover-badge-text">Nos Coffrets</span>
             </div>
-            <h1 class="category-cover-heading" id="cat-cover-title">Infusions &amp; Tisanes Artisanales</h1>
-            <p class="category-cover-desc" id="cat-cover-desc">Des mélanges de plantes et d'arômes naturels soigneusement sélectionnés pour éveiller vos sens et vous offrir une parenthèse de sérénité.</p>
+            <h1 class="category-cover-heading" id="cat-cover-title">Nos Coffrets Bien-Être ÔTAY BOX</h1>
+            <p class="category-cover-desc" id="cat-cover-desc">L'harmonie parfaite entre infusions d'exception et céramiques artisanales.</p>
             <div>
-                <a href="boutique.html#infusions" class="category-cover-link" id="cat-cover-link">
-                    <span id="cat-cover-link-text">Explorer toute la collection</span>
+                <a href="boutique.html#coffrets" class="category-cover-link" id="cat-cover-link">
+                    <span id="cat-cover-link-text">Explorer nos Coffrets</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
@@ -630,7 +630,7 @@
     <!-- Scripts -->
     <script src="js/script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        function initProductPage() {
             if (typeof productsData === 'undefined') return; // Wait for script.js
             
             // Parse ID from URL
@@ -643,7 +643,7 @@
                 product = productsData[0]; // fallback
             }
 
-            // Résolution dynamique de la catégorie via window.getCategoryMeta (permet d'ajouter n'importe quelle catégorie)
+            // Résolution dynamique de la catégorie via window.getCategoryMeta
             const catInfo = (typeof window.getCategoryMeta === 'function') 
                 ? window.getCategoryMeta(product.category) 
                 : {
@@ -652,7 +652,7 @@
                     icon: "fa-box-open",
                     title: "Nos Coffrets Bien-Être ÔTAY BOX",
                     desc: "L'harmonie parfaite entre infusions d'exception et céramiques artisanales.",
-                    cover: "assets/category-coffrets.png",
+                    cover: "assets/category-coffrets.jpg",
                     link: "boutique.html#coffrets",
                     linkLabel: "Explorer la collection"
                 };
@@ -666,7 +666,9 @@
             const catLink = document.getElementById('cat-cover-link');
             const catLinkText = document.getElementById('cat-cover-link-text');
 
-            if (heroCover) heroCover.style.backgroundImage = `url('${catInfo.cover}')`;
+            if (heroCover && catInfo.cover) {
+                heroCover.style.backgroundImage = `url('${catInfo.cover}')`;
+            }
             if (catIcon) catIcon.className = `fa-solid ${catInfo.icon}`;
             if (catBadgeText) catBadgeText.textContent = catInfo.badge;
             if (catTitle) catTitle.textContent = catInfo.title;
@@ -708,7 +710,7 @@ document.head.appendChild(scriptSchema);
             const relatedContainer = document.getElementById('related-products');
             
             if (container && extraInfo && relatedContainer) {
-                // Gestion des avis réels : Lien vers l'avis Google authentique pour le coffret, pas de fausses étoiles
+                // Gestion des avis réels : Lien vers l'avis Google authentique UNIQUEMENT si le produit a un avis réel
                 let ratingHTML = '';
                 if (product.id === 1 || product.hasGoogleReview) {
                     ratingHTML = `
@@ -719,15 +721,6 @@ document.head.appendChild(scriptSchema);
                                 <strong style="color: #2F2A25;">5.0</strong>
                                 <span style="text-decoration: underline; color: #6E6862; font-size: 0.85rem;">(1 avis Google vérifié &rarr;)</span>
                             </a>
-                        </div>
-                    `;
-                } else {
-                    ratingHTML = `
-                        <div class="product-rating" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #4b6c4f;">
-                            <i class="fa-solid fa-seedling"></i>
-                            <span>Produit artisanal authentique</span>
-                            <span style="color: #ccc;">•</span>
-                            <a href="https://share.google/dgQhvFrvPj3LWtspy" target="_blank" rel="noopener" style="color: #6E6862; text-decoration: underline; font-size: 0.8rem;">Avis vérifiés sur Google</a>
                         </div>
                     `;
                 }
@@ -831,7 +824,7 @@ document.head.appendChild(scriptSchema);
                     }
                 });
                 
-                // Render Related Products (sans fausses étoiles)
+                // Render Related Products (sans fausses étoiles ni mention non vérifiée)
                 const relatedGrid = document.getElementById('related-products-grid');
                 let related = productsData.filter(p => p.category === product.category && p.id !== product.id);
                 if (related.length === 0) {
@@ -849,8 +842,6 @@ document.head.appendChild(scriptSchema);
                     let pReviewHTML = '';
                     if (p.id === 1 || p.hasGoogleReview) {
                         pReviewHTML = `<div style="display: flex; align-items: center; gap: 4px; color: #555; font-size: 0.72rem; margin-bottom: 8px;"><i class="fa-brands fa-google" style="color: #4285F4;"></i> <i class="fa-solid fa-star" style="color: #FFB800;"></i> <strong>5.0</strong> (1 avis)</div>`;
-                    } else {
-                        pReviewHTML = `<div style="display: flex; align-items: center; gap: 4px; color: #4b6c4f; font-size: 0.72rem; margin-bottom: 8px;"><i class="fa-solid fa-seedling"></i> Fait main & naturel</div>`;
                     }
                     
                     card.innerHTML = `
@@ -888,26 +879,6 @@ document.head.appendChild(scriptSchema);
                     
                     relatedGrid.appendChild(card);
                 });
-                    
-                    card.addEventListener('click', (e) => {
-                        if (e.target.closest('.rel-add-btn')) return;
-                        window.location.href = `product.html?id=${p.id}`;
-                    });
-                    
-                    const relAddBtn = card.querySelector('.rel-add-btn');
-                    relAddBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        if (window.otayCart) {
-                            window.otayCart.add(p, 1);
-                        }
-                        const og = this.innerHTML;
-                        this.innerHTML = '<i class="fa-solid fa-check"></i>';
-                        setTimeout(() => { this.innerHTML = og; }, 2000);
-                    });
-                    
-                    relatedGrid.appendChild(card);
-                });
                 
                 // Tabs
                 const tabBtns = document.querySelectorAll('.tab-btn');
@@ -921,7 +892,13 @@ document.head.appendChild(scriptSchema);
                     });
                 });
             }
-        });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initProductPage);
+        } else {
+            initProductPage();
+        }
     </script>
 </body>
 </html>

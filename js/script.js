@@ -19,7 +19,7 @@ window.OTAY_CATEGORIES = {
         icon: 'fa-box-open',
         title: 'Nos Coffrets Bien-Être ÔTAY BOX',
         desc: "L'harmonie parfaite entre infusions d'exception, céramiques artisanales et douceurs sensorielles réunies dans un coffret raffiné.",
-        cover: 'assets/category-coffrets.png',
+        cover: 'assets/category-coffrets.jpg',
         link: 'boutique.html#coffrets'
     },
     accessoires: {

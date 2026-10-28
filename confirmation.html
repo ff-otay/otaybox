@@ -195,11 +195,11 @@
                 </div>
 
                 <div class="actions-row">
-                    <a href="boutique.html" class="btn btn-primary" style="background-color: #4b6c4f; color: #fff; padding: 0.9rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600;">
-                        <i class="fa-solid fa-arrow-left"></i> Retourner à la boutique
+                    <a href="https://wa.me/21654050380" id="conf-whatsapp-btn" target="_blank" class="btn" style="background-color: #25D366; color: #ffffff; padding: 0.9rem 1.8rem; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.25);">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 1.25rem;"></i> Confirmer ma commande par WhatsApp
                     </a>
-                    <a href="https://wa.me/21654050380" id="conf-whatsapp-btn" target="_blank" class="btn btn-outline" style="padding: 0.9rem 1.5rem; border-radius: 50px; text-decoration: none;">
-                        <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> Une question ? Écrivez-nous sur WhatsApp
+                    <a href="boutique.html" class="btn btn-outline" style="padding: 0.9rem 1.5rem; border-radius: 50px; text-decoration: none; color: #4b6c4f; border: 1.5px solid #4b6c4f; font-weight: 600;">
+                        <i class="fa-solid fa-arrow-left"></i> Retourner à la boutique
                     </a>
                 </div>
 
@@ -244,7 +244,16 @@
 
             const waBtn = document.getElementById('conf-whatsapp-btn');
             if (waBtn) {
-                waBtn.href = `https://wa.me/21654050380?text=${encodeURIComponent('Bonjour 🌿 Je souhaite des informations concernant ma commande ' + orderNum + ' sur ÔTAY BOX.')}`;
+                let waText = `Bonjour ÔTAY BOX 🌿 Je viens de valider ma commande ${orderNum}`;
+                if (lastOrder) {
+                    const cust = lastOrder.customer || {};
+                    const total = Number(lastOrder.total).toFixed(3);
+                    waText += ` d'un montant de ${total} DT.`;
+                    if (cust.clientName) waText += ` Nom: ${cust.clientName}.`;
+                    if (cust.governorate) waText += ` Gouvernorat: ${cust.governorate}.`;
+                    waText += ` Merci de me confirmer la livraison !`;
+                }
+                waBtn.href = `https://wa.me/21654050380?text=${encodeURIComponent(waText)}`;
             }
 
             if (lastOrder) {

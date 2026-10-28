@@ -1075,7 +1075,7 @@
                         ? window.getCategoryMeta(p.category) 
                         : { name: p.categoryName || p.category };
 
-                    // Avis réels : Lien vers l'avis Google authentique pour le coffret, pas de fausses étoiles
+                    // Avis réels : Lien vers l'avis Google authentique pour le coffret UNIQUEMENT
                     let reviewHTML = '';
                     if (p.id === 1 || p.hasGoogleReview) {
                         reviewHTML = `
@@ -1085,12 +1085,6 @@
                                 <strong style="color: #2F2A25;">5.0</strong>
                                 <span style="color: #777; text-decoration: underline;">(1 avis Google)</span>
                             </a>
-                        `;
-                    } else {
-                        reviewHTML = `
-                            <div class="prod-artisan-badge" style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem; color: #4b6c4f; margin: 3px 0 6px 0;">
-                                <i class="fa-solid fa-seedling"></i> Fait main & naturel
-                            </div>
                         `;
                     }
                     

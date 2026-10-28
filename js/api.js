@@ -335,6 +335,7 @@
                 enabled: true,
                 admin_email: (window.OTAY_CONFIG && window.OTAY_CONFIG.ADMIN_NOTIFICATION_EMAIL) || 'contact@otaybox.tn',
                 admin_phone: '+216 54 050 380',
+                ntfy_topic: 'otaybox-commandes-2026',
                 email_webhook_url: '',
                 telegram_bot_token: '',
                 telegram_chat_id: '',
@@ -391,9 +392,27 @@ ${itemsList}
 
 🔗 Dashboard : https://otaybox.tn/admin/`;
 
-                const results = { telegram: false, email: false };
+                const results = { ntfy: false, telegram: false, email: false };
 
-                // 1. Notification Smartphone via Telegram Bot (Gratuit, instantané avec alerte sonore)
+                // 1. Notification Smartphone instantanée Push (ntfy.sh - 100% gratuit, sans token, alerte sonore directe sur mobile)
+                try {
+                    const ntfyTopic = settings.ntfy_topic || 'otaybox-commandes-2026';
+                    const ntfyRes = await fetch(`https://ntfy.sh/${encodeURIComponent(ntfyTopic)}`, {
+                        method: 'POST',
+                        headers: {
+                            'Title': `Nouvelle commande OTAY BOX (${orderData.orderNumber})`,
+                            'Priority': 'urgent',
+                            'Tags': 'package,tea,bell',
+                            'Click': 'https://otaybox.tn/admin/'
+                        },
+                        body: `Client : ${customer.clientName || 'N/A'}\nTél : ${customer.clientPhone || 'N/A'}\nMontant : ${totalFormatted}\nVille : ${customer.governorate || ''}\nArticles :\n${itemsList}`
+                    });
+                    results.ntfy = ntfyRes.ok;
+                } catch (pushErr) {
+                    console.warn('Erreur notification push mobile (ntfy):', pushErr);
+                }
+
+                // 2. Notification Smartphone via Telegram Bot (Optionnel, instantané avec alerte sonore)
                 if (settings.telegram_bot_token && settings.telegram_chat_id) {
                     try {
                         const tgRes = await fetch(`https://api.telegram.org/bot${settings.telegram_bot_token}/sendMessage`, {
