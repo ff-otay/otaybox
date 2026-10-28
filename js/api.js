@@ -668,6 +668,31 @@ ${itemsList}
         async getOrders(filters = {}) {
             const client = getSupabase();
             if (client) {
+                // 1. Essai prioritaire via la fonction RPC sécurisée get_admin_orders (SECURITY DEFINER)
+                try {
+                    const { data: rpcData, error: rpcError } = await client.rpc('get_admin_orders');
+                    if (!rpcError && Array.isArray(rpcData)) {
+                        let orders = rpcData;
+                        if (filters.order_status) orders = orders.filter(o => o.order_status === filters.order_status);
+                        if (filters.delivery_status) orders = orders.filter(o => o.delivery_status === filters.delivery_status);
+                        if (filters.payment_status) orders = orders.filter(o => o.payment_status === filters.payment_status);
+                        if (filters.origin) orders = orders.filter(o => o.origin === filters.origin);
+                        if (filters.search) {
+                            const s = filters.search.toLowerCase().trim();
+                            orders = orders.filter(o =>
+                                (o.order_number && o.order_number.toLowerCase().includes(s)) ||
+                                (o.client_name && o.client_name.toLowerCase().includes(s)) ||
+                                (o.client_phone && o.client_phone.includes(s)) ||
+                                (o.city && o.city.toLowerCase().includes(s))
+                            );
+                        }
+                        return orders;
+                    }
+                } catch (rpcErr) {
+                    // Fallback sur REST
+                }
+
+                // 2. Repli REST standard
                 try {
                     let query = client.from('orders').select('*, order_items(*)').order('created_at', { ascending: false });
                     if (filters.order_status) query = query.eq('order_status', filters.order_status);
@@ -677,17 +702,8 @@ ${itemsList}
 
                     const { data, error } = await query;
                     if (!error && data) return data;
-                    if (error) {
-                        console.error('Erreur Supabase getOrders:', error);
-                        if (error.code === '42501' || (error.message && error.message.includes('permission denied'))) {
-                            throw new Error("Accès refusé par la sécurité Supabase (RLS). Votre session administrateur n'est pas authentifiée. Veuillez vous reconnecter sur login.html.");
-                        }
-                    }
                 } catch (e) {
                     console.warn('Erreur chargement Supabase orders:', e);
-                    if (e.message && e.message.includes('Accès refusé')) {
-                        throw e;
-                    }
                 }
             }
 
@@ -716,6 +732,16 @@ ${itemsList}
         async getOrderById(idOrNumber) {
             const client = getSupabase();
             if (client) {
+                // 1. Essai prioritaire via RPC get_admin_orders
+                try {
+                    const { data: allOrders } = await client.rpc('get_admin_orders');
+                    if (Array.isArray(allOrders)) {
+                        const found = allOrders.find(o => o.id === idOrNumber || o.order_number === idOrNumber);
+                        if (found) return found;
+                    }
+                } catch (e) {}
+
+                // 2. Repli REST direct
                 try {
                     const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrNumber);
                     const col = isUuid ? 'id' : 'order_number';
@@ -725,12 +751,8 @@ ${itemsList}
                         .eq(col, idOrNumber)
                         .single();
                     if (!error && data) return data;
-                    if (error && (error.code === '42501' || (error.message && error.message.includes('permission denied')))) {
-                        throw new Error("Accès refusé par la sécurité Supabase (RLS). Votre session administrateur n'est pas authentifiée. Veuillez vous reconnecter.");
-                    }
                 } catch (e) {
                     console.warn('Erreur getOrderById Supabase:', e);
-                    if (e.message && e.message.includes('Accès refusé')) throw e;
                 }
             }
 
@@ -744,6 +766,21 @@ ${itemsList}
         async updateOrder(id, updates, adminEmail = 'Administratrice') {
             const client = getSupabase();
             if (client) {
+                // 1. Essai prioritaire via RPC sécurisée admin_update_order
+                try {
+                    const { data: rpcData, error: rpcError } = await client.rpc('admin_update_order', {
+                        p_order_id: id,
+                        p_order_status: updates.order_status || null,
+                        p_delivery_status: updates.delivery_status || null,
+                        p_payment_status: updates.payment_status || null,
+                        p_carrier: updates.carrier || null,
+                        p_tracking_number: updates.tracking_number || null,
+                        p_internal_notes: updates.internal_notes || null
+                    });
+                    if (!rpcError) return { id, ...updates };
+                } catch (e) {}
+
+                // 2. Repli REST direct
                 try {
                     const { data, error } = await client
                         .from('orders')

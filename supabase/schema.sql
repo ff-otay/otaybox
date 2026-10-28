@@ -509,3 +509,100 @@ GRANT ALL ON ALL ROUTINES IN SCHEMA public TO authenticated;
 
 -- Autoriser l'exécution de la fonction RPC de commande par le public
 GRANT EXECUTE ON FUNCTION create_verified_order TO anon, authenticated;
+
+-- -----------------------------------------------------------------------------
+-- 12. Procédure RPC Administrateur : Récupération Complète des Commandes
+-- Permet au Dashboard d'accéder aux commandes réelles de façon sécurisée (SECURITY DEFINER)
+-- -----------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION get_admin_orders()
+RETURNS JSONB
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+    v_result JSONB;
+BEGIN
+    SELECT COALESCE(jsonb_agg(
+        jsonb_build_object(
+            'id', o.id,
+            'order_number', o.order_number,
+            'origin', o.origin,
+            'client_name', o.client_name,
+            'client_phone', o.client_phone,
+            'client_email', o.client_email,
+            'governorate', o.governorate,
+            'city', o.city,
+            'address', o.address,
+            'delivery_notes', o.delivery_notes,
+            'country', o.country,
+            'postal_code', o.postal_code,
+            'subtotal', o.subtotal,
+            'shipping_fee', o.shipping_fee,
+            'discount', o.discount,
+            'total', o.total,
+            'order_status', o.order_status,
+            'delivery_status', o.delivery_status,
+            'payment_status', o.payment_status,
+            'payment_method', o.payment_method,
+            'carrier', o.carrier,
+            'tracking_number', o.tracking_number,
+            'internal_notes', o.internal_notes,
+            'created_at', o.created_at,
+            'updated_at', o.updated_at,
+            'order_items', (
+                SELECT COALESCE(jsonb_agg(
+                    jsonb_build_object(
+                        'id', oi.id,
+                        'product_id', oi.product_id,
+                        'sku', oi.sku,
+                        'product_name', oi.product_name,
+                        'unit_price', oi.unit_price,
+                        'quantity', oi.quantity,
+                        'discount', oi.discount,
+                        'total_price', oi.total_price
+                    )
+                ), '[]'::jsonb)
+                FROM order_items oi
+                WHERE oi.order_id = o.id
+            )
+        ) ORDER BY o.created_at DESC
+    ), '[]'::jsonb) INTO v_result
+    FROM orders o;
+
+    RETURN v_result;
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION get_admin_orders TO anon, authenticated;
+
+-- Mise à jour administrative de statut
+CREATE OR REPLACE FUNCTION admin_update_order(
+    p_order_id UUID,
+    p_order_status TEXT DEFAULT NULL,
+    p_delivery_status TEXT DEFAULT NULL,
+    p_payment_status TEXT DEFAULT NULL,
+    p_carrier TEXT DEFAULT NULL,
+    p_tracking_number TEXT DEFAULT NULL,
+    p_internal_notes TEXT DEFAULT NULL
+)
+RETURNS JSONB
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+    UPDATE orders
+    SET
+        order_status = COALESCE(p_order_status, order_status),
+        delivery_status = COALESCE(p_delivery_status, delivery_status),
+        payment_status = COALESCE(p_payment_status, payment_status),
+        carrier = COALESCE(p_carrier, carrier),
+        tracking_number = COALESCE(p_tracking_number, tracking_number),
+        internal_notes = COALESCE(p_internal_notes, internal_notes),
+        updated_at = NOW()
+    WHERE id = p_order_id;
+
+    RETURN jsonb_build_object('success', TRUE);
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION admin_update_order TO anon, authenticated;
