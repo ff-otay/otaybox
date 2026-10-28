@@ -158,33 +158,35 @@
                         </div>
                     </div>
 
-                    <!-- Configuration Resend E-mail (Service Officiel Recommandé) -->
+                    <!-- Configuration Resend E-mail (Serveur Sécurisé Supabase) -->
                     <div style="background: #fdfbf7; border: 1.5px solid #d4a373; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem;">
                         <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 0.75rem; flex-wrap: wrap;">
                             <div style="display: flex; align-items: center; gap: 8px;">
-                                <i class="fa-solid fa-paper-plane" style="font-size: 1.3rem; color: #d4a373;"></i>
-                                <strong style="font-size: 0.95rem; color: #2F2A25;">Alertes E-mail Professionnelles via Resend (Recommandé)</strong>
+                                <i class="fa-solid fa-shield-halved" style="font-size: 1.3rem; color: #4b6c4f;"></i>
+                                <strong style="font-size: 0.95rem; color: #2F2A25;">Alertes E-mail Resend (100% Sécurisé &amp; Confidentiel)</strong>
                             </div>
-                            <span style="font-size: 0.75rem; background: #d4a373; color: #fff; padding: 3px 8px; border-radius: 20px; font-weight: 600;">3 000 emails/mois offerts</span>
+                            <span style="font-size: 0.75rem; background: #4b6c4f; color: #fff; padding: 3px 10px; border-radius: 20px; font-weight: 600;">
+                                <i class="fa-solid fa-lock"></i> Clé protégée dans Supabase Secrets
+                            </span>
                         </div>
                         <p style="font-size: 0.84rem; color: #444; line-height: 1.5; margin-bottom: 0.85rem;">
-                            <strong>Resend</strong> est la meilleure solution pour recevoir un e-mail avec mise en page élégante à chaque commande (garantie sans spam).
+                            Les e-mails sont expédiés via votre compte Resend vérifié pour <strong>otaybox.tn</strong> via l'Edge Function Supabase (la clé <code>RESEND_API_KEY</code> n'est jamais exposée au public).
                         </p>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0.85rem;">
-                            <div>
-                                <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 4px;">Clé API Resend (API Key)</label>
-                                <input type="password" id="set-notif-resend-key" class="filter-select" style="width: 100%; font-family: monospace; font-size: 0.85rem;" placeholder="re_123456789_abcdef...">
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0.85rem; font-size: 0.85rem;">
+                            <div style="background: #ffffff; padding: 10px 14px; border-radius: 6px; border: 1px solid rgba(75, 108, 79, 0.2);">
+                                <strong>Expéditeur officiel :</strong><br>
+                                <code style="color: #4b6c4f; font-weight: bold;">commandes@otaybox.tn</code>
                             </div>
-                            <div>
-                                <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 4px;">Expéditeur (From)</label>
-                                <input type="text" id="set-notif-resend-from" class="filter-select" style="width: 100%; font-size: 0.85rem;" value="ÔTAY BOX <onboarding@resend.dev>">
+                            <div style="background: #ffffff; padding: 10px 14px; border-radius: 6px; border: 1px solid rgba(75, 108, 79, 0.2);">
+                                <strong>Destinataire des alertes :</strong><br>
+                                <code style="color: #4b6c4f; font-weight: bold;">contact@otaybox.tn</code>
                             </div>
                         </div>
-                        <div style="background: #ffffff; padding: 10px 14px; border-radius: 6px; border: 1px dashed rgba(212, 163, 115, 0.6); font-size: 0.8rem; color: #333; line-height: 1.5;">
-                            <strong>🚀 Comment obtenir votre clé Resend en 2 minutes :</strong><br>
-                            1. Rendez-vous sur <a href="https://resend.com" target="_blank" style="color: #4b6c4f; font-weight: 600; text-decoration: underline;">resend.com</a> et créez votre compte gratuit.<br>
-                            2. Cliquez sur <strong>API Keys</strong> &gt; <strong>Create API Key</strong>, donnez-lui le nom <code>OtayBox</code> et copiez la clé.<br>
-                            3. Collez la clé ci-dessus et cliquez sur <em>Enregistrer</em>. Dès qu'une commande arrive, un bel e-mail récapitulatif est expédié !
+
+                        <div style="background: #ffffff; padding: 10px 14px; border-radius: 6px; border: 1px dashed rgba(75, 108, 79, 0.4); font-size: 0.8rem; color: #444; line-height: 1.5;">
+                            🛡️ <strong>Respect de la vie privée &amp; Confidentialité :</strong><br>
+                            L'e-mail d'alerte indique uniquement qu'une nouvelle commande est arrivée avec son montant et la liste des articles. <strong>Aucune donnée personnelle du client</strong> (nom, téléphone, adresse) n'est incluse dans l'e-mail pour garantir une sécurité absolue.
                         </div>
                     </div>
 
@@ -347,8 +349,6 @@
             if (notifSettings) {
                 document.getElementById('set-notif-enabled').checked = notifSettings.enabled !== false;
                 document.getElementById('set-notif-email').value = notifSettings.admin_email || 'contact@otaybox.tn';
-                document.getElementById('set-notif-resend-key').value = notifSettings.resend_api_key || '';
-                document.getElementById('set-notif-resend-from').value = notifSettings.resend_from || 'ÔTAY BOX <onboarding@resend.dev>';
                 document.getElementById('set-notif-webhook').value = notifSettings.email_webhook_url || '';
                 document.getElementById('set-notif-ntfy').value = notifSettings.ntfy_topic || 'otaybox-commandes-2026';
                 document.getElementById('set-notif-tg-token').value = notifSettings.telegram_bot_token || '';
@@ -374,8 +374,6 @@
                 const newSettings = {
                     enabled: document.getElementById('set-notif-enabled').checked,
                     admin_email: document.getElementById('set-notif-email').value.trim(),
-                    resend_api_key: document.getElementById('set-notif-resend-key').value.trim(),
-                    resend_from: document.getElementById('set-notif-resend-from').value.trim() || 'ÔTAY BOX <onboarding@resend.dev>',
                     email_webhook_url: document.getElementById('set-notif-webhook').value.trim(),
                     ntfy_topic: document.getElementById('set-notif-ntfy').value.trim() || 'otaybox-commandes-2026',
                     telegram_bot_token: document.getElementById('set-notif-tg-token').value.trim(),
@@ -417,8 +415,11 @@
                 testBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Tester l\'envoi de notification';
 
                 let msg = "Résultat du test de notification :\n";
-                if (res.results && res.results.resend) msg += "✅ E-mail transactionnel envoyé avec succès via Resend !\n";
-                else if (document.getElementById('set-notif-resend-key').value) msg += "⚠️ Resend : vérifiez votre clé API ou le domaine d'envoi.\n";
+                if (res.results && (res.results.resend || res.results.edge_function)) {
+                    msg += "✅ E-mail envoyé avec succès via Resend & Supabase Edge Function !\n";
+                } else {
+                    msg += "⚠️ E-mail Resend : la fonction Supabase 'send-order-notification' n'est pas encore déployée ou a retourné une erreur (consultez le dashboard Supabase Edge Functions).\n";
+                }
 
                 if (res.results && res.results.ntfy) msg += "✅ Alerte push envoyée sur votre smartphone (ntfy) !\n";
                 if (res.results && res.results.telegram) msg += "✅ Alerte Telegram envoyée avec succès sur votre téléphone !\n";
