@@ -6,9 +6,9 @@
 (function(window) {
     'use strict';
 
-    document.addEventListener('DOMContentLoaded', () => {
-        // 1. Contrôle d'accès strict
-        const session = window.OtayAPI.requireAdmin();
+    document.addEventListener('DOMContentLoaded', async () => {
+        // 1. Contrôle d'accès strict avec vérification de la session Supabase
+        const session = await window.OtayAPI.requireAdminAsync();
         if (!session) return;
 
         // 2. Affichage des informations de l'administratrice dans la sidebar

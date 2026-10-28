@@ -232,8 +232,12 @@
                     customer: formData
                 };
 
-                // Notification automatique de commande
-                this.notifyNewOrder(resultPayload).catch(e => console.warn('Notification log:', e));
+                // Notification automatique de commande avec await pour garantir l'envoi avant redirection
+                try {
+                    await this.notifyNewOrder(resultPayload);
+                } catch (notifErr) {
+                    console.warn('Notification log non bloquant:', notifErr);
+                }
 
                 return resultPayload;
             }
@@ -307,8 +311,12 @@
                 customer: formData
             };
 
-            // Notification automatique de commande
-            this.notifyNewOrder(resultPayload).catch(e => console.warn('Notification log:', e));
+            // Notification automatique de commande avec await pour garantir l'envoi avant redirection
+            try {
+                await this.notifyNewOrder(resultPayload);
+            } catch (notifErr) {
+                console.warn('Notification log non bloquant:', notifErr);
+            }
 
             return resultPayload;
         },
@@ -402,7 +410,8 @@ ${itemsList}
                             'Tags': 'package,tea,bell',
                             'Click': 'https://otaybox.tn/admin/'
                         },
-                        body: `Nouvelle commande #${orderData.orderNumber}\nMontant : ${totalFormatted}\nArticles :\n${itemsList}`
+                        body: `Nouvelle commande #${orderData.orderNumber}\nMontant : ${totalFormatted}\nArticles :\n${itemsList}`,
+                        keepalive: true
                     });
                     results.ntfy = ntfyRes.ok;
                 } catch (pushErr) {
@@ -418,7 +427,8 @@ ${itemsList}
                             body: JSON.stringify({
                                 chat_id: settings.telegram_chat_id,
                                 text: notificationText
-                            })
+                            }),
+                            keepalive: true
                         });
                         results.telegram = tgRes.ok;
                     } catch (tgErr) {
@@ -465,7 +475,10 @@ ${itemsList}
                         console.warn("Erreur appel Supabase Edge Function:", fnErr);
                         results.resend = false;
                     }
-                } else if (supabaseUrl && anonKey) {
+                }
+
+                // Fallback direct avec keepalive si client.functions n'a pas pu envoyer ou n'était pas initialisé
+                if (!results.resend && supabaseUrl && anonKey) {
                     try {
                         const fnUrl = `${supabaseUrl.replace(/\/+$/, '')}/functions/v1/send-order-notification`;
                         const rawRes = await fetch(fnUrl, {
@@ -475,7 +488,8 @@ ${itemsList}
                                 'apikey': anonKey,
                                 'Authorization': `Bearer ${anonKey}`
                             },
-                            body: JSON.stringify({ order: safeOrderPayload })
+                            body: JSON.stringify({ order: safeOrderPayload }),
+                            keepalive: true
                         });
                         results.resend = rawRes.ok;
                         results.edge_function = rawRes.ok;
@@ -511,6 +525,10 @@ ${itemsList}
             }
         },
 
+        getSupabaseClient() {
+            return getSupabase();
+        },
+
         /**
          * Authentification administrateur
          */
@@ -518,11 +536,20 @@ ${itemsList}
             const client = getSupabase();
             if (client) {
                 const { data, error } = await client.auth.signInWithPassword({ email, password });
-                if (error) throw new Error(error.message);
+                if (error) {
+                    if (error.message && error.message.includes('Email not confirmed')) {
+                        throw new Error("Votre adresse e-mail n'est pas encore confirmée. Dans votre console Supabase > Authentication > Users, cliquez sur 'Confirm email' ou cochez 'Auto Confirm' pour votre compte.");
+                    }
+                    if (error.message && error.message.includes('Invalid login credentials')) {
+                        throw new Error("Identifiants incorrects. Assurez-vous d'avoir créé votre compte administrateur dans Supabase (Authentication > Users > Add User avec 'Auto Confirm').");
+                    }
+                    throw new Error(error.message);
+                }
                 localStorage.setItem(STORAGE_KEYS.AUTH, JSON.stringify({
                     email: data.user.email,
                     id: data.user.id,
                     token: data.session.access_token,
+                    refresh_token: data.session.refresh_token,
                     logged_at: Date.now()
                 }));
                 return data.user;
@@ -566,6 +593,42 @@ ${itemsList}
                 return null;
             }
             return session;
+        },
+
+        async requireAdminAsync() {
+            const localSession = this.getAdminSession();
+            const client = getSupabase();
+
+            if (client && client.auth) {
+                try {
+                    const { data, error } = await client.auth.getSession();
+                    if (!error && data && data.session) {
+                        return data.session.user;
+                    }
+                    // Si un refresh token est disponible, tenter de restaurer la session
+                    if (localSession && localSession.token && localSession.refresh_token) {
+                        const { data: refreshData, error: refreshError } = await client.auth.setSession({
+                            access_token: localSession.token,
+                            refresh_token: localSession.refresh_token
+                        });
+                        if (!refreshError && refreshData && refreshData.session) {
+                            return refreshData.session.user;
+                        }
+                    }
+                    // Session Supabase non trouvée ou expirée
+                    localStorage.removeItem(STORAGE_KEYS.AUTH);
+                    window.location.href = 'login.html?reason=session_expired';
+                    return null;
+                } catch (e) {
+                    console.warn("Erreur vérification session Supabase:", e);
+                }
+            }
+
+            if (!localSession) {
+                window.location.href = 'login.html';
+                return null;
+            }
+            return localSession;
         },
 
         /**
@@ -614,8 +677,17 @@ ${itemsList}
 
                     const { data, error } = await query;
                     if (!error && data) return data;
+                    if (error) {
+                        console.error('Erreur Supabase getOrders:', error);
+                        if (error.code === '42501' || (error.message && error.message.includes('permission denied'))) {
+                            throw new Error("Accès refusé par la sécurité Supabase (RLS). Votre session administrateur n'est pas authentifiée. Veuillez vous reconnecter sur login.html.");
+                        }
+                    }
                 } catch (e) {
                     console.warn('Erreur chargement Supabase orders:', e);
+                    if (e.message && e.message.includes('Accès refusé')) {
+                        throw e;
+                    }
                 }
             }
 
@@ -653,8 +725,12 @@ ${itemsList}
                         .eq(col, idOrNumber)
                         .single();
                     if (!error && data) return data;
+                    if (error && (error.code === '42501' || (error.message && error.message.includes('permission denied')))) {
+                        throw new Error("Accès refusé par la sécurité Supabase (RLS). Votre session administrateur n'est pas authentifiée. Veuillez vous reconnecter.");
+                    }
                 } catch (e) {
                     console.warn('Erreur getOrderById Supabase:', e);
+                    if (e.message && e.message.includes('Accès refusé')) throw e;
                 }
             }
 

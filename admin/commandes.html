@@ -183,8 +183,26 @@
         let allOrders = [];
 
         async function loadAndRenderOrders() {
-            allOrders = await window.OtayAPI.getOrders();
-            renderFilteredOrders();
+            try {
+                allOrders = await window.OtayAPI.getOrders();
+                renderFilteredOrders();
+            } catch (err) {
+                console.error("Erreur chargement commandes:", err);
+                const tbody = document.getElementById('orders-table-body');
+                if (tbody) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="11" style="text-align: center; padding: 3rem; color: #c0392b;">
+                                <i class="fa-solid fa-triangle-exclamation" style="font-size: 2rem; margin-bottom: 0.5rem; display: block; color: #e74c3c;"></i>
+                                <strong style="font-size: 1rem;">${err.message || "Erreur de chargement des commandes."}</strong><br>
+                                <a href="login.html?reason=session_expired" class="btn-primary" style="display: inline-block; margin-top: 1rem; padding: 8px 20px; font-size: 0.85rem; text-decoration: none;">
+                                    <i class="fa-solid fa-right-to-bracket"></i> Se reconnecter avec votre compte administrateur
+                                </a>
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
         }
 
         function renderFilteredOrders() {

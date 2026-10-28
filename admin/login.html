@@ -165,6 +165,10 @@
         </form>
         
         <div class="login-footer-links">
+            <div style="font-size: 0.8rem; color: #555; background: #FAF8F5; border: 1px dashed #d4a373; border-radius: 6px; padding: 10px; margin-bottom: 15px; text-align: left; line-height: 1.4;">
+                <i class="fa-solid fa-circle-info" style="color: #4b6c4f;"></i> <strong>Connexion sécurisée Supabase :</strong><br>
+                Utilisez votre compte administrateur créé dans la console Supabase (<strong>Authentication &gt; Users</strong> avec <em>Auto Confirm User</em>).
+            </div>
             <a href="../index.html"><i class="fa-solid fa-arrow-left"></i> Retourner sur le site public</a>
         </div>
     </div>
@@ -174,15 +178,29 @@
     <script src="../js/supabase-config.js"></script>
     <script src="../js/api.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Si déjà connecté, rediriger vers le dashboard
-            if (window.OtayAPI && window.OtayAPI.getAdminSession()) {
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const errorBox = document.getElementById('login-error');
+
+            if (urlParams.get('reason') === 'session_expired') {
+                errorBox.textContent = "Votre session a expiré ou n'est pas connectée à Supabase. Veuillez vous connecter avec vos identifiants administrateur.";
+                errorBox.style.display = 'block';
+            }
+
+            // Ne rediriger automatiquement que si une vraie session Supabase est active
+            const client = window.OtayAPI.getSupabaseClient ? window.OtayAPI.getSupabaseClient() : null;
+            if (client && client.auth && !urlParams.has('reason')) {
+                const { data } = await client.auth.getSession();
+                if (data && data.session) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+            } else if (!client && window.OtayAPI && window.OtayAPI.getAdminSession() && !urlParams.has('reason')) {
                 window.location.href = 'index.html';
                 return;
             }
 
             const form = document.getElementById('admin-login-form');
-            const errorBox = document.getElementById('login-error');
             const submitBtn = document.getElementById('login-btn');
 
             form.addEventListener('submit', async (e) => {
