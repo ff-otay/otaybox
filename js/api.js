@@ -47,6 +47,9 @@
         AUTH: 'otay_admin_session'
     };
 
+    // Cache anti-doublon en mémoire de session
+    const notifiedOrdersCache = new Set();
+
     function getLocalOrders() {
         try {
             return JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS)) || [];
@@ -382,6 +385,15 @@
                 const settings = await this.getNotificationSettings();
                 if (!settings || !settings.enabled) return { notified: false, reason: 'disabled' };
 
+                const orderNum = orderData.orderNumber || (orderData.customer && orderData.customer.order_number);
+                if (orderNum && notifiedOrdersCache.has(orderNum)) {
+                    console.log(`[Anti-doublon client] Commande #${orderNum} déjà notifiée dans cette session.`);
+                    return { notified: true, results: { resend: true, edge_function: true }, text: 'Déjà notifiée' };
+                }
+                if (orderNum) {
+                    notifiedOrdersCache.add(orderNum);
+                }
+
                 const itemsList = (orderData.items || []).map(i => `• ${i.qty || i.quantity || 1}x ${i.name || i.product_name || i.title} (${((i.price || i.unit_price || 0)).toFixed ? (i.price || i.unit_price).toFixed(3) : i.price} TND)`).join('\n');
                 const customer = orderData.customer || {};
                 const totalFormatted = (typeof orderData.total === 'number') ? orderData.total.toFixed(3) + ' TND' : orderData.total;
@@ -500,7 +512,7 @@ ${itemsList}
                 }
 
                 // 4. Notification Email via Webhook externe optionnel (Formspree / Make)
-                if (settings.email_webhook_url) {
+                if (settings.email_webhook_url && !settings.email_webhook_url.includes('send-order-notification')) {
                     try {
                         const emailRes = await fetch(settings.email_webhook_url, {
                             method: 'POST',

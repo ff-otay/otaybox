@@ -13,6 +13,22 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Cache mémoire anti-doublon : évite le double envoi si le webhook Supabase et le navigateur appellent en même temps
+const sentOrdersCache = new Map<string, number>();
+
+function isDuplicate(orderNumber: string): boolean {
+  const now = Date.now();
+  // Nettoyage des entrées de plus de 10 minutes
+  for (const [k, timestamp] of sentOrdersCache.entries()) {
+    if (now - timestamp > 600000) sentOrdersCache.delete(k);
+  }
+  if (sentOrdersCache.has(orderNumber)) {
+    return true;
+  }
+  sentOrdersCache.set(orderNumber, now);
+  return false;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -25,6 +41,21 @@ serve(async (req) => {
     if (!order || !order.order_number) {
       return new Response(JSON.stringify({ error: "Données de commande manquantes (order_number requis)." }), {
         status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const orderNumStr = String(order.order_number);
+
+    // Protection anti-doublon : si cette commande a déjà été notifiée il y a moins de 10 minutes, ignorer
+    if (isDuplicate(orderNumStr)) {
+      console.log(`[Anti-doublon] Commande #${orderNumStr} déjà notifiée. Double envoi bloqué.`);
+      return new Response(JSON.stringify({ 
+        success: true, 
+        message: `Notification déjà envoyée pour la commande #${orderNumStr}.`,
+        provider: "deduplicated" 
+      }), {
+        status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -116,6 +147,7 @@ serve(async (req) => {
         headers: {
           "Authorization": `Bearer ${resendApiKey}`,
           "Content-Type": "application/json",
+          "Idempotency-Key": `otay-cmd-${order.order_number}`,
         },
         body: JSON.stringify({
           from: "ÔTAY BOX <commandes@otaybox.tn>",

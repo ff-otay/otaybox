@@ -164,15 +164,10 @@
                 </div>
                 
                 <h1 class="conf-title">Merci pour votre commande !</h1>
-                
-                <div>
-                    <span class="conf-number-badge" id="conf-order-number">Commande N° ...</span>
-                </div>
-
-                <div class="conf-message-notice">
-                    <strong><i class="fa-solid fa-phone"></i> Information importante :</strong><br>
-                    Votre commande est bien enregistrée dans notre système. Elle est actuellement <strong>en attente de confirmation téléphonique</strong>. Notre équipe va vous appeler très prochainement au numéro indiqué afin de valider avec vous les détails de la livraison avant l'expédition de votre colis.
-                </div>
+                <p style="color: #615B55; font-size: 1rem; margin-bottom: 2rem; line-height: 1.5;">
+                    Votre commande a été enregistrée avec succès.<br>
+                    Nous préparons votre colis avec le plus grand soin.
+                </p>
 
                 <!-- Récapitulatif -->
                 <div class="summary-box">
@@ -199,10 +194,6 @@
                         <i class="fa-solid fa-arrow-left"></i> Retourner à la boutique
                     </a>
                 </div>
-
-                <div style="margin-top: 1.5rem; text-align: center; font-size: 0.85rem; color: #555;">
-                    <i class="fa-solid fa-circle-check" style="color: #4b6c4f;"></i> L'atelier ÔTAY BOX a été notifié de votre commande et débute sa préparation.
-                </div>
             </div>
         </div>
     </main>
@@ -228,16 +219,10 @@
     <!-- Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const orderNumFromUrl = urlParams.get('order');
-
             let lastOrder = null;
             try {
                 lastOrder = JSON.parse(sessionStorage.getItem('otay_last_order'));
             } catch (e) {}
-
-            const orderNum = (lastOrder && lastOrder.orderNumber) ? lastOrder.orderNumber : (orderNumFromUrl || 'OTB-CMD-2026-0001');
-            document.getElementById('conf-order-number').textContent = `Commande N° ${orderNum}`;
 
             if (lastOrder) {
                 document.getElementById('conf-subtotal').textContent = Number(lastOrder.subtotal).toFixed(3) + ' DT';

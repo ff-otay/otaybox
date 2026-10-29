@@ -558,8 +558,8 @@
                         // Sauvegarder les données de confirmation pour l'écran suivant
                         sessionStorage.setItem('otay_last_order', JSON.stringify(result));
 
-                        // Redirection vers confirmation
-                        window.location.href = `confirmation.html?order=${encodeURIComponent(result.orderNumber)}`;
+                        // Redirection vers confirmation (sans exposer le numéro dans l'URL)
+                        window.location.href = 'confirmation.html';
                     } else {
                         throw new Error("L'enregistrement de la commande n'a pas pu aboutir.");
                     }
